@@ -647,6 +647,8 @@
 <span class="sd">        results_td</span>
 <span class="sd">            :py:class:`xarray.Dataset` with time domain results.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">create_time</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        
         <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">decompose_state</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
 
         <span class="c1"># position</span>
@@ -681,12 +683,16 @@
                       <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;N or Nm&#39;</span><span class="p">}</span>
         <span class="n">power_attr</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Power&#39;</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;W&#39;</span><span class="p">}</span>
         <span class="n">mech_power_attr</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Mechanical power&#39;</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;W&#39;</span><span class="p">}</span>
-        <span class="n">omega_attr</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Frequency&#39;</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;rad/s&#39;</span><span class="p">}</span>
+        <span class="n">omega_attr</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Radial frequency&#39;</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;rad/s&#39;</span><span class="p">}</span>
+        <span class="n">freq_attr</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Frequency&#39;</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;Hz&#39;</span><span class="p">}</span>
+        <span class="n">period_attr</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Period&#39;</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;s&#39;</span><span class="p">}</span>
         <span class="n">dof_attr</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;PTO degree of freedom&#39;</span><span class="p">}</span>
         <span class="n">time_attr</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Time&#39;</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;s&#39;</span><span class="p">}</span>
 
         <span class="n">t_dat</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">time_nsubsteps</span><span class="p">(</span><span class="n">nsubsteps</span><span class="p">)</span>
-
+        
+        <span class="n">freq</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">omega</span><span class="o">/</span><span class="mi">2</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+        <span class="n">period</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">freq</span>
 
         <span class="n">results_fd</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span>
             <span class="n">data_vars</span><span class="o">=</span><span class="p">{</span>
@@ -699,8 +705,10 @@
             <span class="p">},</span>
             <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
                 <span class="s1">&#39;omega&#39;</span><span class="p">:(</span><span class="s1">&#39;omega&#39;</span><span class="p">,</span> <span class="n">wec</span><span class="o">.</span><span class="n">omega</span><span class="p">,</span> <span class="n">omega_attr</span><span class="p">),</span>
+                <span class="s1">&#39;freq&#39;</span><span class="p">:(</span><span class="s1">&#39;omega&#39;</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">freq_attr</span><span class="p">),</span>
+                <span class="s1">&#39;period&#39;</span><span class="p">:(</span><span class="s1">&#39;omega&#39;</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">period_attr</span><span class="p">),</span>
                 <span class="s1">&#39;dof&#39;</span><span class="p">:(</span><span class="s1">&#39;dof&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="n">dof_attr</span><span class="p">)},</span>
-            <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;time_created_utc&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
+            <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;time_created_utc&quot;</span><span class="p">:</span> <span class="n">create_time</span><span class="p">}</span>
             <span class="p">)</span>
 
         <span class="n">results_td</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span>
@@ -715,7 +723,7 @@
             <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
                 <span class="s1">&#39;time&#39;</span><span class="p">:(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">t_dat</span><span class="p">,</span> <span class="n">time_attr</span><span class="p">),</span>
                 <span class="s1">&#39;dof&#39;</span><span class="p">:(</span><span class="s1">&#39;dof&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="n">dof_attr</span><span class="p">)},</span>
-            <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;time_created_utc&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
+            <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;time_created_utc&quot;</span><span class="p">:</span> <span class="n">create_time</span><span class="p">}</span>
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">results_fd</span><span class="p">,</span> <span class="n">results_td</span></div></div>

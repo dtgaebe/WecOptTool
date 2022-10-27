@@ -415,7 +415,7 @@ power</a></p>
 <p>This example illustrates how to set up, run, and analyze a basic optimization problem within WecOptTool.</p>
 <p>The objective of this example is to <strong>find the optimal PTO force time-series</strong> that produces the most mechanical power subject to the WEC dynamics and a maximum force the PTO can exert.</p>
 <p>WecOptTool requires the following to be defined to successfully run its optimization routines: - The WEC object, including all of its properties and constraints - The wave condition - The objective function</p>
-<div><p><img alt="d41fc243040a49ef99e792d994dbe137" class="no-scaled-link" src="https://live.staticflickr.com/65535/52435098523_37d6a2ca94_k.jpg" style="width: 1000px;" /></p>
+<div><p><img alt="28270e00a40d431fb0de9d11b6da4363" class="no-scaled-link" src="https://live.staticflickr.com/65535/52435098523_37d6a2ca94_k.jpg" style="width: 1000px;" /></p>
 </div><p>The graphic shows all the requirements for this first part of the tutorial: from the wave on the left, to the objective (mechanical power) on the right. The WEC object, with all it’s components, is illustrated in the middle. The components inside the blue box are the WEC properties that are actually passed on to the optimizer. In short, the WEC’s hydrodynamic properties are modelled by 1. Defining the WEC’s geometry 2. Meshing the geometry 3. Obtaining the WEC’s BEM cofficients based on the mesh
 4. Determening the WEC’s intrinsic impedance model based on the BEM coefficients</p>
 <p>For this first part of the tutorial, the heave-only, WEC-PTO kinematics are trivial (Unity) and the PTO is assumed to be lossless.</p>
@@ -777,18 +777,18 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Heave&#34; has negative or c
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimization terminated successfully    (Exit mode 0)
-            Current function value: -1.0114865599083214
-            Iterations: 18
+            Current function value: -1.0114864334987634
+            Iterations: 19
             Function evaluations: 19
-            Gradient evaluations: 18
-Optimal average mechanical power: -101.14865599083214 W
+            Gradient evaluations: 19
+Optimal average mechanical power: -101.14864334987634 W
 </pre></div></div>
 </div>
 </section>
 <section id="Analyzing-results">
 <h3>Analyzing results<a class="headerlink" href="#Analyzing-results" title="Permalink to this heading"></a></h3>
 <p>We will use two post-processing functions to obtain frequency- and time-domain results for the WEC and PTO responses. The pseudospectral method gives continuous in time results. To get smoother looking plots, we specify the number of subpoints betweeen co-location points. In this case we will use 5.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
@@ -797,6 +797,17 @@ Optimal average mechanical power: -101.14865599083214 W
 <span class="n">wec_fdom</span><span class="p">,</span> <span class="n">wec_tdom</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">post_process</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="n">nsubsteps</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/opt/hostedtoolcache/Python/3.10.8/x64/lib/python3.10/site-packages/wecopttool/pto.py:617: RuntimeWarning: divide by zero encountered in divide
+  period = 1/freq
+/opt/hostedtoolcache/Python/3.10.8/x64/lib/python3.10/site-packages/wecopttool/core.py:804: RuntimeWarning: divide by zero encountered in divide
+  period = 1/freq
+</pre></div></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">pto.post_process</span></code> function returns <code class="docutils literal notranslate"><span class="pre">xarray.Dataset</span></code>s, which have built-in integration with PyPlot for smart plotting that automagically sets titles and formatting. We will plot the mechanical power (<code class="docutils literal notranslate"><span class="pre">mech_power</span></code>), position (<code class="docutils literal notranslate"><span class="pre">pos</span></code>), and the PTO force (<code class="docutils literal notranslate"><span class="pre">force</span></code>).</p>
 <div class="nbinput docutils container">
@@ -814,7 +825,7 @@ Optimal average mechanical power: -101.14865599083214 W
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[&lt;matplotlib.lines.Line2D at 0x7f3b30966770&gt;]
+[&lt;matplotlib.lines.Line2D at 0x7f060cefeb90&gt;]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -840,7 +851,7 @@ Optimal average mechanical power: -101.14865599083214 W
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[&lt;matplotlib.lines.Line2D at 0x7f3b309d7520&gt;]
+[&lt;matplotlib.lines.Line2D at 0x7f060cd7faf0&gt;]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -865,7 +876,7 @@ Optimal average mechanical power: -101.14865599083214 W
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[&lt;matplotlib.lines.Line2D at 0x7f3b308745b0&gt;]
+[&lt;matplotlib.lines.Line2D at 0x7f060ce10430&gt;]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1247,254 +1258,254 @@ Coordinates:
   * time        (time) float64 0.0 0.0396 0.07921 0.1188 ... 19.88 19.92 19.96
   * dof         (dof) &lt;U9 &#x27;PTO_Heave&#x27;
 Data variables:
-    pos         (time, dof) float64 0.08728 0.09576 0.1047 ... 0.07211 0.07937
-    vel         (time, dof) float64 0.2074 0.2204 0.2292 ... 0.1749 0.1917
-    acc         (time, dof) float64 0.3686 0.2811 0.1606 ... 0.4216 0.4167
-    force       (time, dof) float64 1.755e+03 1.856e+03 ... 1.431e+03 1.615e+03
-    power       (time, dof) float64 364.0 409.0 440.7 ... 191.2 250.4 309.6
-    mech_power  (time, dof) float64 364.0 409.0 440.7 ... 191.2 250.4 309.6
+    pos         (time, dof) float64 0.08728 0.09579 0.1047 ... 0.07201 0.07933
+    vel         (time, dof) float64 0.2083 0.2208 0.2293 ... 0.1605 0.1765 0.193
+    acc         (time, dof) float64 0.3579 0.2705 0.1517 ... 0.4176 0.4082
+    force       (time, dof) float64 1.737e+03 1.839e+03 ... 1.422e+03 1.599e+03
+    power       (time, dof) float64 361.9 406.1 437.8 ... 192.9 250.9 308.7
+    mech_power  (time, dof) float64 361.9 406.1 437.8 ... 192.9 250.9 308.7
 Attributes:
-    time_created_utc:  2022-10-20 14:33:25.029595</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-8f451657-ee8e-4c09-9c3a-4760f553d771' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-8f451657-ee8e-4c09-9c3a-4760f553d771' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>time</span>: 505</li><li><span class='xr-has-index'>dof</span>: 1</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-e7ff1c71-e239-4d0a-bd99-98884c4aec90' class='xr-section-summary-in' type='checkbox'  checked><label for='section-e7ff1c71-e239-4d0a-bd99-98884c4aec90' class='xr-section-summary' >Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>time</span></div><div class='xr-var-dims'>(time)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.0 0.0396 0.07921 ... 19.92 19.96</div><input id='attrs-7a1badc3-b2e9-467b-8d5b-831e02b2125f' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-7a1badc3-b2e9-467b-8d5b-831e02b2125f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-d1dd7901-9ecf-42e3-80af-78e7a54bf007' class='xr-var-data-in' type='checkbox'><label for='data-d1dd7901-9ecf-42e3-80af-78e7a54bf007' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Time</dd><dt><span>units :</span></dt><dd>s</dd></dl></div><div class='xr-var-data'><pre>array([ 0.      ,  0.039604,  0.079208, ..., 19.881188, 19.920792, 19.960396])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>dof</span></div><div class='xr-var-dims'>(dof)</div><div class='xr-var-dtype'>&lt;U9</div><div class='xr-var-preview xr-preview'>&#x27;PTO_Heave&#x27;</div><input id='attrs-b902ed57-372e-4307-bf49-948a7f70e3c9' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-b902ed57-372e-4307-bf49-948a7f70e3c9' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-03c0167e-441e-4e95-8e4d-6e96fc355ff6' class='xr-var-data-in' type='checkbox'><label for='data-03c0167e-441e-4e95-8e4d-6e96fc355ff6' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>PTO degree of freedom</dd></dl></div><div class='xr-var-data'><pre>array([&#x27;PTO_Heave&#x27;], dtype=&#x27;&lt;U9&#x27;)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-1687818e-d9de-41de-9701-b0971c5786fc' class='xr-section-summary-in' type='checkbox'  checked><label for='section-1687818e-d9de-41de-9701-b0971c5786fc' class='xr-section-summary' >Data variables: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>pos</span></div><div class='xr-var-dims'>(time, dof)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.08728 0.09576 ... 0.07211 0.07937</div><input id='attrs-6eb900cb-48b9-457e-8246-2882b6ed7b6e' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-6eb900cb-48b9-457e-8246-2882b6ed7b6e' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c67d527e-dc5c-4cd9-9d57-af46f2d1c61e' class='xr-var-data-in' type='checkbox'><label for='data-c67d527e-dc5c-4cd9-9d57-af46f2d1c61e' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Position</dd><dt><span>units :</span></dt><dd>m or rad</dd></dl></div><div class='xr-var-data'><pre>array([[ 0.08727515],
-       [ 0.09575635],
-       [ 0.10467418],
-       [ 0.11384071],
-       [ 0.12302887],
-       [ 0.13198621],
-       [ 0.14044869],
-       [ 0.14815353],
-       [ 0.15485055],
-       [ 0.16031176],
-       [ 0.16433916],
-       [ 0.16677103],
-       [ 0.16748664],
-       [ 0.16640975],
-       [ 0.16351076],
-       [ 0.1588075 ],
-       [ 0.15236468],
-       [ 0.14429194],
-       [ 0.13474058],
-       [ 0.12389914],
+    time_created_utc:  2022-10-27 14:07:11.542724</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-d522a589-9c5f-42a9-a13e-aacc1f94786f' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-d522a589-9c5f-42a9-a13e-aacc1f94786f' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>time</span>: 505</li><li><span class='xr-has-index'>dof</span>: 1</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-8934c157-c8a1-40bf-84bf-9c3f38cee49c' class='xr-section-summary-in' type='checkbox'  checked><label for='section-8934c157-c8a1-40bf-84bf-9c3f38cee49c' class='xr-section-summary' >Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>time</span></div><div class='xr-var-dims'>(time)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.0 0.0396 0.07921 ... 19.92 19.96</div><input id='attrs-0b365f14-0549-45d2-a410-3ed75c08cc83' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-0b365f14-0549-45d2-a410-3ed75c08cc83' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-2a9f42e0-41af-4cb8-b00b-2d97b800e5d2' class='xr-var-data-in' type='checkbox'><label for='data-2a9f42e0-41af-4cb8-b00b-2d97b800e5d2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Time</dd><dt><span>units :</span></dt><dd>s</dd></dl></div><div class='xr-var-data'><pre>array([ 0.      ,  0.039604,  0.079208, ..., 19.881188, 19.920792, 19.960396])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>dof</span></div><div class='xr-var-dims'>(dof)</div><div class='xr-var-dtype'>&lt;U9</div><div class='xr-var-preview xr-preview'>&#x27;PTO_Heave&#x27;</div><input id='attrs-dfe2c827-2dd1-4b9f-a13c-5e15845f47bd' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-dfe2c827-2dd1-4b9f-a13c-5e15845f47bd' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-7d2143e1-ede7-4a59-9f3e-37a240b5e48b' class='xr-var-data-in' type='checkbox'><label for='data-7d2143e1-ede7-4a59-9f3e-37a240b5e48b' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>PTO degree of freedom</dd></dl></div><div class='xr-var-data'><pre>array([&#x27;PTO_Heave&#x27;], dtype=&#x27;&lt;U9&#x27;)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-3d876b15-1807-4970-aedf-23a3e8ba27dc' class='xr-section-summary-in' type='checkbox'  checked><label for='section-3d876b15-1807-4970-aedf-23a3e8ba27dc' class='xr-section-summary' >Data variables: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>pos</span></div><div class='xr-var-dims'>(time, dof)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.08728 0.09579 ... 0.07201 0.07933</div><input id='attrs-ad76231c-f819-4fd4-a018-4398d51eb65f' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-ad76231c-f819-4fd4-a018-4398d51eb65f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-80748785-aa3f-43d1-aeec-e9dcd976f64d' class='xr-var-data-in' type='checkbox'><label for='data-80748785-aa3f-43d1-aeec-e9dcd976f64d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Position</dd><dt><span>units :</span></dt><dd>m or rad</dd></dl></div><div class='xr-var-data'><pre>array([[ 0.08728084],
+       [ 0.09578976],
+       [ 0.10471884],
+       [ 0.11388269],
+       [ 0.12305821],
+       [ 0.13199707],
+       [ 0.14043854],
+       [ 0.14812193],
+       [ 0.15479799],
+       [ 0.16023895],
+       [ 0.16424685],
+       [ 0.16666018],
+       [ 0.16735885],
+       [ 0.16626751],
+       [ 0.16335739],
+       [ 0.15864689],
+       [ 0.15220083],
+       [ 0.14412863],
+       [ 0.13458123],
+       [ 0.12374693],
 ...
-       [-0.08478229],
-       [-0.07121424],
-       [-0.05765929],
-       [-0.0443801 ],
-       [-0.03161674],
-       [-0.0195754 ],
-       [-0.00841786],
-       [ 0.0017476 ],
-       [ 0.01087304],
-       [ 0.01897436],
-       [ 0.02613084],
-       [ 0.03248015],
-       [ 0.03820875],
-       [ 0.04353795],
-       [ 0.04870671],
-       [ 0.05395244],
-       [ 0.05949156],
-       [ 0.06550158],
-       [ 0.07210652],
-       [ 0.07936691]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>vel</span></div><div class='xr-var-dims'>(time, dof)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.2074 0.2204 ... 0.1749 0.1917</div><input id='attrs-6dddd69f-a50e-4341-9ab0-4f4c3fc834be' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-6dddd69f-a50e-4341-9ab0-4f4c3fc834be' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-bab9b1e9-b43b-4057-948c-552b34e5427c' class='xr-var-data-in' type='checkbox'><label for='data-bab9b1e9-b43b-4057-948c-552b34e5427c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Velocity</dd><dt><span>units :</span></dt><dd>m/s or rad/s</dd></dl></div><div class='xr-var-data'><pre>array([[ 0.20736785],
-       [ 0.22035466],
-       [ 0.2291996 ],
-       [ 0.23274873],
-       [ 0.23018508],
-       [ 0.22104406],
-       [ 0.20520063],
-       [ 0.18283696],
-       [ 0.1543998 ],
-       [ 0.12055525],
-       [ 0.08214614],
-       [ 0.04015367],
-       [-0.00433719],
-       [-0.05017062],
-       [-0.09615318],
-       [-0.14108826],
-       [-0.18381121],
-       [-0.22322357],
-       [-0.25832451],
-       [-0.28823818],
+       [-0.08478985],
+       [-0.07116512],
+       [-0.05755818],
+       [-0.04423611],
+       [-0.0314444 ],
+       [-0.01939472],
+       [-0.00825292],
+       [ 0.00187155],
+       [ 0.01093343],
+       [ 0.0189554 ],
+       [ 0.02602686],
+       [ 0.03229725],
+       [ 0.03796425],
+       [ 0.04325762],
+       [ 0.04842038],
+       [ 0.05368884],
+       [ 0.05927361],
+       [ 0.06534312],
+       [ 0.07201105],
+       [ 0.07932847]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>vel</span></div><div class='xr-var-dims'>(time, dof)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.2083 0.2208 ... 0.1765 0.193</div><input id='attrs-69bd9680-7609-40ed-9917-b17a5ff890d5' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-69bd9680-7609-40ed-9917-b17a5ff890d5' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-11ff0b9e-a650-474a-9051-2a6b34af9e08' class='xr-var-data-in' type='checkbox'><label for='data-11ff0b9e-a650-474a-9051-2a6b34af9e08' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Velocity</dd><dt><span>units :</span></dt><dd>m/s or rad/s</dd></dl></div><div class='xr-var-data'><pre>array([[ 0.20828208],
+       [ 0.22084057],
+       [ 0.22929298],
+       [ 0.23253741],
+       [ 0.2297759 ],
+       [ 0.22053386],
+       [ 0.2046584 ],
+       [ 0.18229965],
+       [ 0.15387963],
+       [ 0.12005299],
+       [ 0.08166396],
+       [ 0.03970253],
+       [-0.0047374 ],
+       [-0.05049675],
+       [-0.09638656],
+       [-0.14122023],
+       [-0.18384381],
+       [-0.22316531],
+       [-0.25818377],
+       [-0.2880184 ],
 ...
-       [ 0.34046137],
-       [ 0.34356671],
-       [ 0.33984833],
-       [ 0.32973538],
-       [ 0.31394217],
-       [ 0.29346095],
-       [ 0.26953609],
-       [ 0.24361655],
-       [ 0.21728529],
-       [ 0.19216694],
-       [ 0.16981862],
-       [ 0.15161234],
-       [ 0.13862051],
-       [ 0.13151775],
-       [ 0.1305121 ],
-       [ 0.13531594],
-       [ 0.14516274],
-       [ 0.15886924],
-       [ 0.17493694],
-       [ 0.19168053]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>acc</span></div><div class='xr-var-dims'>(time, dof)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.3686 0.2811 ... 0.4216 0.4167</div><input id='attrs-99eaf067-8b84-4e3a-9237-7eef7b5a0ad0' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-99eaf067-8b84-4e3a-9237-7eef7b5a0ad0' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-9287aebb-027f-41d6-9405-cae620c67129' class='xr-var-data-in' type='checkbox'><label for='data-9287aebb-027f-41d6-9405-cae620c67129' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Acceleration</dd><dt><span>units :</span></dt><dd>m/s^2 or rad/s^2</dd></dl></div><div class='xr-var-data'><pre>array([[ 3.68588937e-01],
-       [ 2.81143550e-01],
-       [ 1.60648830e-01],
-       [ 1.51380972e-02],
-       [-1.46551505e-01],
-       [-3.15582180e-01],
-       [-4.83726040e-01],
-       [-6.43739611e-01],
-       [-7.89515813e-01],
-       [-9.16070958e-01],
-       [-1.01944566e+00],
-       [-1.09659459e+00],
-       [-1.14531576e+00],
-       [-1.16423547e+00],
-       [-1.15283329e+00],
-       [-1.11147244e+00],
-       [-1.04140041e+00],
-       [-9.44700612e-01],
-       [-8.24201167e-01],
-       [-6.83369828e-01],
+       [ 0.34192404],
+       [ 0.34495414],
+       [ 0.34106751],
+       [ 0.33065879],
+       [ 0.31442657],
+       [ 0.29337969],
+       [ 0.26881734],
+       [ 0.24227637],
+       [ 0.21544447],
+       [ 0.19004413],
+       [ 0.16769855],
+       [ 0.14979504],
+       [ 0.13736311],
+       [ 0.13098337],
+       [ 0.13073854],
+       [ 0.13621206],
+       [ 0.14653291],
+       [ 0.16045907],
+       [ 0.17648789],
+       [ 0.19297985]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>acc</span></div><div class='xr-var-dims'>(time, dof)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.3579 0.2705 ... 0.4176 0.4082</div><input id='attrs-cc94f065-fc28-469a-b8ea-6b2389a2b7ba' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-cc94f065-fc28-469a-b8ea-6b2389a2b7ba' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-ac82fdf7-b41b-4e24-bb67-09be413bac03' class='xr-var-data-in' type='checkbox'><label for='data-ac82fdf7-b41b-4e24-bb67-09be413bac03' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Acceleration</dd><dt><span>units :</span></dt><dd>m/s^2 or rad/s^2</dd></dl></div><div class='xr-var-data'><pre>array([[ 0.35794657],
+       [ 0.27049506],
+       [ 0.15169622],
+       [ 0.00878132],
+       [-0.15023377],
+       [-0.31712445],
+       [-0.48394116],
+       [-0.64338283],
+       [-0.78905502],
+       [-0.91561865],
+       [-1.01884363],
+       [-1.09558891],
+       [-1.14373486],
+       [-1.16209538],
+       [-1.15033364],
+       [-1.10889805],
+       [-1.03898511],
+       [-0.9425261 ],
+       [-0.82218723],
+       [-0.68137107],
 ...
-       [ 1.66397179e-01],
-       [-8.94938238e-03],
-       [-1.77025821e-01],
-       [-3.30669526e-01],
-       [-4.62701236e-01],
-       [-5.66343564e-01],
-       [-6.35734307e-01],
-       [-6.66501726e-01],
-       [-6.56343654e-01],
-       [-6.05530090e-01],
-       [-5.17237137e-01],
-       [-3.97624644e-01],
-       [-2.55594222e-01],
-       [-1.02207041e-01],
-       [ 5.02041665e-02],
-       [ 1.89137676e-01],
-       [ 3.03102585e-01],
-       [ 3.82714582e-01],
-       [ 4.21551958e-01],
-       [ 4.16652108e-01]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>force</span></div><div class='xr-var-dims'>(time, dof)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.755e+03 1.856e+03 ... 1.615e+03</div><input id='attrs-7f8dc6f5-8fb5-4c60-8ddc-4ded84baab93' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-7f8dc6f5-8fb5-4c60-8ddc-4ded84baab93' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1540ff77-3032-4dae-b513-4c8d8718b97d' class='xr-var-data-in' type='checkbox'><label for='data-1540ff77-3032-4dae-b513-4c8d8718b97d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Force or moment on WEC</dd><dt><span>units :</span></dt><dd>N or Nm</dd></dl></div><div class='xr-var-data'><pre>array([[ 1755.43536173],
-       [ 1855.99329686],
-       [ 1922.9897527 ],
-       [ 1963.82022325],
-       [ 1985.99071098],
-       [ 1996.19164653],
-       [ 1999.70373787],
-       [ 2000.18019364],
-       [ 1999.76280044],
-       [ 1999.42412277],
-       [ 1999.39923901],
-       [ 1999.58142784],
-       [ 1999.79895038],
-       [ 1999.94774597],
-       [ 2000.00755204],
+       [ 0.16534565],
+       [-0.01185964],
+       [-0.18276476],
+       [-0.33993869],
+       [-0.4755349 ],
+       [-0.58184302],
+       [-0.6520512 ],
+       [-0.6811159 ],
+       [-0.66658907],
+       [-0.60923863],
+       [-0.51332234],
+       [-0.38643352],
+       [-0.23891456],
+       [-0.0829137 ],
+       [ 0.06877722],
+       [ 0.20393424],
+       [ 0.31199477],
+       [ 0.38489955],
+       [ 0.41760366],
+       [ 0.40823679]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>force</span></div><div class='xr-var-dims'>(time, dof)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.737e+03 1.839e+03 ... 1.599e+03</div><input id='attrs-bb483e28-5788-4f36-a44c-ae52798adda7' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-bb483e28-5788-4f36-a44c-ae52798adda7' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-24dcb861-d9ff-4ac9-a4dc-7f20b8d499e8' class='xr-var-data-in' type='checkbox'><label for='data-24dcb861-d9ff-4ac9-a4dc-7f20b8d499e8' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Force or moment on WEC</dd><dt><span>units :</span></dt><dd>N or Nm</dd></dl></div><div class='xr-var-data'><pre>array([[ 1737.33319889],
+       [ 1838.79971517],
+       [ 1909.13517897],
+       [ 1954.43208626],
+       [ 1980.89981173],
+       [ 1994.29200365],
+       [ 1999.50355662],
+       [ 2000.34381125],
+       [ 1999.47450306],
+       [ 1998.48825978],
+       [ 1998.09404132],
+       [ 1998.36888461],
+       [ 1999.03137194],
+       [ 1999.69310219],
+       [ 2000.0514744 ],
        [ 2000.        ],
-       [ 1999.9484348 ],
-       [ 1999.87326617],
-       [ 1999.81602911],
-       [ 1999.84779256],
+       [ 1999.64866499],
+       [ 1999.26249835],
+       [ 1999.13733018],
+       [ 1999.43534161],
 ...
        [-2000.        ],
-       [-1995.75693791],
-       [-1983.80607511],
-       [-1959.32886627],
-       [-1916.58459955],
-       [-1849.29296837],
-       [-1751.21133443],
-       [-1616.87427695],
-       [-1442.42122324],
-       [-1226.39909145],
-       [ -970.40207851],
-       [ -679.41015206],
-       [ -361.71736374],
-       [  -28.39984381],
-       [  307.64752816],
-       [  632.99273922],
-       [  935.08346693],
-       [ 1203.57767128],
-       [ 1431.37143823],
-       [ 1615.1576628 ]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>power</span></div><div class='xr-var-dims'>(time, dof)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>364.0 409.0 440.7 ... 250.4 309.6</div><input id='attrs-d5e7fe03-1ff2-458c-bd94-e5f718b1c777' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-d5e7fe03-1ff2-458c-bd94-e5f718b1c777' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1c3fcee1-f345-4954-a7c1-1af2d4dd3430' class='xr-var-data-in' type='checkbox'><label for='data-1c3fcee1-f345-4954-a7c1-1af2d4dd3430' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Power</dd><dt><span>units :</span></dt><dd>W</dd></dl></div><div class='xr-var-data'><pre>array([[ 364.02085222],
-       [ 408.97677724],
-       [ 440.74847848],
-       [ 457.07666257],
-       [ 457.14543696],
-       [ 441.24630451],
-       [ 410.34046119],
-       [ 365.7068756 ],
-       [ 308.76298031],
-       [ 241.04108144],
-       [ 164.24292668],
-       [  80.29052309],
-       [  -8.67351306],
-       [-100.33862027],
-       [-192.30709407],
-       [-282.17652602],
-       [-367.61293996],
-       [-446.41885759],
-       [-516.60150282],
-       [-576.43249449],
+       [-1997.46798533],
+       [-1989.08652076],
+       [-1969.69329909],
+       [-1932.54774706],
+       [-1869.91293408],
+       [-1774.01909583],
+       [-1638.26681876],
+       [-1458.45131282],
+       [-1233.76205439],
+       [ -967.34346696],
+       [ -666.28527324],
+       [ -341.02496789],
+       [   -4.26119157],
+       [  330.43217508],
+       [  650.05540361],
+       [  943.46608773],
+       [ 1202.31802067],
+       [ 1421.55801922],
+       [ 1599.47036687]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>power</span></div><div class='xr-var-dims'>(time, dof)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>361.9 406.1 437.8 ... 250.9 308.7</div><input id='attrs-3b3ad382-a2ca-4e8a-8559-123d966ce45b' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-3b3ad382-a2ca-4e8a-8559-123d966ce45b' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-6b816ac5-ce49-43a1-8ce6-9bc83e7917a6' class='xr-var-data-in' type='checkbox'><label for='data-6b816ac5-ce49-43a1-8ce6-9bc83e7917a6' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Power</dd><dt><span>units :</span></dt><dd>W</dd></dl></div><div class='xr-var-data'><pre>array([[ 3.61855367e+02],
+       [ 4.06081577e+02],
+       [ 4.37751292e+02],
+       [ 4.54478568e+02],
+       [ 4.55163034e+02],
+       [ 4.39808915e+02],
+       [ 4.09215195e+02],
+       [ 3.64661982e+02],
+       [ 3.07678390e+02],
+       [ 2.39924501e+02],
+       [ 1.63172271e+02],
+       [ 7.93402937e+01],
+       [-9.47021221e+00],
+       [-1.00978011e+02],
+       [-1.92778085e+02],
+       [-2.82440456e+02],
+       [-3.67623028e+02],
+       [-4.46166039e+02],
+       [-5.16144816e+02],
+       [-5.75874176e+02],
 ...
-       [-680.92274392],
-       [-685.67563944],
-       [-674.19319083],
-       [-646.06004466],
-       [-601.69672351],
-       [-542.69527485],
-       [-472.01466114],
-       [-393.89733757],
-       [-313.41691138],
-       [-235.67335472],
-       [-164.79233834],
-       [-103.00696369],
-       [ -50.14144477],
-       [  -3.73508354],
-       [  40.15172354],
-       [  85.65401037],
-       [ 135.73927736],
-       [ 191.21147381],
-       [ 250.39974208],
-       [ 309.59427703]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>mech_power</span></div><div class='xr-var-dims'>(time, dof)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>364.0 409.0 440.7 ... 250.4 309.6</div><input id='attrs-234638fb-4a8b-4ece-9daa-a7739364aba4' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-234638fb-4a8b-4ece-9daa-a7739364aba4' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-2110dc9c-1da6-42e3-896f-16b6677c8e86' class='xr-var-data-in' type='checkbox'><label for='data-2110dc9c-1da6-42e3-896f-16b6677c8e86' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Mechanical power</dd><dt><span>units :</span></dt><dd>W</dd></dl></div><div class='xr-var-data'><pre>array([[ 364.02085222],
-       [ 408.97677724],
-       [ 440.74847848],
-       [ 457.07666257],
-       [ 457.14543696],
-       [ 441.24630451],
-       [ 410.34046119],
-       [ 365.7068756 ],
-       [ 308.76298031],
-       [ 241.04108144],
-       [ 164.24292668],
-       [  80.29052309],
-       [  -8.67351306],
-       [-100.33862027],
-       [-192.30709407],
-       [-282.17652602],
-       [-367.61293996],
-       [-446.41885759],
-       [-516.60150282],
-       [-576.43249449],
+       [-6.83848084e+02],
+       [-6.89034844e+02],
+       [-6.78412780e+02],
+       [-6.51296409e+02],
+       [-6.07644364e+02],
+       [-5.48594482e+02],
+       [-4.76887101e+02],
+       [-3.96913345e+02],
+       [-3.14215268e+02],
+       [-2.34469232e+02],
+       [-1.62222101e+02],
+       [-9.98062282e+01],
+       [-4.68442503e+01],
+       [-5.58145237e-01],
+       [ 4.32002185e+01],
+       [ 8.85453840e+01],
+       [ 1.38248835e+02],
+       [ 1.92922828e+02],
+       [ 2.50887777e+02],
+       [ 3.08665553e+02]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>mech_power</span></div><div class='xr-var-dims'>(time, dof)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>361.9 406.1 437.8 ... 250.9 308.7</div><input id='attrs-44127571-648e-4466-9dd7-04a66285b24e' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-44127571-648e-4466-9dd7-04a66285b24e' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-3d93302e-1b99-4718-8248-2519c3dec054' class='xr-var-data-in' type='checkbox'><label for='data-3d93302e-1b99-4718-8248-2519c3dec054' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Mechanical power</dd><dt><span>units :</span></dt><dd>W</dd></dl></div><div class='xr-var-data'><pre>array([[ 3.61855367e+02],
+       [ 4.06081577e+02],
+       [ 4.37751292e+02],
+       [ 4.54478568e+02],
+       [ 4.55163034e+02],
+       [ 4.39808915e+02],
+       [ 4.09215195e+02],
+       [ 3.64661982e+02],
+       [ 3.07678390e+02],
+       [ 2.39924501e+02],
+       [ 1.63172271e+02],
+       [ 7.93402937e+01],
+       [-9.47021221e+00],
+       [-1.00978011e+02],
+       [-1.92778085e+02],
+       [-2.82440456e+02],
+       [-3.67623028e+02],
+       [-4.46166039e+02],
+       [-5.16144816e+02],
+       [-5.75874176e+02],
 ...
-       [-680.92274392],
-       [-685.67563944],
-       [-674.19319083],
-       [-646.06004466],
-       [-601.69672351],
-       [-542.69527485],
-       [-472.01466114],
-       [-393.89733757],
-       [-313.41691138],
-       [-235.67335472],
-       [-164.79233834],
-       [-103.00696369],
-       [ -50.14144477],
-       [  -3.73508354],
-       [  40.15172354],
-       [  85.65401037],
-       [ 135.73927736],
-       [ 191.21147381],
-       [ 250.39974208],
-       [ 309.59427703]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-73ab10c2-29a4-421b-a2c9-10435eb5192f' class='xr-section-summary-in' type='checkbox'  checked><label for='section-73ab10c2-29a4-421b-a2c9-10435eb5192f' class='xr-section-summary' >Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>time_created_utc :</span></dt><dd>2022-10-20 14:33:25.029595</dd></dl></div></li></ul></div></div></div>
+       [-6.83848084e+02],
+       [-6.89034844e+02],
+       [-6.78412780e+02],
+       [-6.51296409e+02],
+       [-6.07644364e+02],
+       [-5.48594482e+02],
+       [-4.76887101e+02],
+       [-3.96913345e+02],
+       [-3.14215268e+02],
+       [-2.34469232e+02],
+       [-1.62222101e+02],
+       [-9.98062282e+01],
+       [-4.68442503e+01],
+       [-5.58145237e-01],
+       [ 4.32002185e+01],
+       [ 8.85453840e+01],
+       [ 1.38248835e+02],
+       [ 1.92922828e+02],
+       [ 2.50887777e+02],
+       [ 3.08665553e+02]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-1d2ccbe3-2531-4f06-9767-f2c2234d49f8' class='xr-section-summary-in' type='checkbox'  checked><label for='section-1d2ccbe3-2531-4f06-9767-f2c2234d49f8' class='xr-section-summary' >Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>time_created_utc :</span></dt><dd>2022-10-27 14:07:11.542724</dd></dl></div></li></ul></div></div></div>
 </div>
 </section>
 </section>
@@ -1502,7 +1513,7 @@ Attributes:
 <h2>2. Optimal control for maximum electrical power<a class="headerlink" href="#2.-Optimal-control-for-maximum-electrical-power" title="Permalink to this heading"></a></h2>
 <p>The rest of this tutorial will focus on optimizing for electrical power (new objective function) rather than mechanical, as this is a form of power that is usable and transportable.</p>
 <p>Since we’re still dealing with the same WaveBot as in part 1, we can reuse the BEM and wave data from before. Look back at part 1 if you need a refresher on how to create these data.</p>
-<div><p><img alt="fee01227a7914907ab02743099872962" class="no-scaled-link" src="https://live.staticflickr.com/65535/52435033525_b8efc28d16_k.jpg" style="width: 1000px;" /></p>
+<div><p><img alt="977b3db6b40545eda2cf5b375acfaa6b" class="no-scaled-link" src="https://live.staticflickr.com/65535/52435033525_b8efc28d16_k.jpg" style="width: 1000px;" /></p>
 </div><p>The WEC-PTO kinematics remain the same as well (unity). The major difference now is that we consider the dynamics of PTO, since they impact the electrical power and we shall not assume a lossless PTO.</p>
 <p>We will express the PTO’s dynamics in form of a 2-port impedance model, to incoporate the dynamics of the drive-train and the dynamics of the generator. The additional mechanical energy storage through the drive-train is modelled using Newton’s second law and we assume a linear generator using a power-invariant park transform.</p>
 <p>The PTO impedance matrix components are then obtained under open-circuit conditions, i.e. no load current or no WEC velocity, respectively.</p>
@@ -1605,17 +1616,28 @@ Attributes:
 WARNING:wecopttool.core:Linear damping for DOF &#34;Heave&#34; has negative or close to zero terms. Shifting up via linear friction of 44.029505005377246 N/(m/s).
 </pre></div></div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.25538975281034815
-            Iterations: 11
-            Function evaluations: 12
-            Gradient evaluations: 11
-Optimal average electrical power: -25.538975281034816 W
+            Current function value: -0.2553901736666705
+            Iterations: 12
+            Function evaluations: 14
+            Gradient evaluations: 12
+Optimal average electrical power: -25.53901736666705 W
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/opt/hostedtoolcache/Python/3.10.8/x64/lib/python3.10/site-packages/wecopttool/core.py:804: RuntimeWarning: divide by zero encountered in divide
+  period = 1/freq
+/opt/hostedtoolcache/Python/3.10.8/x64/lib/python3.10/site-packages/wecopttool/pto.py:617: RuntimeWarning: divide by zero encountered in divide
+  period = 1/freq
 </pre></div></div>
 </div>
 <p>We will compare our optimal results to the unconstrained case to gain some insight into the effect of the constraint on the optimal PTO force. Let’s do the same process as before, but unset the <code class="docutils literal notranslate"><span class="pre">constraints</span></code> parameter in a new <code class="docutils literal notranslate"><span class="pre">WEC</span></code> object.</p>
@@ -1653,17 +1675,28 @@ Optimal average electrical power: -25.538975281034816 W
 WARNING:wecopttool.core:Linear damping for DOF &#34;Heave&#34; has negative or close to zero terms. Shifting up via linear friction of 44.029505005377246 N/(m/s).
 </pre></div></div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimization terminated successfully    (Exit mode 0)
-            Current function value: -28.894772365910512
-            Iterations: 26
-            Function evaluations: 26
-            Gradient evaluations: 26
-Optimal average electrical power: -28.894772365910512 W
+            Current function value: -28.894196337242352
+            Iterations: 27
+            Function evaluations: 27
+            Gradient evaluations: 27
+Optimal average electrical power: -28.894196337242352 W
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/opt/hostedtoolcache/Python/3.10.8/x64/lib/python3.10/site-packages/wecopttool/core.py:804: RuntimeWarning: divide by zero encountered in divide
+  period = 1/freq
+/opt/hostedtoolcache/Python/3.10.8/x64/lib/python3.10/site-packages/wecopttool/pto.py:617: RuntimeWarning: divide by zero encountered in divide
+  period = 1/freq
 </pre></div></div>
 </div>
 <p>Note that the optimal constrained PTO force follows the optimal unconstrained solution (sinusoidal) whenever the unconstrained solution is within the constraint. When the constraint is active the optimal PTO force is the maximum PTO force of <span class="math notranslate nohighlight">\(600 N\)</span>.</p>
@@ -1694,7 +1727,7 @@ Optimal average electrical power: -28.894772365910512 W
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x7f3b34d3ebc0&gt;
+&lt;matplotlib.legend.Legend at 0x7f060ccfbfd0&gt;
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -1728,7 +1761,7 @@ electrical power, while maintaining a constant hull volume. A constant volume is
 <p>This example demonstrates a complete case of the types of optimization studies WecOptTool is meant for. The main optimization (outer optimization loop) is to find the optimal geometry (radius <code class="docutils literal notranslate"><span class="pre">r2</span></code>), and for each geometry considered the optimal PTO force (inner optimization loop) will be found. The inner loop was showcased in Example 2 and uses a gradient-based optimization method, with the gradients obtained with automatic differentiation. The outer loop optimization is for the user to setup.
 In this example, we will do a simple <em>brute force</em> optimization using <code class="docutils literal notranslate"><span class="pre">scipy.optimize.brute</span></code>.</p>
 <p><img alt="Device Diagram" src="https://live.staticflickr.com/65535/51751577441_515afec334_z.jpg" /></p>
-<div><p><img alt="a0a39d7e9557442d9d39261f103add1b" class="no-scaled-link" src="https://live.staticflickr.com/65535/52434071157_187eb4334c_k.jpg" style="width: 1000px;" /></p>
+<div><p><img alt="b1029e19b80f4316b76966c0bb5bfcbd" class="no-scaled-link" src="https://live.staticflickr.com/65535/52434071157_187eb4334c_k.jpg" style="width: 1000px;" /></p>
 </div><section id="Problem-setup">
 <h3>Problem setup<a class="headerlink" href="#Problem-setup" title="Permalink to this heading"></a></h3>
 <p>First, we define a function for <code class="docutils literal notranslate"><span class="pre">h2</span></code> based on <code class="docutils literal notranslate"><span class="pre">r1</span></code> that maintains a constant volume. We see that, as expected, smaller values of <code class="docutils literal notranslate"><span class="pre">r2</span></code> require larger values of <code class="docutils literal notranslate"><span class="pre">h2</span></code> in order to maintain a constant hull volume.</p>
@@ -2046,6 +2079,27 @@ This warning appears because the largest panel of this mesh has radius 9.19e-02 
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for DiffractionProblem(body=WaveBot_immersed, omega=9.739, depth=inf, wave_direction=0.000, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=6.50e-01.
 This warning appears because the largest panel of this mesh has radius 9.19e-02 &gt; λ/8.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Optimization terminated successfully    (Exit mode 0)
+            Current function value: -0.25516530780822694
+            Iterations: 11
+            Function evaluations: 13
+            Gradient evaluations: 11
+
+r2 = 0.17:
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for DiffractionProblem(body=WaveBot_immersed, omega=10.053, depth=inf, wave_direction=0.000, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=6.10e-01.
 This warning appears because the largest panel of this mesh has radius 9.19e-02 &gt; λ/8.
@@ -2106,27 +2160,6 @@ This warning appears because the largest panel of this mesh has radius 9.19e-02 
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for RadiationProblem(body=WaveBot_immersed, omega=9.425, depth=inf, radiating_dof=Heave, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=6.94e-01.
 This warning appears because the largest panel of this mesh has radius 9.19e-02 &gt; λ/8.
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.25516514489619263
-            Iterations: 12
-            Function evaluations: 13
-            Gradient evaluations: 12
-
-r2 = 0.17:
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for RadiationProblem(body=WaveBot_immersed, omega=9.739, depth=inf, radiating_dof=Heave, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=6.50e-01.
 This warning appears because the largest panel of this mesh has radius 9.19e-02 &gt; λ/8.
@@ -2203,6 +2236,27 @@ This warning appears because the largest panel of this mesh has radius 9.83e-02 
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for DiffractionProblem(body=WaveBot_immersed, omega=10.367, depth=inf, wave_direction=0.000, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=5.73e-01.
 This warning appears because the largest panel of this mesh has radius 9.83e-02 &gt; λ/8.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Optimization terminated successfully    (Exit mode 0)
+            Current function value: -0.25510398255909233
+            Iterations: 11
+            Function evaluations: 12
+            Gradient evaluations: 11
+
+r2 = 0.29:
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for DiffractionProblem(body=WaveBot_immersed, omega=10.681, depth=inf, wave_direction=0.000, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=5.40e-01.
 This warning appears because the largest panel of this mesh has radius 9.83e-02 &gt; λ/8.
@@ -2254,27 +2308,6 @@ This warning appears because the largest panel of this mesh has radius 9.83e-02 
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for DiffractionProblem(body=WaveBot_immersed, omega=15.708, depth=inf, wave_direction=0.000, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=2.50e-01.
 This warning appears because the largest panel of this mesh has radius 9.83e-02 &gt; λ/8.
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.2551039070616855
-            Iterations: 11
-            Function evaluations: 12
-            Gradient evaluations: 11
-
-r2 = 0.29:
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for RadiationProblem(body=WaveBot_immersed, omega=9.111, depth=inf, radiating_dof=Heave, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=7.43e-01.
 This warning appears because the largest panel of this mesh has radius 9.83e-02 &gt; λ/8.
@@ -2360,6 +2393,27 @@ This warning appears because the largest panel of this mesh has radius 9.80e-02 
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for DiffractionProblem(body=WaveBot_immersed, omega=10.681, depth=inf, wave_direction=0.000, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=5.40e-01.
 This warning appears because the largest panel of this mesh has radius 9.80e-02 &gt; λ/8.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Optimization terminated successfully    (Exit mode 0)
+            Current function value: -0.2553094232431326
+            Iterations: 12
+            Function evaluations: 12
+            Gradient evaluations: 12
+
+r2 = 0.41:
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for DiffractionProblem(body=WaveBot_immersed, omega=10.996, depth=inf, wave_direction=0.000, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=5.10e-01.
 This warning appears because the largest panel of this mesh has radius 9.80e-02 &gt; λ/8.
@@ -2459,27 +2513,6 @@ This warning appears because the largest panel of this mesh has radius 9.80e-02 
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for RadiationProblem(body=WaveBot_immersed, omega=14.137, depth=inf, radiating_dof=Heave, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=3.08e-01.
 This warning appears because the largest panel of this mesh has radius 9.80e-02 &gt; λ/8.
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.2553096395750571
-            Iterations: 11
-            Function evaluations: 12
-            Gradient evaluations: 11
-
-r2 = 0.41:
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for RadiationProblem(body=WaveBot_immersed, omega=14.451, depth=inf, radiating_dof=Heave, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=2.95e-01.
 This warning appears because the largest panel of this mesh has radius 9.80e-02 &gt; λ/8.
@@ -2532,6 +2565,27 @@ This warning appears because the largest panel of this mesh has radius 1.04e-01 
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for DiffractionProblem(body=WaveBot_immersed, omega=12.252, depth=inf, wave_direction=0.000, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=4.11e-01.
 This warning appears because the largest panel of this mesh has radius 1.04e-01 &gt; λ/8.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Optimization terminated successfully    (Exit mode 0)
+            Current function value: -0.25547494885747823
+            Iterations: 11
+            Function evaluations: 12
+            Gradient evaluations: 11
+
+r2 = 0.52:
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for DiffractionProblem(body=WaveBot_immersed, omega=12.566, depth=inf, wave_direction=0.000, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=3.90e-01.
 This warning appears because the largest panel of this mesh has radius 1.04e-01 &gt; λ/8.
@@ -2619,27 +2673,6 @@ This warning appears because the largest panel of this mesh has radius 1.04e-01 
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for RadiationProblem(body=WaveBot_immersed, omega=14.137, depth=inf, radiating_dof=Heave, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=3.08e-01.
 This warning appears because the largest panel of this mesh has radius 1.04e-01 &gt; λ/8.
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.2554749467803473
-            Iterations: 11
-            Function evaluations: 12
-            Gradient evaluations: 11
-
-r2 = 0.52:
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for RadiationProblem(body=WaveBot_immersed, omega=14.451, depth=inf, radiating_dof=Heave, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=2.95e-01.
 This warning appears because the largest panel of this mesh has radius 1.04e-01 &gt; λ/8.
@@ -2680,6 +2713,27 @@ This warning appears because the largest panel of this mesh has radius 9.73e-02 
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for DiffractionProblem(body=WaveBot_immersed, omega=11.310, depth=inf, wave_direction=0.000, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=4.82e-01.
 This warning appears because the largest panel of this mesh has radius 9.73e-02 &gt; λ/8.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Optimization terminated successfully    (Exit mode 0)
+            Current function value: -0.2559500864942835
+            Iterations: 11
+            Function evaluations: 12
+            Gradient evaluations: 11
+
+r2 = 0.64:
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for DiffractionProblem(body=WaveBot_immersed, omega=11.624, depth=inf, wave_direction=0.000, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=4.56e-01.
 This warning appears because the largest panel of this mesh has radius 9.73e-02 &gt; λ/8.
@@ -2746,27 +2800,6 @@ This warning appears because the largest panel of this mesh has radius 9.73e-02 
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for RadiationProblem(body=WaveBot_immersed, omega=11.310, depth=inf, radiating_dof=Heave, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=4.82e-01.
 This warning appears because the largest panel of this mesh has radius 9.73e-02 &gt; λ/8.
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.2559498849663039
-            Iterations: 11
-            Function evaluations: 11
-            Gradient evaluations: 11
-
-r2 = 0.64:
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for RadiationProblem(body=WaveBot_immersed, omega=11.624, depth=inf, radiating_dof=Heave, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=4.56e-01.
 This warning appears because the largest panel of this mesh has radius 9.73e-02 &gt; λ/8.
@@ -2828,6 +2861,27 @@ This warning appears because the largest panel of this mesh has radius 1.00e-01 
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for DiffractionProblem(body=WaveBot_immersed, omega=10.367, depth=inf, wave_direction=0.000, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=5.73e-01.
 This warning appears because the largest panel of this mesh has radius 1.00e-01 &gt; λ/8.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Optimization terminated successfully    (Exit mode 0)
+            Current function value: -0.25450881238921574
+            Iterations: 11
+            Function evaluations: 12
+            Gradient evaluations: 11
+
+r2 = 0.76:
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for DiffractionProblem(body=WaveBot_immersed, omega=10.681, depth=inf, wave_direction=0.000, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=5.40e-01.
 This warning appears because the largest panel of this mesh has radius 1.00e-01 &gt; λ/8.
@@ -2900,27 +2954,6 @@ This warning appears because the largest panel of this mesh has radius 1.00e-01 
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for RadiationProblem(body=WaveBot_immersed, omega=10.681, depth=inf, radiating_dof=Heave, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=5.40e-01.
 This warning appears because the largest panel of this mesh has radius 1.00e-01 &gt; λ/8.
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.2545087741410049
-            Iterations: 11
-            Function evaluations: 12
-            Gradient evaluations: 11
-
-r2 = 0.76:
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for RadiationProblem(body=WaveBot_immersed, omega=10.996, depth=inf, radiating_dof=Heave, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=5.10e-01.
 This warning appears because the largest panel of this mesh has radius 1.00e-01 &gt; λ/8.
@@ -2982,6 +3015,27 @@ This warning appears because the largest panel of this mesh has radius 9.45e-02 
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for DiffractionProblem(body=WaveBot_immersed, omega=10.053, depth=inf, wave_direction=0.000, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=6.10e-01.
 This warning appears because the largest panel of this mesh has radius 9.45e-02 &gt; λ/8.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Optimization terminated successfully    (Exit mode 0)
+            Current function value: -0.2528062977544542
+            Iterations: 10
+            Function evaluations: 12
+            Gradient evaluations: 10
+
+r2 = 0.88:
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for DiffractionProblem(body=WaveBot_immersed, omega=10.367, depth=inf, wave_direction=0.000, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=5.73e-01.
 This warning appears because the largest panel of this mesh has radius 9.45e-02 &gt; λ/8.
@@ -3036,27 +3090,6 @@ This warning appears because the largest panel of this mesh has radius 9.45e-02 
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for DiffractionProblem(body=WaveBot_immersed, omega=15.708, depth=inf, wave_direction=0.000, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=2.50e-01.
 This warning appears because the largest panel of this mesh has radius 9.45e-02 &gt; λ/8.
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.2528064657360337
-            Iterations: 11
-            Function evaluations: 12
-            Gradient evaluations: 11
-
-r2 = 0.88:
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
 WARNING:capytaine.bem.problems_and_results:Mesh resolution for RadiationProblem(body=WaveBot_immersed, omega=9.111, depth=inf, radiating_dof=Heave, rho=1025.0):
 The resolution of the mesh &#39;WaveBot_mesh&#39; of the body &#39;WaveBot_immersed&#39; might be insufficient for the wavelength λ=7.43e-01.
 This warning appears because the largest panel of this mesh has radius 9.45e-02 &gt; λ/8.
@@ -3132,10 +3165,10 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Heave&#34; has negative or c
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.25106079503125145
-            Iterations: 10
-            Function evaluations: 12
-            Gradient evaluations: 10
+            Current function value: -0.2510607538141835
+            Iterations: 11
+            Function evaluations: 11
+            Gradient evaluations: 11
 </pre></div></div>
 </div>
 </section>

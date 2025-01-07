@@ -3,6 +3,7 @@ import subprocess
 import shutil
 import re
 import yaml
+import argparse 
 
 from sphinx.application import Sphinx
 
@@ -17,6 +18,10 @@ linkcheck_dir = os.path.join(build_dir, 'linkcheck')
 html_dir = os.path.join(build_dir, 'html')
 doctree_dir = os.path.join(build_dir, 'doctrees')
 
+parser = argparse.ArgumentParser()
+parser.add_argument('-b', '--build', nargs=1, type=str,
+                    choices=['debug', 'production'],
+                    default='debug')
 
 def linkcheck():
     app = Sphinx(source_dir,
@@ -51,6 +56,7 @@ def cleanup():
         f.write(data2)
 
 
+<<<<<<< HEAD
 def build_doc(version, tag, home_branch):
     os.environ['current_version'] = version
     subprocess.run(f'git checkout {tag}', shell=True)
@@ -60,10 +66,26 @@ def build_doc(version, tag, home_branch):
         f"git checkout {home_branch} -- {os.path.join(docs_dir, 'versions.yaml')}", shell=True)
     subprocess.run(
         f"git checkout {home_branch} -- {os.path.join(source_dir, '_templates/versions.html')}", shell=True)
+=======
+def build_doc(version, tag, home_branch, build):
+    if build != 'debug':
+        os.environ['current_version'] = version
+        subprocess.run(f'git checkout {tag}', shell=True)
+        subprocess.run(
+            f"git checkout {home_branch} -- {os.path.join(source_dir, 'conf.py')}",
+            shell=True)
+        subprocess.run(
+            f"git checkout {home_branch} -- {os.path.join(docs_dir, 'versions.yaml')}",
+            shell=True)
+        subprocess.run(
+            f"git checkout {home_branch} -- {os.path.join(source_dir, '_templates/versions.html')}",
+            shell=True)
+>>>>>>> 71c826abfc290a705d8b9c6e30c5a29729c27fc7
     source.make_theory_animations
     linkcheck()
     html()
     cleanup()
+<<<<<<< HEAD
     subprocess.run(
         f"git checkout {home_branch}", shell=True)
 
@@ -83,4 +105,41 @@ if __name__ == '__main__':
             print(f"Moving HTML pages to {os.path.join(docs_dir, 'pages', name)}...")
             shutil.copytree(html_dir, os.path.join(docs_dir, 'pages', name))
             print('Done.')
+=======
+    if build != 'debug':
+        subprocess.run(
+            f"git checkout {home_branch}", shell=True)
+
+
+def move_pages(dest_dir=None):
+    if dest_dir is None:
+        print(f"Moving HTML pages to {os.path.join(docs_dir, 'pages')}...")
+        shutil.copytree(
+            html_dir, os.path.join(docs_dir, 'pages'))
+    else:
+        print(f"Moving HTML pages to {os.path.join(docs_dir, 'pages', dest_dir)}...")
+        shutil.copytree(
+            html_dir, os.path.join(docs_dir, 'pages', dest_dir))
+    print('Done.')
+
+
+if __name__ == '__main__':
+    args = parser.parse_args()
+    build = args.build
+    if build == 'debug':
+        print(f'Building docs in current branch...')
+        build_doc('latest', '', '', build)
+        move_pages()
+    else:
+        home_name = 'latest'
+        with open(os.path.join(docs_dir, 'versions.yaml'), 'r') as v_file:
+            versions = yaml.safe_load(v_file)
+        home_branch = versions[home_name]
+        build_doc(home_name, home_branch, home_branch, build)
+        move_pages()
+        for name, tag in versions.items():
+            if name != home_name:
+                build_doc(name, tag, home_branch, build)
+                move_pages(dest_dir=name)
+>>>>>>> 71c826abfc290a705d8b9c6e30c5a29729c27fc7
     shutil.rmtree(html_dir)

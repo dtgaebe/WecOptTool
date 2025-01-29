@@ -101,8 +101,8 @@ class PioneerBuoy(wot.WEC):
                                       f_add = f_add,
                                       constraints = constraints)
 
-class NonlinearInvertedPendulumPTO:
-    """A nonlinear inverted pendulum power take-off (PTO) object to be used 
+class InvertedPendulumPTO:
+    """A base inverted pendulum power take-off (PTO) object to be used 
     in conjunction with a :py:class:`PioneerBuoy` object.
     """
     def __init__(self,
@@ -167,17 +167,7 @@ class NonlinearInvertedPendulumPTO:
         self.pto_transfer_mat = self._pto_transfer_mat(self.pto_impedance)
         # self.torque_from_PTO, self.nstate_pto, self.nstate_opt =  self._create_control_torque_function
         self.nstate_pto, self.nstate_opt = self.nstate_based_on_control()
-        self.f_add = {
-            'Generator': self.torque_from_PTO,
-            'Friction': self.nonlinear_torque_from_friction,
-            'Spring': self.torque_from_nl_spring,
-            'Pendulum': self.torque_from_pendulum,
-        }
 
-        self.constraints = [
-            {'type': 'eq', 'fun': self.pendulum_residual_nl_spring}, # pendulum EoM
-            {'type': 'ineq', 'fun': self.constraint_max_generator_torque},
-        ]
 
         #here everything that needs initialization
         #trasnfermat
@@ -216,83 +206,6 @@ class NonlinearInvertedPendulumPTO:
         pto_transfer_mat = wot.pto._make_mimo_transfer_mat(pto_impedance_abcd,
                                          ndof=self.ndof)
         return pto_transfer_mat                                         
-    # def _create_control_torque_function(self):
-    # def _create_control_torque_function(self, wec, x_wec, x_opt, waves, nsubsteps=1):
-    #     control_type = self.control_type
-    #     nfreq = self.nfreq
-    #     nstate_pen = self.nstate_pen
-    #     if control_type == 'unstructured':
-    #         nstate_pto = 2 * nfreq
-    #         nstate_opt = nstate_pto + nstate_pen
-
-    #         def torque_from_PTO(self, wec, x_wec, x_opt, waves=None, nsubsteps=1):
-    #             f_fd = np.reshape(x_opt[:self.nstate_pto], (-1, ndof), order='F')  # Take the first components for PTO torque
-    #             time_matrix = wec.time_mat_nsubsteps(nsubsteps)
-    #             torque = np.dot(time_matrix, f_fd)  
-    #             return torque
-
-    #     elif control_type == 'damping':
-    #         nstate_pto = 1
-    #         nstate_opt = nstate_pto + nstate_pen
-
-    #         def torque_from_PTO(self, wec, x_wec, x_opt, waves=None, nsubsteps=1):
-    #             pos_rel = self.x_rel(wec, x_wec, x_opt)
-    #             vel_rel = np.dot(wec.derivative_mat, pos_rel)
-    #             f_fd = x_opt[:self.nstate_pto] * vel_rel
-    #             time_matrix = wec.time_mat_nsubsteps(nsubsteps)
-    #             torque = np.dot(time_matrix, f_fd)  
-    #             return torque
-    #     elif control_type == 'PI':
-    #         nstate_pto = 2
-    #         nstate_opt = nstate_pto + nstate_pen
-    #         def torque_PI(vel, pos, coeffs):
-    #             return (coeffs[0] * vel +  
-    #                 coeffs[1] * pos) 
-    #         def torque_from_PTO(self, wec, x_wec, x_opt, waves=None, nsubsteps=1):
-    #             pos_rel = self.x_rel(wec, x_wec, x_opt)
-    #             vel_rel = np.dot(wec.derivative_mat, pos_rel)
-    #             f_fd = torque_PI(vel_rel, pos_rel, x_opt[:self.nstate_pto])
-    #             time_matrix = wec.time_mat_nsubsteps(nsubsteps)
-    #             torque = np.dot(time_matrix, f_fd)
-    #             return torque
-    #     elif control_type == 'PID':
-    #         nstate_pto = 3
-    #         nstate_opt = nstate_pto + nstate_pen
-    #         def torque_PID(vel, pos, acc, coeffs):
-    #             return (coeffs[0] * vel +  
-    #                 coeffs[1] * pos+
-    #                 coeffs[2] * acc) 
-    #         def torque_from_PTO(self, wec, x_wec, x_opt, waves=None, nsubsteps=1):
-    #             pos_rel = self.x_rel(wec, x_wec, x_opt)
-    #             vel_rel = np.dot(wec.derivative_mat, pos_rel)
-    #             acc_rel = np.dot(wec.derivative_mat, vel_rel)
-    #             f_fd = torque_PID(vel_rel, pos_rel, acc_rel, x_opt[:self.nstate_pto])
-    #             time_matrix = wec.time_mat_nsubsteps(nsubsteps)
-    #             torque = np.dot(time_matrix, f_fd)
-    #             return torque
-    #     elif control_type == 'nonlinear_3rdO':
-    #         nstate_pto = 7
-    #         nstate_opt = nstate_pto + nstate_pen
-    #         def torque_3rd_polynomial(vel, pos, coeffs):
-    #             return (coeffs[0] +  #e1
-    #                 coeffs[1] * vel +  #e1
-    #                 coeffs[2] * pos + #e1
-    #                 coeffs[3] * vel**3 + #e1
-    #                 coeffs[4] * pos**3 + #e1
-    #                 coeffs[5] * vel**2 * pos + #e0
-    #                 coeffs[6] * vel * pos**2) #e1
-    #         def torque_from_PTO(self,wec, x_wec, x_opt, waves=None, nsubsteps=1):
-    #             pos_rel = self.x_rel(wec, x_wec, x_opt)
-    #             vel_rel = np.dot(wec.derivative_mat, pos_rel)
-    #             f_fd = torque_3rd_polynomial(vel_rel, pos_rel, x_opt[:self.nstate_pto])
-    #             time_matrix = wec.time_mat_nsubsteps(nsubsteps)
-    #             torque = np.dot(time_matrix, f_fd) 
-    #             return torque
-
-    #     else:
-    #         raise ValueError("Invalid control type. Choose 'unstructured', 'damping', 'PI', 'PID', or 'nonlinear_3rdO'.")
-
-    #     return torque_from_PTO, nstate_pto, nstate_opt
     
     def x_rel(self, wec, x_wec, x_opt, waves, nsubsteps=1):
         x_pos_buoy = wec.vec_to_dofmat(x_wec)
@@ -310,6 +223,8 @@ class NonlinearInvertedPendulumPTO:
         time_matrix = wec.time_mat_nsubsteps(nsubsteps)
         return np.dot(time_matrix, vel_rel)
     ## PTO torque depending on controller
+
+    
 
     def torque_from_PTO(self, wec, x_wec, x_opt, waves=None, nsubsteps=1):
         # Call the appropriate torque calculation method based on the control type
@@ -411,41 +326,13 @@ class NonlinearInvertedPendulumPTO:
                 coeffs[6] * vel * pos**2)  # e1
 
     ## additional torque
+    def torque_from_friction(self, wec, x_wec, x_opt, waves=None, nsubsteps=1):
+        raise NotImplementedError("This method should be implemented in subclasses.")
+    def torque_from_spring(self, wec, x_wec, x_opt, waves=None, nsubsteps=1):
+        raise NotImplementedError("This method should be implemented in subclasses.")
+    def torque_from_pendulum(self, wec, x_wec, x_opt, waves=None, nsubsteps=1):
+        raise NotImplementedError("This method should be implemented in subclasses.")
 
-    def nonlinear_torque_from_friction(self, wec, x_wec, x_opt, waves, nsubsteps = 1):
-        rel_vel = self.rel_velocity(wec, x_wec, x_opt, waves, nsubsteps)
-        #generator and gearbox have Clolumb friction, the we'll convert into the relative vel frame
-        combined_Coulomg_friction = (self.pendulum_coulomb_friction + 
-                            self.gearbox_friction*self.belt_gear_ratio)
-        fric =  -1*(np.tanh(rel_vel)*combined_Coulomg_friction + rel_vel*self.pendulum_viscous_friction) 
-        return fric
-
-    def nonlinear_spring_torque(self, spring_pos):
-        # 135 deg nonlinear spring
-        spring_eq_pos_td = spring_pos - np.pi
-        n = 12
-        slope = 1/(2**(2*n))*comb(2*n,n)
-        scale = 1/slope
-        new_pos = 0
-        for ind in range(n):
-            k = ind+1
-            coeffs = comb(2*n, n-k)/(k*(2**(2*n-1)))
-            new_pos = new_pos - coeffs*np.sin(k*spring_eq_pos_td)
-        return  -self.spring_stiffness * scale * new_pos
-
-    def torque_from_nl_spring(self, wec, x_wec, x_opt, waves, nsubsteps = 1):
-        rel_pos = self.rel_position(wec, x_wec, x_opt, waves, nsubsteps) 
-        spring_pos = self.spring_gear_ratio * rel_pos
-        spring_torque = self.nonlinear_spring_torque(spring_pos)
-        spring_torque_on_shaft = self.spring_gear_ratio * spring_torque
-        return spring_torque_on_shaft
-
-    def torque_from_pendulum(self, wec, x_wec, x_opt, waves, nsubsteps=1):
-        pos_pen = wec.vec_to_dofmat(x_opt[self.nstate_pto:])
-        time_matrix = wec.time_mat_nsubsteps(nsubsteps)
-        pos_pen = np.dot(time_matrix, pos_pen)
-        return -1*self.pendulum_mass * _default_parameters['g'] * self.pendulum_com * np.sin(pos_pen)
-    ## residual
 
     def pendulum_inertia(self, wec, x_wec, x_opt, waves = None, nsubsteps = 1):
         pos_pen = wec.vec_to_dofmat(x_opt[self.nstate_pto:])
@@ -454,23 +341,6 @@ class NonlinearInvertedPendulumPTO:
         acc_pen = np.dot(time_matrix, acc_pen)
         return self.pendulum_moi * acc_pen
     
-    def pendulum_residual_nl_spring(self, wec, x_wec, x_opt, waves = None, nsubsteps = 1):
-        resid = (
-        self.pendulum_inertia(wec, x_wec, x_opt, waves, nsubsteps) +
-        self.torque_from_pendulum(wec, x_wec, x_opt, waves, nsubsteps) +
-        self.torque_from_nl_spring(wec, x_wec, x_opt, waves, nsubsteps) +
-        self.nonlinear_torque_from_friction(wec, x_wec, x_opt, waves, nsubsteps) +
-        self.torque_from_PTO(wec, x_wec, x_opt, waves, nsubsteps)
-        )
-        return resid.flatten()
-
-    ## constraints
-    
-    #TODO: How to pass substeps?
-    def constraint_max_generator_torque(self, wec, x_wec, x_opt, waves, nsubsteps = 5):
-        torque = self.torque_from_PTO(wec, x_wec, x_opt, waves, nsubsteps)
-        return self.max_PTO_torque - np.abs(torque.flatten())
-
     ## objective function
     
     def mechanical_power(self, wec, x_wec, x_opt, waves, nsubsteps=1):
@@ -502,3 +372,129 @@ class NonlinearInvertedPendulumPTO:
         e = self.energy(wec, x_wec, x_opt, waves, nsubsteps)
         return e / wec.tf
 
+
+class NonlinearInvertedPendulumPTO(InvertedPendulumPTO):
+    """A nonlinear inverted pendulum power take-off (PTO) object to be used 
+    in conjunction with a :py:class:`PioneerBuoy` object.
+    """
+    def __init__(self, f1: int, nfreq: int, ndof: int, **kwargs):
+        super().__init__(f1, nfreq, ndof, **kwargs)
+        self.f_add = {
+            'Generator': self.torque_from_PTO,
+            'Friction NL': self.torque_from_friction,
+            'Spring NL': self.torque_from_spring,
+            'Pendulum NL': self.torque_from_pendulum,
+        }
+
+        self.constraints = [
+            {'type': 'eq', 'fun': self.pendulum_residual}, # pendulum EoM
+            {'type': 'ineq', 'fun': self.constraint_max_generator_torque},
+        ]
+
+    def torque_from_friction(self, wec, x_wec, x_opt, waves, nsubsteps = 1):
+        #nonlinear
+        rel_vel = self.rel_velocity(wec, x_wec, x_opt, waves, nsubsteps)
+        #generator and gearbox have Clolumb friction, the we'll convert into the relative vel frame
+        combined_Coulomg_friction = (self.pendulum_coulomb_friction + 
+                            self.gearbox_friction*self.belt_gear_ratio)
+        fric =  -1*(np.tanh(rel_vel)*combined_Coulomg_friction + rel_vel*self.pendulum_viscous_friction) 
+        return fric
+
+    def nonlinear_spring_torque(self, spring_pos):
+        # 135 deg nonlinear spring
+        spring_eq_pos_td = spring_pos - np.pi
+        n = 12
+        slope = 1/(2**(2*n))*comb(2*n,n)
+        scale = 1/slope
+        new_pos = 0
+        for ind in range(n):
+            k = ind+1
+            coeffs = comb(2*n, n-k)/(k*(2**(2*n-1)))
+            new_pos = new_pos - coeffs*np.sin(k*spring_eq_pos_td)
+        return  -self.spring_stiffness * scale * new_pos
+
+    def torque_from_spring(self, wec, x_wec, x_opt, waves, nsubsteps = 1):
+        #nonlinear
+        rel_pos = self.rel_position(wec, x_wec, x_opt, waves, nsubsteps) 
+        spring_pos = self.spring_gear_ratio * rel_pos
+        spring_torque = self.nonlinear_spring_torque(spring_pos)
+        spring_torque_on_shaft = self.spring_gear_ratio * spring_torque
+        return spring_torque_on_shaft
+
+    def torque_from_pendulum(self, wec, x_wec, x_opt, waves, nsubsteps=1):
+        #nonlinear
+        pos_pen = wec.vec_to_dofmat(x_opt[self.nstate_pto:])
+        time_matrix = wec.time_mat_nsubsteps(nsubsteps)
+        pos_pen = np.dot(time_matrix, pos_pen)
+        return -1*self.pendulum_mass * _default_parameters['g'] * self.pendulum_com * np.sin(pos_pen)
+    ## constraints
+        #TODO: How to pass substeps?
+    def constraint_max_generator_torque(self, wec, x_wec, x_opt, waves, nsubsteps = 5):
+        torque = self.torque_from_PTO(wec, x_wec, x_opt, waves, nsubsteps)
+        return self.max_PTO_torque - np.abs(torque.flatten())
+
+    ## residual
+    def pendulum_residual(self, wec, x_wec, x_opt, waves = None, nsubsteps = 1):
+        resid = (
+        self.pendulum_inertia(wec, x_wec, x_opt, waves, nsubsteps) +
+        self.torque_from_pendulum(wec, x_wec, x_opt, waves, nsubsteps) +
+        self.torque_from_spring(wec, x_wec, x_opt, waves, nsubsteps) +
+        self.torque_from_friction(wec, x_wec, x_opt, waves, nsubsteps) +
+        self.torque_from_PTO(wec, x_wec, x_opt, waves, nsubsteps)
+        )
+        return resid.flatten()
+
+class LinearizedInvertedPendulumPTO(InvertedPendulumPTO):
+    """A linearzied inverted pendulum power take-off (PTO) object to be used 
+    in conjunction with a :py:class:`PioneerBuoy` object.
+    """
+    def __init__(self, f1: int, nfreq: int, ndof: int, **kwargs):
+        super().__init__(f1, nfreq, ndof, **kwargs)
+        self.f_add = {
+            'Generator': self.torque_from_PTO,
+            'Friction': self.torque_from_friction,
+            'Spring': self.torque_from_spring,
+            'Pendulum': self.torque_from_pendulum,
+        }
+
+        self.constraints = [
+            {'type': 'eq', 'fun': self.pendulum_residual}, # pendulum EoM
+            {'type': 'ineq', 'fun': self.constraint_max_generator_torque},
+        ]
+
+    def torque_from_friction(self, wec, x_wec, x_opt, waves, nsubsteps = 1):
+        #linear
+        rel_vel = self.rel_velocity(wec, x_wec, x_opt, waves, nsubsteps)
+        fric =  -2* rel_vel*self.pendulum_viscous_friction #increased viscous fric becuase no Coulomb
+        return fric
+
+    def torque_from_spring(self, wec, x_wec, x_opt, waves, nsubsteps = 1):
+        #linear
+        rel_pos = self.rel_position(wec, x_wec, x_opt, waves, nsubsteps) 
+        spring_pos = self.spring_gear_ratio * rel_pos
+        linear_spring_torque = -1*self.spring_stiffness*spring_pos
+        linear_spring_torque_on_shaft = self.spring_gear_ratio * linear_spring_torque
+        return linear_spring_torque_on_shaft
+
+    def torque_from_pendulum(self, wec, x_wec, x_opt, waves, nsubsteps=1):
+        #linear
+        pos_pen = wec.vec_to_dofmat(x_opt[self.nstate_pto:])
+        time_matrix = wec.time_mat_nsubsteps(nsubsteps)
+        pos_pen = np.dot(time_matrix, pos_pen)
+        return -1*self.pendulum_mass * _default_parameters['g'] * self.pendulum_com * pos_pen
+    ## constraints
+        #TODO: How to pass substeps?
+    def constraint_max_generator_torque(self, wec, x_wec, x_opt, waves, nsubsteps = 5):
+        torque = self.torque_from_PTO(wec, x_wec, x_opt, waves, nsubsteps)
+        return self.max_PTO_torque - np.abs(torque.flatten())
+
+    ## residual
+    def pendulum_residual(self, wec, x_wec, x_opt, waves = None, nsubsteps = 1):
+        resid = (
+        self.pendulum_inertia(wec, x_wec, x_opt, waves, nsubsteps) +
+        self.torque_from_pendulum(wec, x_wec, x_opt, waves, nsubsteps) +
+        self.torque_from_spring(wec, x_wec, x_opt, waves, nsubsteps) +
+        self.torque_from_friction(wec, x_wec, x_opt, waves, nsubsteps) +
+        self.torque_from_PTO(wec, x_wec, x_opt, waves, nsubsteps)
+        )
+        return resid.flatten()

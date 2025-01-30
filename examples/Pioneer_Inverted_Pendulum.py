@@ -1,5 +1,5 @@
 import autograd.numpy as np
-from xarray import DataArray, Dataset, load_dataset
+from xarray import DataArray, Dataset, load_dataset, concat, merge
 from math import comb
 import wecopttool as wot
 import os
@@ -9,6 +9,7 @@ import capytaine as cpy
 from numpy.typing import ArrayLike
 from typing import Iterable, Callable, Any, Optional, Mapping, TypeVar, Union
 from autograd.numpy import ndarray
+from scipy.optimize import OptimizeResult, Bounds
 
 # default values
 _default_parameters = {'rho': 1025.0, 'g': 9.81, 'depth': np.infty}
@@ -117,7 +118,7 @@ class InvertedPendulumPTO:
                 pendulum_mass: Optional[float] = 244, # kg, via CAD
                 pendulum_coulomb_friction: Optional[float] =  1.8, # N*m, coulomb friction from main bearings, in pendulum frame
                 pendulum_viscous_friction: Optional[float] =  1.7, # N*ms/rad
-                spring_stiffness: Optional[float] = 955,
+                spring_stiffness: Optional[float] = 305,    #Nm/rad
                 spring_gear_ratio: Optional[float] = 1,
                 belt_gear_ratio: Optional[float] =  112/34,
                 belt_power_rating: Optional[float] =  3100, #W
@@ -132,13 +133,14 @@ class InvertedPendulumPTO:
                 generator_winding_resistance: Optional[float] =  0.0718,   #Ohm
                 generator_winding_inductance: Optional[float] = 0.0,
                 generator_rotor_inertia: Optional[float] = 0.000153, #kgm^2,
-                generator_max_conti_current = 17.1,  #A     #max conti torque = 17.1*0.186 = 3.18Nm, on gearbox side 3.18*6.6 = 21Nm > than gear box limit
+                generator_max_conti_current: Optional[float] = 17.1,  #A     #max conti torque = 17.1*0.186 = 3.18Nm, on gearbox side 3.18*6.6 = 21Nm > than gear box limit
+                dc_bus_max_voltage: Optional[float] = 30, #V
                 generator_coulomb_friction: Optional[float] = 0.6125, #Nm #coulomb friction, in the space of the gear box output
-                drivetrain_friction: Optional[float] = 0.2,
+                drivetrain_friction: Optional[float] = 0.0,
                 drivetrain_stiffness: Optional[float] = 0,
                 nsubsteps_constraints: Optional[int] = 4,
         )  -> None:
-        pto_gear_ratio = belt_gear_ratio*gearbox_gear_ratio
+        self.pto_gear_ratio = belt_gear_ratio*gearbox_gear_ratio
         freqs = wot.frequency(f1, nfreq, False)
         omega = 2*np.pi*freqs
         self.ndof = ndof
@@ -155,9 +157,10 @@ class InvertedPendulumPTO:
         self.belt_gear_ratio = belt_gear_ratio
         self.gearbox_friction = gearbox_friction
         self.max_PTO_torque = gearbox_peak_torque*belt_gear_ratio # N*m, gearbox is more limiting than generator
+        self.dc_bus_max_voltage = dc_bus_max_voltage
         self.nsubsteps_constraints = nsubsteps_constraints
         self.pto_impedance = self._pto_impedance(omega,
-                        pto_gear_ratio = pto_gear_ratio,
+                        pto_gear_ratio = self.pto_gear_ratio,
                         torque_constant = generator_torque_constant,
                         drivetrain_inertia = generator_rotor_inertia+gearbox_moi,
                         drivetrain_stiffness = drivetrain_stiffness,
@@ -169,10 +172,6 @@ class InvertedPendulumPTO:
         self.nstate_pto, self.nstate_opt = self.nstate_based_on_control()
 
 
-        #here everything that needs initialization
-        #trasnfermat
-        #torque_from_pto, or just torque..but multiple torques...
-        #other properties that we'd want later...
     def _pto_impedance(self,
         omega,
         pto_gear_ratio,
@@ -205,12 +204,27 @@ class InvertedPendulumPTO:
         pto_impedance_abcd = wot.pto._make_abcd(pto_impedance, ndof=self.ndof)
         pto_transfer_mat = wot.pto._make_mimo_transfer_mat(pto_impedance_abcd,
                                          ndof=self.ndof)
-        return pto_transfer_mat                                         
-    
+        return pto_transfer_mat   
+
+    def x_pen(self, wec, x_wec, x_opt, waves, nsubsteps=1):                               
+        x_pos_pen = wec.vec_to_dofmat(x_opt[self.nstate_pto:])
+        return x_pos_pen
+
     def x_rel(self, wec, x_wec, x_opt, waves, nsubsteps=1):
         x_pos_buoy = wec.vec_to_dofmat(x_wec)
-        x_pos_pen = wec.vec_to_dofmat(x_opt[self.nstate_pto:])
+        x_pos_pen = self.x_pen(wec, x_wec, x_opt, waves, nsubsteps)
         return x_pos_buoy - x_pos_pen
+
+    def pen_position(self, wec, x_wec, x_opt, waves, nsubsteps=1):
+        x_pos_pen = self.x_pen(wec, x_wec, x_opt, waves, nsubsteps)
+        time_matrix = wec.time_mat_nsubsteps(nsubsteps)
+        return np.dot(time_matrix, x_pos_pen)
+
+    def pen_velocity(self, wec, x_wec, x_opt, waves, nsubsteps=1):
+        x_pos_pen = self.x_pen(wec, x_wec, x_opt, waves, nsubsteps)
+        x_vel_pen = np.dot(wec.derivative_mat, x_pos_pen)
+        time_matrix = wec.time_mat_nsubsteps(nsubsteps)
+        return np.dot(time_matrix, x_vel_pen)
 
     def rel_position(self, wec, x_wec, x_opt, waves, nsubsteps=1):
         pos_rel = self.x_rel(wec, x_wec, x_opt, waves)
@@ -218,10 +232,10 @@ class InvertedPendulumPTO:
         return np.dot(time_matrix, pos_rel)
 
     def rel_velocity(self, wec, x_wec, x_opt, waves, nsubsteps=1):
-        pos_rel = self.x_rel(wec, x_wec, x_opt, waves)
-        vel_rel = np.dot(wec.derivative_mat, pos_rel)
+        x_pos_rel = self.x_rel(wec, x_wec, x_opt, waves)
+        x_vel_rel = np.dot(wec.derivative_mat, x_pos_rel)
         time_matrix = wec.time_mat_nsubsteps(nsubsteps)
-        return np.dot(time_matrix, vel_rel)
+        return np.dot(time_matrix, x_vel_rel)
     ## PTO torque depending on controller
 
     
@@ -230,7 +244,7 @@ class InvertedPendulumPTO:
         # Call the appropriate torque calculation method based on the control type
         if self.control_type == 'unstructured':
             return self.torque_from_unstructured(wec, x_wec, x_opt, waves, nsubsteps)
-        elif self.control_type == 'damping':
+        elif self.control_type == 'P':
             return self.torque_from_damping(wec, x_wec, x_opt, waves, nsubsteps)
         elif self.control_type == 'PI':
             return self.torque_from_PI(wec, x_wec, x_opt, waves, nsubsteps)
@@ -239,7 +253,7 @@ class InvertedPendulumPTO:
         elif self.control_type == 'nonlinear_3rdO':
             return self.torque_from_nonlinear_3rdO(wec, x_wec, x_opt, waves, nsubsteps)
         else:
-            raise ValueError("Invalid control type. Choose 'unstructured', 'damping', 'PI', 'PID', or 'nonlinear_3rdO'.")
+            raise ValueError("Invalid control type. Choose 'unstructured', 'P', 'PI', 'PID', or 'nonlinear_3rdO'.")
 
     def nstate_based_on_control(self):
         control_type = self.control_type
@@ -249,7 +263,7 @@ class InvertedPendulumPTO:
             nstate_pto = 2 * nfreq
             nstate_opt = nstate_pto + nstate_pen
             return nstate_pto, nstate_opt
-        elif control_type == 'damping':
+        elif control_type == 'P':
             nstate_pto = 1
             nstate_opt = nstate_pto + nstate_pen
             return nstate_pto, nstate_opt
@@ -266,7 +280,26 @@ class InvertedPendulumPTO:
             nstate_opt = nstate_pto + nstate_pen
             return nstate_pto, nstate_opt
         else:
-            raise ValueError("Invalid control type. Choose 'unstructured', 'damping', 'PI', 'PID', or 'nonlinear_3rdO'.")
+            raise ValueError("Invalid control type. Choose 'unstructured', 'P', 'PI', 'PID', or 'nonlinear_3rdO'.")
+
+    def bounds_based_on_control(self):
+        control_type = self.control_type
+        unbound_list = self.nstate_opt*[np.Infinity]
+        lb_list = (-1*np.array(unbound_list)).tolist()
+        if control_type == 'unstructured':
+            return None
+        elif control_type == 'P':
+            return None
+        elif control_type == 'PI':
+            return None
+        elif control_type == 'PID':
+            lb_list[2] = 0
+            bounds_PID = Bounds(lb=lb_list, ub=unbound_list)
+            return bounds_PID
+        elif control_type == 'nonlinear_3rdO':
+            return None
+        else:
+            raise ValueError("Invalid control type. Choose 'unstructured', 'P', 'PI', 'PID', or 'nonlinear_3rdO'.")
 
     def torque_from_unstructured(self, wec, x_wec, x_opt, waves=None, nsubsteps=1):
         f_fd = np.reshape(x_opt[:self.nstate_pto], (-1, self.ndof), order='F')  # Take the first components for PTO torque
@@ -317,13 +350,13 @@ class InvertedPendulumPTO:
                 coeffs[2] * acc)
 
     def torque_3rd_polynomial(self, vel, pos, coeffs):
-        return (coeffs[0] +  # e1
-                coeffs[1] * vel +  # e1
-                coeffs[2] * pos +  # e1
-                coeffs[3] * vel**3 +  # e1
-                coeffs[4] * pos**3 +  # e1
-                coeffs[5] * vel**2 * pos +  # e0
-                coeffs[6] * vel * pos**2)  # e1
+        return (coeffs[0] +   
+                coeffs[1] * vel +   
+                coeffs[2] * pos +   
+                coeffs[3] * vel**3 +   
+                coeffs[4] * pos**3 +  
+                coeffs[5] * vel**2 * pos +  
+                coeffs[6] * vel * pos**2)  
 
     ## additional torque
     def torque_from_friction(self, wec, x_wec, x_opt, waves=None, nsubsteps=1):
@@ -335,8 +368,9 @@ class InvertedPendulumPTO:
 
 
     def pendulum_inertia(self, wec, x_wec, x_opt, waves = None, nsubsteps = 1):
-        pos_pen = wec.vec_to_dofmat(x_opt[self.nstate_pto:])
-        acc_pen = np.dot(wec.derivative2_mat, pos_pen)
+        # pos_pen = wec.vec_to_dofmat(x_opt[self.nstate_pto:])
+        x_pos_pen = self.x_pen(wec, x_wec, x_opt, waves, nsubsteps)
+        acc_pen = np.dot(wec.derivative2_mat, x_pos_pen)
         time_matrix = wec.time_mat_nsubsteps(nsubsteps)
         acc_pen = np.dot(time_matrix, acc_pen)
         return self.pendulum_moi * acc_pen
@@ -348,7 +382,7 @@ class InvertedPendulumPTO:
         vel_td = self.rel_velocity(wec, x_wec, x_opt, waves, nsubsteps)
         return vel_td * torque_td
 
-    def electrical_power(self, wec, x_wec, x_opt, waves, nsubsteps=1):
+    def power_variables(self, wec, x_wec, x_opt, waves, nsubsteps=1):
         q1_td = self.rel_velocity(wec, x_wec, x_opt, waves)
         e1_td = self.torque_from_PTO(wec, x_wec, x_opt, waves)
         q1 = wot.complex_to_real(wec.td_to_fd(q1_td, False))
@@ -362,7 +396,36 @@ class InvertedPendulumPTO:
         time_mat = wec.time_mat_nsubsteps(nsubsteps)
         q2_td = np.dot(time_mat, q2)
         e2_td = np.dot(time_mat, e2)
-        return q2_td * e2_td
+        return q2_td, e2_td
+
+    def electrical_power(self, wec, x_wec, x_opt, waves, nsubsteps=1):
+        # q1_td = self.rel_velocity(wec, x_wec, x_opt, waves)
+        # e1_td = self.torque_from_PTO(wec, x_wec, x_opt, waves)
+        # q1 = wot.complex_to_real(wec.td_to_fd(q1_td, False))
+        # e1 = wot.complex_to_real(wec.td_to_fd(e1_td, False))
+        # vars_1 = np.hstack([q1, e1])
+        # vars_1_flat = wec.dofmat_to_vec(vars_1)
+        # vars_2_flat = np.dot(self.pto_transfer_mat, vars_1_flat)
+        # vars_2 = wot.vec_to_dofmat(vars_2_flat, 2)
+        # q2 = vars_2[:, 0]
+        # e2 = vars_2[:, 1]
+        # time_mat = wec.time_mat_nsubsteps(nsubsteps)
+        # q2_td = np.dot(time_mat, q2)
+        # e2_td = np.dot(time_mat, e2)
+        q2_td, e2_td = self.power_variables(wec, x_wec,
+                                            x_opt, waves, nsubsteps)
+        epower_td = q2_td * e2_td                             
+        return np.expand_dims(epower_td, axis=1)
+
+    def back_emf(self, wec, x_wec, x_opt, waves, nsubsteps=1):
+        q2_td, e2_td = self.power_variables(wec, x_wec,
+                                            x_opt, waves, nsubsteps)
+        return e2_td
+
+    def quad_current(self, wec, x_wec, x_opt, waves, nsubsteps=1):
+        q2_td, e2_td = self.power_variables(wec, x_wec,
+                                            x_opt, waves, nsubsteps)
+        return q2_td
 
     def energy(self, wec, x_wec, x_opt, waves, nsubsteps=1):
         power_td = self.electrical_power(wec, x_wec, x_opt, waves, nsubsteps)
@@ -372,6 +435,154 @@ class InvertedPendulumPTO:
         e = self.energy(wec, x_wec, x_opt, waves, nsubsteps)
         return e / wec.tf
 
+
+
+    def solve(self, 
+              wec,
+              waves: Dataset,
+              x_wec_0: Optional[ndarray] = None,
+              x_opt_0: Optional[ndarray] = None,
+              bounds_opt: Optional[Bounds] = None,
+              **kwargs)-> list[OptimizeResult]:
+        if bounds_opt is None:
+            bounds_opt = self.bounds_based_on_control()
+        res = wec.solve(waves,
+                        obj_fun = self.average_electrical_power,
+                        nstate_opt = self.nstate_opt,
+                        optim_options={'maxiter': 500,
+                                       'disp':False},
+                        x_wec_0=x_wec_0, # initialize with result from linearized case
+                        x_opt_0=x_opt_0, # initialize with result from linearized case
+                        scale_x_wec=1e1,
+                        scale_x_opt=np.concatenate((np.array([1e-1])*np.ones(self.nstate_pto), 1e1 * np.ones(self.nstate_pen))),
+                        scale_obj=1e-1,
+                        bounds_opt= bounds_opt,
+                        **kwargs)
+        for idx, ires in enumerate(res):
+            print(f"wave {idx}, exit mode: {ires.status}, nit: {ires.nit}, cntr: {self.control_type}, avg. power: {ires.fun:.2f}W")
+        return res
+
+    def _postproc(self,
+                    wec,
+                    res_opt,
+                    waves,
+                    nsubsteps):
+        """Post process of single results (not list)"""
+        x_wec, x_opt = wec.decompose_state(res_opt.x)
+        t_dat = wec.time_nsubsteps(nsubsteps)
+
+        rel_vel_td = self.rel_velocity(wec, x_wec, x_opt, waves, nsubsteps)
+        rel_vel_fd = wec.td_to_fd(rel_vel_td[::nsubsteps])
+        rel_vel_attr = {'long_name': 'Relative velocity', 'units': 'rad/s'}
+
+        pen_vel_td = self.pen_velocity(wec, x_wec, x_opt, waves, nsubsteps)
+        pen_vel_fd = wec.td_to_fd(pen_vel_td[::nsubsteps])
+        pen_vel_attr = {'long_name': 'Pendulum velocity', 'units': 'rad/s'}
+
+        mpower_td = self.mechanical_power(wec, x_wec, x_opt, waves, nsubsteps)
+        mpower_fd = wec.td_to_fd(mpower_td[::nsubsteps])
+        mpower_attr = {'long_name': 'Mechanical power', 'units': 'W'}
+
+        epower_td = self.electrical_power(wec, x_wec, x_opt, waves, nsubsteps)
+        epower_fd = wec.td_to_fd(epower_td[::nsubsteps])
+        epower_attr = {'long_name': 'Electrical power', 'units': 'W'}
+
+        back_emf_td = np.expand_dims(self.back_emf(wec, x_wec, x_opt, waves, nsubsteps),axis = 1)
+        back_emf_fd = wec.td_to_fd(back_emf_td[::nsubsteps])
+        back_emf_attr = {'long_name': 'Back electromotive force', 'units': 'V'}
+
+
+        names = ["relative PTO Dof"]
+
+        omega_attr = {'long_name': 'Radial frequency', 'units': 'rad/s'}
+        freq_attr = {'long_name': 'Frequency', 'units': 'Hz'}
+        period_attr = {'long_name': 'Period', 'units': 's'}
+        dof_attr = {'long_name': 'PTO degree of freedom'}
+        time_attr = {'long_name': 'Time', 'units': 's'}
+        torque_attr = {'long_name': 'Torque', 'units': 'Nm'}
+
+        coords_fd = {'omega':('omega', wec.omega, omega_attr),
+                'freq':('omega', wec.frequency, freq_attr),
+                'period':('omega', wec.period, period_attr),
+                'dof':('dof', names, dof_attr),         }
+
+        coords_td = {'time':('time', t_dat, time_attr),
+                'dof':('dof', names, dof_attr),        }
+
+
+        pen_fd_state = Dataset(
+            data_vars={
+                'rel_vel': (['omega','dof'], rel_vel_fd, rel_vel_attr),
+                'pen_vel': (['omega','dof'], pen_vel_fd, pen_vel_attr),
+                'epower': (['omega','dof'], epower_fd, epower_attr),
+                'mpower': (['omega','dof'], mpower_fd, mpower_attr),
+                'back_emf': (['omega','dof'], back_emf_fd, back_emf_attr),
+
+            },
+            coords=coords_fd,
+            attrs={},
+        )
+
+        pen_td_state = Dataset(
+            data_vars={
+                'rel_vel': (['time','dof'], rel_vel_td, rel_vel_attr),
+                'pen_vel': (['time','dof'], pen_vel_td, pen_vel_attr),
+                'epower': (['time', 'dof'], epower_td, epower_attr),
+                'mpower': (['time', 'dof'], mpower_td, mpower_attr),
+                'back_emf': (['time','dof'], back_emf_td, back_emf_attr),
+
+            },
+            coords=coords_td,
+            attrs={}
+        )
+
+        torque_td_da_list = []
+        torque_fd_da_list = []
+
+        for name, torque in self.f_add.items():
+            torque_td = torque(wec, x_wec, x_opt, waves, nsubsteps)
+            torque_fd = wec.td_to_fd(torque_td[::nsubsteps])  # no substeps
+            torque_td_da = DataArray(data = torque_td,
+                        dims = ['time','dof'],
+                        coords = coords_td,
+                        attrs = torque_attr
+                            ).expand_dims({'type': [name]})
+            torque_fd_da = DataArray(data = torque_fd,
+                        dims = ['omega','dof'],
+                        coords = coords_fd,
+                        attrs = torque_attr
+                            ).expand_dims({'type': [name]})
+            torque_td_da_list.append(torque_td_da)
+            torque_fd_da_list.append(torque_fd_da)
+
+        pen_torque_td = concat(torque_td_da_list, dim = 'type')
+        pen_torque_td.type.attrs['long_name'] = 'Type'
+        pen_torque_td.name = 'torque'
+        pen_torque_fd = concat(torque_fd_da_list, dim = 'type')
+        pen_torque_fd.type.attrs['long_name'] = 'Type'
+        pen_torque_fd.name = 'torque'
+        
+        
+        # pen_fdom = merge(pen_fd_state)
+        pen_fdom = merge([pen_fd_state,pen_torque_fd])
+        pen_tdom = merge([pen_td_state,pen_torque_td])
+
+        return pen_fdom, pen_tdom
+
+    def post_process(self,
+                        wec,
+                        res_opt,
+                        waves,
+                        nsubsteps):
+        wec_fdom, wec_tdom = wec.post_process(wec, res_opt, waves, nsubsteps=nsubsteps)
+
+        pen_fdom = []
+        pen_tdom = []
+        for idx, ires in enumerate(res_opt):
+            ifd, itd = self._postproc(wec, ires, waves.sel(realization=idx), nsubsteps)
+            pen_fdom.append(ifd)
+            pen_tdom.append(itd)
+        return wec_fdom, wec_tdom, pen_fdom, pen_tdom 
 
 class NonlinearInvertedPendulumPTO(InvertedPendulumPTO):
     """A nonlinear inverted pendulum power take-off (PTO) object to be used 
@@ -389,6 +600,8 @@ class NonlinearInvertedPendulumPTO(InvertedPendulumPTO):
         self.constraints = [
             {'type': 'eq', 'fun': self.pendulum_residual}, # pendulum EoM
             {'type': 'ineq', 'fun': self.constraint_max_generator_torque},
+            {'type': 'ineq', 'fun': self.constraint_max_dc_bus_voltage},
+
         ]
 
     def torque_from_friction(self, wec, x_wec, x_opt, waves, nsubsteps = 1):
@@ -411,7 +624,7 @@ class NonlinearInvertedPendulumPTO(InvertedPendulumPTO):
             k = ind+1
             coeffs = comb(2*n, n-k)/(k*(2**(2*n-1)))
             new_pos = new_pos - coeffs*np.sin(k*spring_eq_pos_td)
-        return  -self.spring_stiffness * scale * new_pos
+        return  -1*self.spring_stiffness * scale * new_pos
 
     def torque_from_spring(self, wec, x_wec, x_opt, waves, nsubsteps = 1):
         #nonlinear
@@ -423,15 +636,19 @@ class NonlinearInvertedPendulumPTO(InvertedPendulumPTO):
 
     def torque_from_pendulum(self, wec, x_wec, x_opt, waves, nsubsteps=1):
         #nonlinear
-        pos_pen = wec.vec_to_dofmat(x_opt[self.nstate_pto:])
+        # pos_pen = wec.vec_to_dofmat(x_opt[self.nstate_pto:])
+        x_pos_pen = self.x_pen(wec, x_wec, x_opt, waves, nsubsteps)
         time_matrix = wec.time_mat_nsubsteps(nsubsteps)
-        pos_pen = np.dot(time_matrix, pos_pen)
+        pos_pen = np.dot(time_matrix, x_pos_pen)
         return -1*self.pendulum_mass * _default_parameters['g'] * self.pendulum_com * np.sin(pos_pen)
     ## constraints
         #TODO: How to pass substeps?
     def constraint_max_generator_torque(self, wec, x_wec, x_opt, waves, nsubsteps = 5):
         torque = self.torque_from_PTO(wec, x_wec, x_opt, waves, nsubsteps)
         return self.max_PTO_torque - np.abs(torque.flatten())
+    def constraint_max_dc_bus_voltage(self, wec, x_wec, x_opt, waves, nsubsteps = 5):
+        back_emf = self.back_emf(wec, x_wec, x_opt, waves, nsubsteps)
+        return self.dc_bus_max_voltage - np.abs(back_emf.flatten())
 
     ## residual
     def pendulum_residual(self, wec, x_wec, x_opt, waves = None, nsubsteps = 1):
@@ -460,6 +677,7 @@ class LinearizedInvertedPendulumPTO(InvertedPendulumPTO):
         self.constraints = [
             {'type': 'eq', 'fun': self.pendulum_residual}, # pendulum EoM
             {'type': 'ineq', 'fun': self.constraint_max_generator_torque},
+            {'type': 'ineq', 'fun': self.constraint_max_dc_bus_voltage},        
         ]
 
     def torque_from_friction(self, wec, x_wec, x_opt, waves, nsubsteps = 1):
@@ -478,16 +696,19 @@ class LinearizedInvertedPendulumPTO(InvertedPendulumPTO):
 
     def torque_from_pendulum(self, wec, x_wec, x_opt, waves, nsubsteps=1):
         #linear
-        pos_pen = wec.vec_to_dofmat(x_opt[self.nstate_pto:])
+        # pos_pen = wec.vec_to_dofmat(x_opt[self.nstate_pto:])
+        x_pos_pen = self.x_pen(wec, x_wec, x_opt, waves, nsubsteps)
         time_matrix = wec.time_mat_nsubsteps(nsubsteps)
-        pos_pen = np.dot(time_matrix, pos_pen)
+        pos_pen = np.dot(time_matrix, x_pos_pen)
         return -1*self.pendulum_mass * _default_parameters['g'] * self.pendulum_com * pos_pen
     ## constraints
         #TODO: How to pass substeps?
     def constraint_max_generator_torque(self, wec, x_wec, x_opt, waves, nsubsteps = 5):
         torque = self.torque_from_PTO(wec, x_wec, x_opt, waves, nsubsteps)
         return self.max_PTO_torque - np.abs(torque.flatten())
-
+    def constraint_max_dc_bus_voltage(self, wec, x_wec, x_opt, waves, nsubsteps = 5):
+        back_emf = self.back_emf(wec, x_wec, x_opt, waves, nsubsteps)
+        return self.dc_bus_max_voltage - np.abs(back_emf.flatten())
     ## residual
     def pendulum_residual(self, wec, x_wec, x_opt, waves = None, nsubsteps = 1):
         resid = (

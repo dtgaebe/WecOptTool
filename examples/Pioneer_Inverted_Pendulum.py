@@ -11,11 +11,16 @@ from typing import Iterable, Callable, Any, Optional, Mapping, TypeVar, Union
 from autograd.numpy import ndarray
 from scipy.optimize import OptimizeResult, Bounds
 
+from matplotlib.animation import FuncAnimation
+import matplotlib.patches as patches
+import matplotlib.pyplot as plt
+
 # default values
 _default_parameters = {'rho': 1025.0, 'g': 9.81, 'depth': np.infty}
 _default_min_damping = 1e-6
 
 TWEC = TypeVar("TWEC", bound="WEC")
+TIPP = TypeVar("TIPP", bound ="InvertedPendulumPTO")
 TStateFunction = Callable[
     [TWEC, ndarray, ndarray, Dataset], ndarray]
 TForceDict = dict[str, TStateFunction]
@@ -139,10 +144,14 @@ class InvertedPendulumPTO:
                 drivetrain_friction: Optional[float] = 0.0,
                 drivetrain_stiffness: Optional[float] = 0,
                 nsubsteps_constraints: Optional[int] = 4,
+                name: Optional[str] = ''
         )  -> None:
         self.pto_gear_ratio = belt_gear_ratio*gearbox_gear_ratio
         freqs = wot.frequency(f1, nfreq, False)
+        self.f1 = f1
+        self.nfreq = nfreq
         omega = 2*np.pi*freqs
+        self.omega = omega
         self.ndof = ndof
         self.control_type = control_type
         self.nfreq = nfreq
@@ -170,7 +179,7 @@ class InvertedPendulumPTO:
         self.pto_transfer_mat = self._pto_transfer_mat(self.pto_impedance)
         # self.torque_from_PTO, self.nstate_pto, self.nstate_opt =  self._create_control_torque_function
         self.nstate_pto, self.nstate_opt = self.nstate_based_on_control()
-
+        self.name = name
 
     def _pto_impedance(self,
         omega,
@@ -248,12 +257,14 @@ class InvertedPendulumPTO:
             return self.torque_from_damping(wec, x_wec, x_opt, waves, nsubsteps)
         elif self.control_type == 'PI':
             return self.torque_from_PI(wec, x_wec, x_opt, waves, nsubsteps)
+        elif self.control_type == 'I':
+            return self.torque_from_I(wec, x_wec, x_opt, waves, nsubsteps)            
         elif self.control_type == 'PID':
             return self.torque_from_PID(wec, x_wec, x_opt, waves, nsubsteps)
         elif self.control_type == 'nonlinear_3rdO':
             return self.torque_from_nonlinear_3rdO(wec, x_wec, x_opt, waves, nsubsteps)
         else:
-            raise ValueError("Invalid control type. Choose 'unstructured', 'P', 'PI', 'PID', or 'nonlinear_3rdO'.")
+            raise ValueError("Invalid control type. Choose 'unstructured', 'P', 'PI', 'I', 'PID', or 'nonlinear_3rdO'.")
 
     def nstate_based_on_control(self):
         control_type = self.control_type
@@ -271,6 +282,10 @@ class InvertedPendulumPTO:
             nstate_pto = 2
             nstate_opt = nstate_pto + nstate_pen
             return nstate_pto, nstate_opt
+        elif control_type == 'I':
+            nstate_pto = 1
+            nstate_opt = nstate_pto + nstate_pen
+            return nstate_pto, nstate_opt            
         elif control_type == 'PID':
             nstate_pto = 3
             nstate_opt = nstate_pto + nstate_pen
@@ -291,6 +306,8 @@ class InvertedPendulumPTO:
         elif control_type == 'P':
             return None
         elif control_type == 'PI':
+            return None
+        elif control_type == 'I':
             return None
         elif control_type == 'PID':
             lb_list[2] = 0
@@ -323,6 +340,14 @@ class InvertedPendulumPTO:
         torque = np.dot(time_matrix, f_fd)
         return torque
 
+    def torque_from_I(self, wec, x_wec, x_opt, waves=None, nsubsteps=1):
+        pos_rel = self.x_rel(wec, x_wec, x_opt, waves)
+        # vel_rel = np.dot(wec.derivative_mat, pos_rel)
+        f_fd = self.torque_I(pos_rel, x_opt[:self.nstate_pto])
+        time_matrix = wec.time_mat_nsubsteps(nsubsteps)
+        torque = np.dot(time_matrix, f_fd)
+        return torque        
+
     def torque_from_PID(self, wec, x_wec, x_opt, waves=None, nsubsteps=1):
         pos_rel = self.x_rel(wec, x_wec, x_opt, waves)
         vel_rel = np.dot(wec.derivative_mat, pos_rel)
@@ -339,6 +364,9 @@ class InvertedPendulumPTO:
         time_matrix = wec.time_mat_nsubsteps(nsubsteps)
         torque = np.dot(time_matrix, f_fd) 
         return torque
+
+    def torque_I(self, pos, coeffs):
+        return (coeffs[0] * pos)
 
     def torque_PI(self, vel, pos, coeffs):
         return (coeffs[0] * vel +  
@@ -443,13 +471,17 @@ class InvertedPendulumPTO:
               x_wec_0: Optional[ndarray] = None,
               x_opt_0: Optional[ndarray] = None,
               bounds_opt: Optional[Bounds] = None,
+              max_attempts: Optional[float]  = 3,
               **kwargs)-> list[OptimizeResult]:
         if bounds_opt is None:
             bounds_opt = self.bounds_based_on_control()
-        res = wec.solve(waves,
+        attempts = 0
+        while attempts < max_attempts:
+            try:
+                res = wec.solve(waves,
                         obj_fun = self.average_electrical_power,
                         nstate_opt = self.nstate_opt,
-                        optim_options={'maxiter': 500,
+                        optim_options={'maxiter': 200,
                                        'disp':False},
                         x_wec_0=x_wec_0, # initialize with result from linearized case
                         x_opt_0=x_opt_0, # initialize with result from linearized case
@@ -458,15 +490,28 @@ class InvertedPendulumPTO:
                         scale_obj=1e-1,
                         bounds_opt= bounds_opt,
                         **kwargs)
-        for idx, ires in enumerate(res):
-            print(f"wave {idx}, exit mode: {ires.status}, nit: {ires.nit}, cntr: {self.control_type}, avg. power: {ires.fun:.2f}W")
+                status_list = []
+                for idx, ires in enumerate(res):
+                    print(f"{self.name} wave {idx}, exit mode: {ires.status}, nit: {ires.nit}, cntr: {self.control_type}, avg. power: {ires.fun:.2f}W")
+                    status_list.append(ires.status)
+                if all(x == 0 for x in status_list):
+                    # print("Operation successful, exiting.")
+                    return  res# Exit the function if successful
+                elif any(x == 9 for x in status_list):
+                    print("Exit mode 9 encountered, trying again...")
+                else:
+                    print(f"Unexpected exit mode, trying again...")
+            except Exception as e:
+                print(f"An error occurred: {e}, trying again...")
+            attempts += 1
+        
         return res
 
     def _postproc(self,
                     wec,
                     res_opt,
                     waves,
-                    nsubsteps):
+                    nsubsteps) -> tuple[list[Dataset], list[Dataset]]:
         """Post process of single results (not list)"""
         x_wec, x_opt = wec.decompose_state(res_opt.x)
         t_dat = wec.time_nsubsteps(nsubsteps)
@@ -474,6 +519,14 @@ class InvertedPendulumPTO:
         rel_vel_td = self.rel_velocity(wec, x_wec, x_opt, waves, nsubsteps)
         rel_vel_fd = wec.td_to_fd(rel_vel_td[::nsubsteps])
         rel_vel_attr = {'long_name': 'Relative velocity', 'units': 'rad/s'}
+
+        rel_pos_td = self.rel_position(wec, x_wec, x_opt, waves, nsubsteps)
+        rel_pos_fd = wec.td_to_fd(rel_pos_td[::nsubsteps])
+        rel_pos_attr = {'long_name': 'Relative position', 'units': 'rad'}
+
+        pen_pos_td = self.pen_position(wec, x_wec, x_opt, waves, nsubsteps)
+        pen_pos_fd = wec.td_to_fd(pen_pos_td[::nsubsteps])
+        pen_pos_attr = {'long_name': 'Pendulum position', 'units': 'rad'}
 
         pen_vel_td = self.pen_velocity(wec, x_wec, x_opt, waves, nsubsteps)
         pen_vel_fd = wec.td_to_fd(pen_vel_td[::nsubsteps])
@@ -491,6 +544,9 @@ class InvertedPendulumPTO:
         back_emf_fd = wec.td_to_fd(back_emf_td[::nsubsteps])
         back_emf_attr = {'long_name': 'Back electromotive force', 'units': 'V'}
 
+        quad_cur_td = np.expand_dims(self.quad_current(wec, x_wec, x_opt, waves, nsubsteps),axis = 1)
+        quad_cur_fd = wec.td_to_fd(quad_cur_td[::nsubsteps])
+        quad_cur_attr = {'long_name': 'Quadrature current', 'units': 'A'}
 
         names = ["relative PTO Dof"]
 
@@ -512,11 +568,14 @@ class InvertedPendulumPTO:
 
         pen_fd_state = Dataset(
             data_vars={
+                'pen_pos': (['omega','dof'], pen_pos_fd, pen_pos_attr),
                 'rel_vel': (['omega','dof'], rel_vel_fd, rel_vel_attr),
+                'rel_pos': (['omega','dof'], rel_pos_fd, rel_pos_attr),
                 'pen_vel': (['omega','dof'], pen_vel_fd, pen_vel_attr),
                 'epower': (['omega','dof'], epower_fd, epower_attr),
                 'mpower': (['omega','dof'], mpower_fd, mpower_attr),
                 'back_emf': (['omega','dof'], back_emf_fd, back_emf_attr),
+                'quad_current': (['omega','dof'], quad_cur_fd, quad_cur_attr),
 
             },
             coords=coords_fd,
@@ -525,11 +584,14 @@ class InvertedPendulumPTO:
 
         pen_td_state = Dataset(
             data_vars={
+                'pen_pos': (['time','dof'], pen_pos_td, pen_pos_attr),
                 'rel_vel': (['time','dof'], rel_vel_td, rel_vel_attr),
+                'rel_pos': (['time','dof'], rel_pos_td, rel_pos_attr),
                 'pen_vel': (['time','dof'], pen_vel_td, pen_vel_attr),
                 'epower': (['time', 'dof'], epower_td, epower_attr),
                 'mpower': (['time', 'dof'], mpower_td, mpower_attr),
                 'back_emf': (['time','dof'], back_emf_td, back_emf_attr),
+                'quad_current': (['time','dof'], quad_cur_td, quad_cur_attr),
 
             },
             coords=coords_td,
@@ -584,12 +646,163 @@ class InvertedPendulumPTO:
             pen_tdom.append(itd)
         return wec_fdom, wec_tdom, pen_fdom, pen_tdom 
 
+    # def animate_results(self,
+    #                     wec_tdom: Dataset,
+    #                     pen_tdom: Dataset)
+
+    def animate_results(self,
+                        wec_tdom: Dataset,
+                        pen_tdom: Dataset,
+                        waves:Dataset):
+        plt.rcParams["animation.html"] = "jshtml"
+        plt.ioff()
+        fig, ax = plt.subplots()
+
+        # Set the limits of the plot
+        xlim = [-1.2, 1.2]
+        dx = xlim[1]-xlim[0]
+        ylim0 = -0.8
+        ylim = [ylim0, ylim0+dx]
+        ax.set_xlim(xlim)
+        ax.set_ylim(ylim)
+
+        wave_number_deep = waves.omega**2/9.81
+
+        spatial_x = np.linspace(xlim[0], xlim[1], 10)
+        wave_elevations = np.zeros((len(spatial_x), len(pen_tdom['time'])))
+
+        #phase shift waves
+        for i, x in enumerate(spatial_x):
+            manual_wave = wot.waves.elevation_fd(self.f1, self.nfreq, 
+                                                directions=waves.wave_direction, 
+                                                nrealizations=len(waves.realization), 
+                                                amplitudes=np.abs(waves), 
+                                                phases=np.rad2deg(np.angle(waves) - np.expand_dims(wave_number_deep*x,axis=(1, 2))))    
+            wave_td = wot.time_results(manual_wave, pen_tdom['time'])
+            wave_elevations[i, :] = wave_td[0, 0, :]
+
+        #Inputs NPIP, or some Pen pen_tdom, wec_tdom
+
+        frames = len(pen_tdom['time'])
+        time = pen_tdom['time']
+        wave_elev = wec_tdom['wave_elev'].squeeze()
+        pendulum_angles = pen_tdom['pen_pos'].squeeze()  # Sine wave for the circle
+        buoy_angles = wec_tdom['pos'].squeeze()
+        pendulum_max_torque = (self.pendulum_mass * _default_parameters['g'] * self.pendulum_com )
+        pendulum_torque_norm = pen_tdom['torque'].sel(type = 'Pendulum NL').squeeze() / pendulum_max_torque
+        spring_torque_norm = pen_tdom['torque'].sel(type = 'Spring NL').squeeze() / pendulum_max_torque# 614.7460754866761  #max value numericall from the acutal used function
+        friction_torque_rel = pen_tdom['torque'].sel(type = 'Friction NL').squeeze() /pendulum_max_torque
+
+
+        pto_torque = pen_tdom['torque'].sel(type = 'Generator').squeeze()
+        pto_torque_rel = pto_torque / pendulum_max_torque
+        pow_norm_factor = 200
+        pto_elec_power = pen_tdom['epower'].squeeze()
+        pto_elec_power_norm = pto_elec_power / pow_norm_factor
+
+        # Rectangle and truncated cone parameters
+        buoy_width = 1.8
+        buoy_height = 0.6
+        cone_height = 0.6
+        cone_radius_top = buoy_width / 4  # Top radius matches half the rectangle width
+        cone_radius_bottom = buoy_width /2 # Bottom radius matches the rectangle width
+
+            
+        delta_y = 0.2
+
+        #zero pos vectors
+        buoy_x = np.array([-buoy_width / 2, buoy_width / 2, buoy_width / 2, -buoy_width / 2, -buoy_width / 2])
+        buoy_y = np.array([-buoy_height / 2, -buoy_height / 2, buoy_height / 2, buoy_height / 2, -buoy_height / 2]) + delta_y
+        buoy_initial =  np.vstack((buoy_x, buoy_y))  
+
+        cone_x = np.linspace(-cone_radius_bottom, cone_radius_bottom, 2)
+        cone_y_top = np.full_like(cone_x, -buoy_height / 2) +delta_y # Top of the cone
+        cone_y_bottom = cone_y_top - cone_height +delta_y # Bottom of the cone
+        cone_top = np.vstack((cone_x, cone_y_top))
+        cone_bottom = np.vstack((cone_x * (cone_radius_top / cone_radius_bottom), cone_y_bottom))
+        
+        cone_left_side = np.array([[cone_x[0], cone_y_top[0]], [cone_x[0] * (cone_radius_top / cone_radius_bottom), cone_y_bottom[0]]])
+        cone_right_side = np.array([[cone_x[-1], cone_y_top[-1]], [cone_x[-1] * (cone_radius_top / cone_radius_bottom), cone_y_bottom[-1]]])
+        
+        len_pen = 0.5
+        def torque_to_arc(pen_torque_norm):
+            return (0, 90 * pen_torque_norm) if pen_torque_norm >= 0 else (90 * pen_torque_norm, 0)
+        def plot_torque(torque, label, radius, color):
+            th1, th2 = torque_to_arc(torque)
+            arc = patches.Arc((0, 0), radius, radius, angle=90, theta1=th1, theta2=th2, color=color, linewidth=2, alpha = 0.5, label =label)
+            ax.add_patch(arc)
+
+        def animate(frame):
+            plt.cla()  # Clear the current axes
+            ax.plot(spatial_x, wave_elevations[:, frame], color='b')
+            # Get the predefined angles for the current frame
+            angle_pen = pendulum_angles[frame]
+            angle_buoy = buoy_angles[frame]
+            torque_pen = pendulum_torque_norm[frame].item()
+            torque_spring = spring_torque_norm[frame].item()
+            torque_friction = friction_torque_rel[frame].item()
+            # torque_pen_inertia = pendulum_inerta_torque_norm[frame].item()
+
+            torque_pto = pto_torque_rel[frame].item()
+            power_pto = pto_elec_power_norm[frame].item()
+
+            # Calculate the x and y coordinates of the pendulum
+            x_pen = len_pen * np.sin(angle_pen)
+            y_pen = len_pen * np.cos(angle_pen)
+
+            
+            # pendulum
+            plt.plot([0, x_pen], [0, y_pen], 'r--')  # Dashed red line
+            plt.plot(x_pen, y_pen, 'ro', markersize = 12)  # 'ro' means red color, circle marker
+
+            # Rotate the rectangle using the predefined angle
+            rotation_matrix = np.array([[np.cos(angle_buoy), -np.sin(angle_buoy)],
+                                        [np.sin(angle_buoy), np.cos(angle_buoy)]])
+            buoy_rotated = rotation_matrix @ buoy_initial
+            plt.plot(buoy_rotated[0, :], buoy_rotated[1, :], color='green')  # Green rectangle
+            
+
+            # Rotate the truncated cone
+            cone_rotated_top = rotation_matrix @ cone_top
+            cone_rotated_bottom = rotation_matrix @ cone_bottom
+            left_side_rotated = rotation_matrix @ cone_left_side.T
+            right_side_rotated = rotation_matrix @ cone_right_side.T
+            
+            # Plot the truncated cone
+            plt.plot(cone_rotated_top[0, :], cone_rotated_top[1, :], color='green')  # Top of the cone
+            plt.plot(cone_rotated_bottom[0, :], cone_rotated_bottom[1, :], color='green')  # Bottom of the cone
+            plt.plot(left_side_rotated[0, :], left_side_rotated[1, :], color='green')  # Left side of the cone
+            plt.plot(right_side_rotated[0, :], right_side_rotated[1, :], color='green')  # Right side of the cone
+
+            #power bar
+            if power_pto < 0:
+                plt.plot([1.1, 1.1],[0, 0-power_pto],  color='green', linewidth=10, alpha = 0.5)
+            else:
+                plt.plot([1.1, 1.1],[0, 0-power_pto],  color='red', linewidth=10, alpha = 0.5)
+            plt.text(1.2, 0, f'{-1*power_pto*pow_norm_factor:.1f}W')
+            
+            #torques
+            plot_torque(torque_pen, label='pen. gravit.',radius= 0.5, color='red')
+            plot_torque(torque_spring, label='Spring',radius= 0.6, color='blue')
+            plot_torque(torque_pto, label='PTO',radius= 0.4, color='orange')
+            plot_torque(torque_friction, label='Friction',radius= 0.3, color='black')
+    
+
+            # Set the limits and aspect ratio
+            ax.set_xlim(xlim)
+            ax.set_ylim(ylim)
+            ax.set_aspect('equal', adjustable='box')  
+            ax.grid(True)  
+            ax.legend(loc = 'upper left')
+            ax.set_title(f'Time = {time[frame]:.2f}')  
+        return FuncAnimation(fig, animate, frames=frames, interval=int(1000*(time[1]-time[0])))
+
 class NonlinearInvertedPendulumPTO(InvertedPendulumPTO):
     """A nonlinear inverted pendulum power take-off (PTO) object to be used 
     in conjunction with a :py:class:`PioneerBuoy` object.
     """
     def __init__(self, f1: int, nfreq: int, ndof: int, **kwargs):
-        super().__init__(f1, nfreq, ndof, **kwargs)
+        super().__init__(f1, nfreq, ndof, name = 'NonLin', **kwargs)
         self.f_add = {
             'Generator': self.torque_from_PTO,
             'Friction NL': self.torque_from_friction,
@@ -666,7 +879,7 @@ class LinearizedInvertedPendulumPTO(InvertedPendulumPTO):
     in conjunction with a :py:class:`PioneerBuoy` object.
     """
     def __init__(self, f1: int, nfreq: int, ndof: int, **kwargs):
-        super().__init__(f1, nfreq, ndof, **kwargs)
+        super().__init__(f1, nfreq, ndof, name = 'Linearized', **kwargs)
         self.f_add = {
             'Generator': self.torque_from_PTO,
             'Friction': self.torque_from_friction,

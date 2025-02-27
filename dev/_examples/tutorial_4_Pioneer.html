@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tutorial 4 - Pioneer &mdash; WecOptTool 3.0.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=a0fb6060" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -142,15 +142,15 @@ back to shore.</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capytaine</span> <span class="k">as</span> <span class="nn">cpy</span>
-<span class="kn">from</span> <span class="nn">capytaine.io.meshio</span> <span class="kn">import</span> <span class="n">load_from_meshio</span>
-<span class="kn">import</span> <span class="nn">autograd.numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">block_diag</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">comb</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">capytaine</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">capytaine.io.meshio</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_from_meshio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">autograd.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="kn">import</span> <span class="n">block_diag</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">comb</span>
 
-<span class="kn">import</span> <span class="nn">wecopttool</span> <span class="k">as</span> <span class="nn">wot</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">wecopttool</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">wot</span>
 
 <span class="c1">## set colorblind-friendly colormap for plots</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;tableau-colorblind10&#39;</span><span class="p">)</span>
@@ -218,7 +218,7 @@ back to shore.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x7f1929e974d0&gt;
+&lt;matplotlib.legend.Legend at 0x7f3775256c90&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -371,7 +371,7 @@ WARNING:capytaine.bodies.bodies:The rotation dof Pitch has been initialized arou
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[00:00:39] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> The rotation dof Pitch has been initialized around the origin of the domain <span style="font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span><span style="font-weight: bold">)</span>.
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[17:11:48] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> The rotation dof Pitch has been initialized around the origin of the domain <span style="font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span><span style="font-weight: bold">)</span>.
 </pre></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -414,7 +414,7 @@ WARNING:wecopttool.core:center_of_mass already defined as [0.    0.    0.298].
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[00:00:40] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> center_of_mass already defined as <span style="font-weight: bold">[</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>.    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>.    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.298</span><span style="font-weight: bold">]</span>.
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[17:11:49] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> center_of_mass already defined as <span style="font-weight: bold">[</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>.    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>.    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.298</span><span style="font-weight: bold">]</span>.
 </pre></div>
 </div>
 <div class="nboutput docutils container">
@@ -471,7 +471,7 @@ This warning appears when the largest panel of this mesh has radius &gt; wavelen
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "b4235af9ba0342ad865e8d9fd45eae47"}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "b97e89e09bd843a88e05b260ffba98b7"}</script></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
@@ -491,7 +491,7 @@ WARNING:wecopttool.core:center_of_mass already defined as [0.    0.    0.298].
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[00:00:53] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> center_of_mass already defined as <span style="font-weight: bold">[</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>.    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>.    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.298</span><span style="font-weight: bold">]</span>.
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[17:12:02] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> center_of_mass already defined as <span style="font-weight: bold">[</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>.    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>.    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.298</span><span style="font-weight: bold">]</span>.
 </pre></div>
 </div>
 <div class="nboutput docutils container">
@@ -548,7 +548,7 @@ This warning appears when the largest panel of this mesh has radius &gt; wavelen
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "fc17cb52152e4d8eb4493fb5e0ac2216"}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "dfee2f6940f44dd2acced00aea9cf79a"}</script></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
@@ -619,7 +619,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[00:03:33] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> Linear damping for DOF <span style="color: #008000; text-decoration-color: #008000">"Pitch"</span> has negative or close to zero terms. Shifting up damping terms
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[17:14:42] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> Linear damping for DOF <span style="color: #008000; text-decoration-color: #008000">"Pitch"</span> has negative or close to zero terms. Shifting up damping terms
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">           </span>         <span style="font-weight: bold">[</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span><span style="font-weight: bold">]</span> to a minimum of <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1e-06</span> N/<span style="font-weight: bold">(</span>m/s<span style="font-weight: bold">)</span>
 </pre></div>
 </div>
@@ -629,7 +629,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x7f19061efd90&gt;
+&lt;matplotlib.legend.Legend at 0x7f3772b3b990&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -667,7 +667,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x7f1905eaa410&gt;
+&lt;matplotlib.legend.Legend at 0x7f3772f63850&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -712,17 +712,17 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">x_rel</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">x_rel</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">):</span>
     <span class="n">pos_wec</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">vec_to_dofmat</span><span class="p">(</span><span class="n">x_wec</span><span class="p">)</span>
     <span class="n">pos_fw</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">vec_to_dofmat</span><span class="p">(</span><span class="n">x_opt</span><span class="p">[</span><span class="n">nstate_pto</span><span class="p">:])</span>
     <span class="k">return</span> <span class="n">pos_wec</span> <span class="o">-</span> <span class="n">pos_fw</span>
 
-<span class="k">def</span> <span class="nf">rel_position</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rel_position</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">pos_rel</span> <span class="o">=</span> <span class="n">x_rel</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">)</span>
     <span class="n">time_matrix</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">time_mat_nsubsteps</span><span class="p">(</span><span class="n">nsubsteps</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_matrix</span><span class="p">,</span> <span class="n">pos_rel</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">rel_velocity</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rel_velocity</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">pos_rel</span> <span class="o">=</span> <span class="n">x_rel</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">)</span>
     <span class="n">vel_rel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">wec</span><span class="o">.</span><span class="n">derivative_mat</span><span class="p">,</span> <span class="n">pos_rel</span><span class="p">)</span>
     <span class="n">time_matrix</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">time_mat_nsubsteps</span><span class="p">(</span><span class="n">nsubsteps</span><span class="p">)</span>
@@ -738,7 +738,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">force_from_generator</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">force_from_generator</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">f_fd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x_opt</span><span class="p">[:</span><span class="n">nstate_pto</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ndof</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
     <span class="n">time_matrix</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">time_mat_nsubsteps</span><span class="p">(</span><span class="n">nsubsteps</span><span class="p">)</span>
     <span class="n">torque</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_matrix</span><span class="p">,</span> <span class="n">f_fd</span><span class="p">)</span> <span class="o">*</span> <span class="n">flywheel_properties</span><span class="p">[</span><span class="s1">&#39;motor_gear_ratio&#39;</span><span class="p">]</span>
@@ -780,12 +780,12 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mechanical_power</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">mechanical_power</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">force_td</span> <span class="o">=</span> <span class="n">force_from_generator</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span>
     <span class="n">vel_td</span> <span class="o">=</span> <span class="n">rel_velocity</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">vel_td</span> <span class="o">*</span> <span class="n">force_td</span>
 
-<span class="k">def</span> <span class="nf">electrical_power</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">electrical_power</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">q1_td</span> <span class="o">=</span> <span class="n">rel_velocity</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">)</span>
     <span class="n">e1_td</span> <span class="o">=</span> <span class="n">force_from_generator</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">)</span>
     <span class="n">q1</span> <span class="o">=</span> <span class="n">wot</span><span class="o">.</span><span class="n">complex_to_real</span><span class="p">(</span><span class="n">wec</span><span class="o">.</span><span class="n">td_to_fd</span><span class="p">(</span><span class="n">q1_td</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
@@ -801,11 +801,11 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
     <span class="n">e2_td</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_mat</span><span class="p">,</span> <span class="n">e2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">q2_td</span> <span class="o">*</span> <span class="n">e2_td</span>
 
-<span class="k">def</span> <span class="nf">energy</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">energy</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">power_td</span> <span class="o">=</span> <span class="n">electrical_power</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">power_td</span><span class="p">)</span> <span class="o">*</span> <span class="n">wec</span><span class="o">.</span><span class="n">dt</span><span class="o">/</span><span class="n">nsubsteps</span>
 
-<span class="k">def</span> <span class="nf">average_electrical_power</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">average_electrical_power</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">e</span> <span class="o">=</span> <span class="n">energy</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">e</span> <span class="o">/</span> <span class="n">wec</span><span class="o">.</span><span class="n">tf</span>
 </pre></div>
@@ -827,7 +827,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">max_generator_torque</span> <span class="o">=</span> <span class="mf">25.8</span> <span class="c1"># N*m</span>
 <span class="n">nsubsteps_constraints</span> <span class="o">=</span> <span class="mi">5</span>
 
-<span class="k">def</span> <span class="nf">constraint_max_generator_torque</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="n">nsubsteps_constraints</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">constraint_max_generator_torque</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="n">nsubsteps_constraints</span><span class="p">):</span>
     <span class="n">torque</span> <span class="o">=</span> <span class="n">force_from_generator</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">max_generator_torque</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">torque</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
 </pre></div>
@@ -861,7 +861,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">force_from_friction</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">force_from_friction</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
     <span class="n">rel_vel</span> <span class="o">=</span> <span class="n">rel_velocity</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span> <span class="o">*</span> <span class="n">flywheel_properties</span><span class="p">[</span><span class="s1">&#39;motor_gear_ratio&#39;</span><span class="p">]</span>
     <span class="n">fric</span> <span class="o">=</span>  <span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="p">(</span>
         <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">rel_vel</span><span class="p">)</span><span class="o">*</span><span class="n">flywheel_properties</span><span class="p">[</span><span class="s1">&#39;coulomb_friction&#39;</span><span class="p">]</span> <span class="o">+</span>
@@ -869,14 +869,14 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
     <span class="p">)</span> <span class="o">*</span> <span class="n">flywheel_properties</span><span class="p">[</span><span class="s1">&#39;motor_gear_ratio&#39;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">fric</span>
 
-<span class="k">def</span> <span class="nf">linear_spring</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">linear_spring</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">spring_properties</span><span class="p">[</span><span class="s1">&#39;gear_ratio&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="o">-</span><span class="n">spring_properties</span><span class="p">[</span><span class="s1">&#39;stiffness&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">pos</span>
 
-<span class="k">def</span> <span class="nf">force_from_lin_spring</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">force_from_lin_spring</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">pos</span> <span class="o">=</span> <span class="n">rel_position</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span> <span class="o">*</span> <span class="n">spring_properties</span><span class="p">[</span><span class="s1">&#39;gear_ratio&#39;</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">linear_spring</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">nonlinear_spring</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nonlinear_spring</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
     <span class="c1"># 135 deg nonlinear spring</span>
     <span class="n">spring_eq_pos_td</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
     <span class="n">n</span> <span class="o">=</span> <span class="mi">12</span>
@@ -889,7 +889,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
         <span class="n">new_pos</span> <span class="o">=</span> <span class="n">new_pos</span> <span class="o">-</span> <span class="n">coeffs</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">spring_eq_pos_td</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">spring_properties</span><span class="p">[</span><span class="s1">&#39;gear_ratio&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="o">-</span><span class="n">spring_properties</span><span class="p">[</span><span class="s1">&#39;stiffness&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">new_pos</span>
 
-<span class="k">def</span> <span class="nf">force_from_nl_spring</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">force_from_nl_spring</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
     <span class="n">pos</span> <span class="o">=</span> <span class="n">rel_position</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span> <span class="o">*</span> <span class="n">spring_properties</span><span class="p">[</span><span class="s1">&#39;gear_ratio&#39;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">nonlinear_spring</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
 
@@ -910,7 +910,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x7f190480c810&gt;
+&lt;matplotlib.legend.Legend at 0x7f376ac73850&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -933,14 +933,14 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">flywheel_inertia</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">flywheel_inertia</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
     <span class="n">pos_fw</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">vec_to_dofmat</span><span class="p">(</span><span class="n">x_opt</span><span class="p">[</span><span class="n">nstate_pto</span><span class="p">:])</span>
     <span class="n">acc_fw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">wec</span><span class="o">.</span><span class="n">derivative2_mat</span><span class="p">,</span> <span class="n">pos_fw</span><span class="p">)</span>
     <span class="n">time_matrix</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">time_mat_nsubsteps</span><span class="p">(</span><span class="n">nsubsteps</span><span class="p">)</span>
     <span class="n">acc_fw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_matrix</span><span class="p">,</span> <span class="n">acc_fw</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">flywheel_properties</span><span class="p">[</span><span class="s1">&#39;MOI&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">acc_fw</span>
 
-<span class="k">def</span> <span class="nf">flywheel_residual_lin_spring</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">flywheel_residual_lin_spring</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
     <span class="n">resid</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">flywheel_inertia</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span> <span class="o">+</span>
     <span class="n">force_from_lin_spring</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span> <span class="o">+</span>
@@ -949,7 +949,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">resid</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">flywheel_residual_nl_spring</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">flywheel_residual_nl_spring</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
     <span class="n">resid</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">flywheel_inertia</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span> <span class="o">+</span>
     <span class="n">force_from_nl_spring</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span> <span class="o">+</span>
@@ -1051,16 +1051,16 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.2449012422888089
+            Current function value: -0.2448801857540362
             Iterations: 17
             Function evaluations: 18
             Gradient evaluations: 17
 Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.13166680668682243
-            Iterations: 21
-            Function evaluations: 22
-            Gradient evaluations: 21
-Optimal average power: -13.17 W
+            Current function value: -0.13147887510516149
+            Iterations: 25
+            Function evaluations: 26
+            Gradient evaluations: 25
+Optimal average power: -13.15 W
 </pre></div></div>
 </div>
 </section>
@@ -1204,13 +1204,13 @@ it will bring the effective stiffness of the flywheel out of resonance, causing 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="k">def</span> <span class="nf">fw_velocity</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fw_velocity</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">pos_fw</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">vec_to_dofmat</span><span class="p">(</span><span class="n">x_opt</span><span class="p">[</span><span class="n">nstate_pto</span><span class="p">:])</span>
     <span class="n">vel_fw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">wec</span><span class="o">.</span><span class="n">derivative_mat</span><span class="p">,</span> <span class="n">pos_fw</span><span class="p">)</span>
     <span class="n">time_matrix</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">time_mat_nsubsteps</span><span class="p">(</span><span class="n">nsubsteps</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_matrix</span><span class="p">,</span> <span class="n">vel_fw</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">fw_friction_power</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fw_friction_power</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">force_td</span> <span class="o">=</span> <span class="n">force_from_friction</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span>
     <span class="n">vel_td</span> <span class="o">=</span> <span class="n">fw_velocity</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">waves</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">vel_td</span> <span class="o">*</span> <span class="n">force_td</span>
@@ -1247,11 +1247,25 @@ it will bring the effective stiffness of the flywheel out of resonance, causing 
 (&lt;Figure size 800x400 with 1 Axes&gt;, &lt;Axes: &gt;)
 </pre></div></div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[17:14:47] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> Ignoring fixed x limits to fulfill fixed data aspect with adjustable data limits.
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">           </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> Ignoring fixed y limits to fulfill fixed data aspect with adjustable data limits.
+</pre></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/_examples_tutorial_4_Pioneer_52_1.png" src="../_images/_examples_tutorial_4_Pioneer_52_1.png" />
+<img alt="../_images/_examples_tutorial_4_Pioneer_52_3.png" src="../_images/_examples_tutorial_4_Pioneer_52_3.png" />
 </div>
 </div>
 </section>
@@ -1307,7 +1321,7 @@ it will bring the effective stiffness of the flywheel out of resonance, causing 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
 
 <span class="n">obj_fun</span> <span class="o">=</span> <span class="n">average_electrical_power</span>
@@ -1341,21 +1355,20 @@ it will bring the effective stiffness of the flywheel out of resonance, causing 
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
 INFO:wecopttool.core:Solving pseudo-spectral control problem for realization number 0.
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.75e-02, 3.24e+00, 1.26e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.74e-02, 3.08e+00, 1.13e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.74e-02, 3.04e+00, 1.04e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.73e-02, 2.84e+00, 6.22e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.61e+00, -5.22e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.68e-02, 4.34e+00, -6.99e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.68e-02, 4.36e+00, -7.01e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.68e-02, 4.39e+00, -7.05e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 4.48e+00, -7.16e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 4.52e+00, -7.17e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 4.52e+00, -7.18e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 4.52e+00, -7.18e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 4.54e+00, -7.19e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 4.54e+00, -7.19e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 4.54e+00, -7.19e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.35e-02, 3.00e+00, 6.96e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.34e-02, 2.92e+00, 6.09e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.33e-02, 2.96e+00, 5.46e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.33e-02, 3.16e+00, 2.59e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.31e-02, 4.05e+00, -5.55e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.30e-02, 4.63e+00, -7.02e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.30e-02, 4.64e+00, -7.03e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.31e-02, 4.66e+00, -7.07e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.31e-02, 4.76e+00, -7.16e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.31e-02, 4.81e+00, -7.17e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.31e-02, 4.82e+00, -7.17e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.31e-02, 4.82e+00, -7.18e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.31e-02, 4.84e+00, -7.19e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.31e-02, 4.84e+00, -7.19e-02]
 INFO:wecopttool.core:Optimization terminated successfully    (Exit mode 0)
 INFO:wecopttool.core:Solving pseudo-spectral control problem for realization number 1.
 </pre></div></div>
@@ -1366,10 +1379,10 @@ INFO:wecopttool.core:Solving pseudo-spectral control problem for realization num
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.07188857400120614
-            Iterations: 15
-            Function evaluations: 16
-            Gradient evaluations: 15
+            Current function value: -0.07185744447155394
+            Iterations: 14
+            Function evaluations: 15
+            Gradient evaluations: 14
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -1377,21 +1390,21 @@ Optimization terminated successfully    (Exit mode 0)
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.72e-02, 2.82e+00, 1.09e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.71e-02, 2.68e+00, 9.79e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.71e-02, 2.64e+00, 8.93e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.71e-02, 2.47e+00, 5.06e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.38e+00, -5.48e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 3.98e+00, -7.00e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 3.99e+00, -7.02e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 4.02e+00, -7.06e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 4.10e+00, -7.16e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 4.13e+00, -7.17e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 4.13e+00, -7.17e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 4.13e+00, -7.18e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 4.15e+00, -7.19e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 4.15e+00, -7.19e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.69e-02, 4.15e+00, -7.19e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.54e-02, 3.17e+00, 6.62e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.54e-02, 3.05e+00, 5.77e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.54e-02, 3.09e+00, 5.15e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.53e-02, 3.31e+00, 2.35e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.52e-02, 4.28e+00, -5.61e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.52e-02, 4.91e+00, -7.03e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.52e-02, 4.92e+00, -7.04e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.52e-02, 4.94e+00, -7.08e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.52e-02, 5.05e+00, -7.17e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.52e-02, 5.11e+00, -7.18e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.52e-02, 5.11e+00, -7.18e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.52e-02, 5.12e+00, -7.19e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.52e-02, 5.14e+00, -7.19e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.52e-02, 5.14e+00, -7.19e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.52e-02, 5.14e+00, -7.19e-02]
 INFO:wecopttool.core:Optimization terminated successfully    (Exit mode 0)
 INFO:wecopttool.core:Solving pseudo-spectral control problem for realization number 0.
 </pre></div></div>
@@ -1402,7 +1415,7 @@ INFO:wecopttool.core:Solving pseudo-spectral control problem for realization num
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.07186125876862925
+            Current function value: -0.07194448418762062
             Iterations: 15
             Function evaluations: 16
             Gradient evaluations: 15
@@ -1413,28 +1426,21 @@ Optimization terminated successfully    (Exit mode 0)
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.68e-02, 4.18e+00, -7.06e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.67e-02, 4.04e+00, -7.01e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.67e-02, 4.03e+00, -7.02e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.67e-02, 4.04e+00, -7.05e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.66e-02, 4.08e+00, -7.21e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.19e+00, -7.60e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.62e-02, 4.11e+00, -7.49e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.60e-02, 4.10e+00, -7.54e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.08e+00, -7.54e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.08e+00, -7.54e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.07e+00, -7.55e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.04e+00, -7.57e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.00e+00, -7.58e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.00e+00, -7.58e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.00e+00, -7.58e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.00e+00, -7.58e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.00e+00, -7.58e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.00e+00, -7.58e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.00e+00, -7.58e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.00e+00, -7.58e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.00e+00, -7.58e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.00e+00, -7.58e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.31e-02, 4.77e+00, -7.22e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.31e-02, 4.77e+00, -7.22e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.31e-02, 4.77e+00, -7.22e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.31e-02, 4.78e+00, -7.23e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.30e-02, 4.81e+00, -7.24e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.30e-02, 4.81e+00, -7.24e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.30e-02, 4.81e+00, -7.24e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.30e-02, 4.81e+00, -7.24e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.30e-02, 4.81e+00, -7.24e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.30e-02, 4.81e+00, -7.24e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.30e-02, 4.81e+00, -7.24e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.30e-02, 4.81e+00, -7.24e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.30e-02, 4.81e+00, -7.24e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.30e-02, 4.81e+00, -7.24e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.30e-02, 4.81e+00, -7.24e-02]
 INFO:wecopttool.core:Optimization terminated successfully    (Exit mode 0)
 INFO:wecopttool.core:Solving pseudo-spectral control problem for realization number 1.
 </pre></div></div>
@@ -1445,10 +1451,10 @@ INFO:wecopttool.core:Solving pseudo-spectral control problem for realization num
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.07583349358389735
-            Iterations: 22
-            Function evaluations: 24
-            Gradient evaluations: 22
+            Current function value: -0.07235659014817777
+            Iterations: 15
+            Function evaluations: 16
+            Gradient evaluations: 15
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -1456,61 +1462,34 @@ Optimization terminated successfully    (Exit mode 0)
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.98e-02, 7.66e+00, 5.39e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [7.07e-02, 7.63e+00, 4.84e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [7.04e-02, 7.18e+00, 3.64e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [7.29e-02, 6.25e+00, 3.50e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [7.38e-02, 5.28e+00, 3.48e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [7.22e-02, 5.67e+00, 2.66e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [7.30e-02, 5.21e+00, 2.94e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [7.31e-02, 5.24e+00, 2.72e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [7.31e-02, 5.21e+00, 2.63e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [7.28e-02, 5.22e+00, 2.20e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [7.15e-02, 5.23e+00, 7.39e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [7.04e-02, 5.05e+00, 7.63e-03]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [7.03e-02, 4.90e+00, 4.81e-03]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [7.01e-02, 4.82e+00, 1.03e-03]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.99e-02, 4.75e+00, -9.35e-04]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.97e-02, 4.70e+00, -2.86e-03]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.92e-02, 4.57e+00, -1.01e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.86e-02, 4.35e+00, -2.27e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.79e-02, 4.07e+00, -4.00e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.75e-02, 3.92e+00, -4.89e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.74e-02, 3.91e+00, -5.09e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.74e-02, 3.94e+00, -5.27e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.74e-02, 4.01e+00, -5.53e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.75e-02, 4.06e+00, -5.73e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.76e-02, 4.07e+00, -5.97e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.76e-02, 3.97e+00, -6.29e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.75e-02, 3.85e+00, -6.59e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.74e-02, 4.01e+00, -6.71e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.73e-02, 4.09e+00, -6.74e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.73e-02, 4.12e+00, -6.75e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.72e-02, 4.15e+00, -6.78e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.71e-02, 4.19e+00, -6.84e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 4.18e+00, -6.95e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 4.09e+00, -7.04e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 4.01e+00, -7.07e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.99e+00, -7.07e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.99e+00, -7.07e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.07e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.70e-02, 3.98e+00, -7.08e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.60e-02, 5.25e+00, -5.25e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.50e-02, 4.78e+00, -5.57e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.55e-02, 4.48e+00, -6.05e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.55e-02, 4.42e+00, -6.07e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.55e-02, 4.42e+00, -6.11e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.56e-02, 4.44e+00, -6.30e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.56e-02, 4.52e+00, -6.84e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.57e-02, 4.56e+00, -6.94e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.57e-02, 4.56e+00, -6.94e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.57e-02, 4.56e+00, -6.94e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.57e-02, 4.56e+00, -6.95e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.57e+00, -6.98e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.57e+00, -6.97e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.57e+00, -6.97e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.57e+00, -6.97e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.56e+00, -6.98e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.56e+00, -6.98e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.55e+00, -6.98e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.55e+00, -6.98e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.55e+00, -6.98e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.55e+00, -6.98e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.55e+00, -6.98e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.55e+00, -6.98e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.56e+00, -6.98e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.55e+00, -6.98e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.55e+00, -6.98e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.55e+00, -6.98e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.55e+00, -6.98e-02]
 INFO:wecopttool.core:Optimization terminated successfully    (Exit mode 0)
 </pre></div></div>
 </div>
@@ -1520,11 +1499,11 @@ INFO:wecopttool.core:Optimization terminated successfully    (Exit mode 0)
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.07078514562982707
-            Iterations: 55
-            Function evaluations: 60
-            Gradient evaluations: 55
-Optimal average power: -7.58 W
+            Current function value: -0.0697934940788013
+            Iterations: 28
+            Function evaluations: 29
+            Gradient evaluations: 28
+Optimal average power: -7.24 W
 </pre></div></div>
 </div>
 </section>
@@ -1747,7 +1726,7 @@ about 0.5% of the converged result which is deemed sufficient for this study.</p
 
 <span class="n">tper_realization</span> <span class="o">=</span> <span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;nfreq&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fend&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span> <span class="c1"># time per realization</span>
 
-<span class="k">def</span> <span class="nf">tick_function</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tick_function</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
     <span class="n">V</span> <span class="o">=</span> <span class="n">tper_realization</span><span class="o">*</span><span class="n">X</span><span class="o">/</span><span class="mi">60</span>
     <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">%.1f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">z</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">V</span><span class="p">]</span>
 
@@ -1775,7 +1754,7 @@ Text(0.5, 0, &#39;Total simulation time [min]&#39;)
 </div>
 </div>
 <script type="application/vnd.jupyter.widget-state+json">
-{"state": {"333b6bfd97884a3895f07c8e88b39d1b": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b4235af9ba0342ad865e8d9fd45eae47": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_333b6bfd97884a3895f07c8e88b39d1b", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "Solving BEM problems \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m0:00:12\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Solving BEM problems <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">0:00:12</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "4b2b335f5db1499388524f1aeb06f857": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "fc17cb52152e4d8eb4493fb5e0ac2216": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_4b2b335f5db1499388524f1aeb06f857", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "Solving BEM problems \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m0:02:38\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Solving BEM problems <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">0:02:38</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}}, "version_major": 2, "version_minor": 0}
+{"state": {"49e80e10a49f4fd883f7f17fa74d1f1b": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b97e89e09bd843a88e05b260ffba98b7": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_49e80e10a49f4fd883f7f17fa74d1f1b", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "Solving BEM problems \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m0:00:12\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Solving BEM problems <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">0:00:12</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "ae014531bef647c0a25218a6634bd7b9": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "dfee2f6940f44dd2acced00aea9cf79a": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_ae014531bef647c0a25218a6634bd7b9", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "Solving BEM problems \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m0:02:38\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Solving BEM problems <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">0:02:38</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}}, "version_major": 2, "version_minor": 0}
 </script></section>
 </section>
 </section>

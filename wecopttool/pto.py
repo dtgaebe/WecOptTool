@@ -469,7 +469,7 @@ class PTO:
             e1 = complex_to_real(td_to_fd(e1_td, False))
             vars_1 = np.hstack([q1, e1])
             vars_1_flat = dofmat_to_vec(vars_1)
-            vars_2_flat = np.dot(self.transfer_mat, vars_1_flat)
+            vars_2_flat = np.dot(self.transfer_mat, vars_1_flat)    #PTO dynamic is in there...
             vars_2 = vec_to_dofmat(vars_2_flat, 2*self.ndof)
             q2 = vars_2[:, :self.ndof]
             e2 = vars_2[:, self.ndof:]
@@ -823,6 +823,63 @@ class PTO:
         return results_fd, results_td
 
 
+class PTO_abcd(PTO):
+    """A power take-off (PTO) object defined with transmission instead of impedance."""
+    def __init__(self,
+                 ndof: int,
+                 kinematics: Union[TStateFunction, np.ndarray],
+                 controller: Optional[TStateFunction] = None,
+                 transmission: Optional[np.ndarray] = None,  # Changed from impedance to transmission
+                 loss: Optional[TLOSS] = None,
+                 names: Optional[list[str]] = None) -> None:
+        """Create a PTO_abcd object.
+
+        The :py:class:`wecopttool.pto.PTO_abcd` class describes the
+        kinematics, control logic, transmission and/or non-linear power
+        loss of a power take-off system.
+        """
+        self._ndof = ndof
+        # names
+        if names is None:
+            names = [f'PTO_{i}' for i in range(ndof)]
+        elif ndof == 1 and isinstance(names, str):
+            names = [names]
+        self._names = names
+        # kinematics
+        if callable(kinematics):
+            def kinematics_fun(wec, x_wec, x_opt, waves, nsubsteps=1):
+                pos_wec = wec.vec_to_dofmat(x_wec)
+                tmat = self._tmat(wec, nsubsteps)
+                pos_wec_td = np.dot(tmat, pos_wec)
+                return kinematics(pos_wec_td)
+        else:
+            def kinematics_fun(wec, x_wec, x_opt, waves, nsubsteps=1):
+                n = wec.nt*nsubsteps
+                return np.repeat(kinematics[:, :, np.newaxis], n, axis=-1)
+        self._kinematics = kinematics_fun
+        # controller
+        if controller is None:
+            controller = controller_unstructured
+
+        def force(wec, x_wec, x_opt, waves, nsubsteps=1):
+            return controller(self, wec, x_wec, x_opt, waves, nsubsteps)
+
+        self._force = force
+
+        # power
+        if transmission is not None:
+            check_1 = transmission.shape[0] == transmission.shape[1] == 2*self.ndof
+            check_2 = len(transmission.shape) == 3
+            if not (check_1 and check_2):
+                raise TypeError(
+                    "Transmission should have size [2*ndof, 2*ndof, nfreq]"
+                )
+            # self._transfer_mat = transmission
+            self._transfer_mat = _make_mimo_transfer_mat(transmission, ndof)
+        else:
+            self._transfer_mat = None
+        self._impedance = 1 #should never be used in actual calcs, but is argument in if statement for post_porcessing
+        self._loss = loss
 # power conversion chain
 def _make_abcd(impedance: ndarray, ndof: int) -> ndarray:
     """Transform the impedance matrix into ABCD form from a MIMO

@@ -10,6 +10,7 @@ __all__ = [
     "plot_bode_impedance",
     "calculate_power_flows",
     "plot_power_flow",
+    "colors",
 ]
 
 
@@ -36,7 +37,15 @@ from matplotlib.sankey import Sankey
 _log = logging.getLogger(__name__)
 
 
-
+@property
+def colors(self):
+    clrs = {'hydro':        (0.267004, 0.004874, 0.329415, 1.0), #viridis(0.0)
+        'hydro_mech':   (0.229739, 0.322361, 0.545706, 1.0), #viridis(0.25)
+        'mech':         (0.127568, 0.566949, 0.550556, 1.0), #viridis(0.5)
+        'mech_elec':    (0.369214, 0.788888, 0.382914, 1.0), #viridis(0.75)
+        'elec':         (0.974417, 0.90359, 0.130215, 0.5), #viridis(0.99)
+        }
+    return clrs
 
 def plot_hydrodynamic_coefficients(bem_data,
                                    wave_dir: Optional[float] = 0.0
@@ -225,11 +234,13 @@ def calculate_power_flows(wec,
     P_elec = pto.average_power(wec, x_wec, x_opt, waves)
 
     #compute analytical power flows
-    Fex_FD = wec_fdom[0].force.sel(type=['Froude_Krylov', 'diffraction']).sum('type')
+    Fexc_FD_full = wec_fdom[0].force.sel(type=
+                        ['Froude_Krylov',
+                         'diffraction']).sum('type')
     Rad_res = np.real(intrinsic_impedance.squeeze())
     Vel_FD = wec_fdom[0].vel
 
-    P_max, P_e, P_r = [], [], []
+    P_max_abs, P_exc, P_rad = [], [], []
 
     #This solution requires radiation resistance matrix Rad_res to be invertible
     # TODO In the future we might want to add an entirely unconstrained solve 
@@ -239,10 +250,10 @@ def calculate_power_flows(wec,
         #use frequency vector from intrinsic impedance (no zero freq)
         #Eq. 6.69
         #Dofs are row vector, which is transposed in standard convention
-        Fe_FD_t = np.atleast_2d(Fex_FD.sel(omega = om))    
-        Fe_FD = np.transpose(Fe_FD_t)
+        Fexc_FD_t = np.atleast_2d(Fexc_FD_full.sel(omega = om))    
+        Fexc_FD = np.transpose(Fexc_FD_t)
         R_inv = np.linalg.inv(np.atleast_2d(Rad_res.sel(omega= om)))
-        P_max.append((1/8)*(Fe_FD_t@R_inv)@np.conj(Fe_FD)) 
+        P_max_abs.append((1/8)*(Fexc_FD_t@R_inv)@np.conj(Fexc_FD)) 
         #Eq.6.57
         U_FD_t = np.atleast_2d(Vel_FD.sel(omega = om))
         U_FD = np.transpose(U_FD_t)
@@ -250,27 +261,36 @@ def calculate_power_flows(wec,
         P_r.append((1/2)*(U_FD_t@R)@np.conj(U_FD))
         #Eq. 6.56 (replaced pinv(Fe)*U with U'*conj(Fe) 
         # as suggested in subsequent paragraph)
-        P_e.append((1/4)*(Fe_FD_t@np.conj(U_FD) + U_FD_t@np.conj(Fe_FD)))
+        P_exc.append((1/4)*(Fexc_FD_t@np.conj(U_FD) + U_FD_t@np.conj(Fexc_FD)))
 
     power_flows = {
-        'Optimal Excitation' : -2* np.sum(np.real(P_max)),#eq 6.68 
-        'Radiated': -1*np.sum(np.real(P_r)), 
-        'Actual Excitation': -1*np.sum(np.real(P_e)), 
-        'Electrical (solver)': P_elec, 
-        'Mechanical (solver)': P_mech, 
+        'Optimal Excitation' : 2* np.sum(np.real(P_max_abs)),#eq 6.68 
+        'Max Absorbed': 1* np.sum(np.real(P_max_abs)),
+        'Radiated': 1*np.sum(np.real(P_rad)), 
+        'Excitation': 1*np.sum(np.real(P_exc)), 
+        'Electrical': -1*P_elec, 
+        'Mechanical': -1*P_mech, 
                   }
 
     power_flows['Absorbed'] =  (
-        power_flows['Actual Excitation'] 
+        power_flows['Excitation'] 
         - power_flows['Radiated']
             )
-    power_flows['Unused Potential'] =  (
+    power_flows['Deficit Excitation'] =  (
         power_flows['Optimal Excitation'] 
-        - power_flows['Actual Excitation']
+        - power_flows['Excitation']
             )
+    power_flows['Deficit Absorbed'] =  (
+        power_flows['Max Absorbed'] 
+        - power_flows['Absorbed']
+            ) 
+    power_flows['Deficit Radiated'] =  (
+        power_flows['Deficit Excitation'] 
+        - power_flows['Deficit Absorbed']
+            )     
     power_flows['PTO Loss'] = (
-        power_flows['Mechanical (solver)'] 
-        -  power_flows['Electrical (solver)']
+        power_flows['Mechanical'] 
+        -  power_flows['Electrical']
             )
     return power_flows
 

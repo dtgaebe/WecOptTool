@@ -295,24 +295,48 @@ def calculate_power_flows(wec,
 
 
 def plot_power_flow(power_flows: dict[str, float], 
-                        plot_reference = True,
-                        axes_title = '', 
-                        axes = None,
-                        return_fig_and_axes = False
+                    plot_reference: bool = True,
+                    axes_title: str = '', 
+                    axes: Axes = None,
+                    return_fig_and_axes: bool = False
     )-> tuple(Figure, Axes):
-    """Plot power flow through a WEC as Sankey diagram.
+"""Plot power flow through a WEC as a Sankey diagram.
+   
+   If you are not considering a model with mechanical and
+   electrical components, you will need to customize this function.
 
     Parameters
     ----------
-    power_flows
-    #TODO: update key words...
-        Power flow dictionary produced by for example by
+    power_flows : dict[str, float]
+        A dictionary containing power flow values produced by, for example,
         :py:func:`wecopttool.utilities.calculate_power_flows`.
-        Required keys: 'Optimal Excitation', 'Radiated', 'Actual Excitation',
-                        'Electrical (solver)', 'Mechanical (solver)',
-                        'Absorbed', 'Unused Potential', 'PTO Loss'
-    tolerance
-        Tolerance value for sankey diagram.
+        Required keys include:
+            - 'Optimal Excitation'
+            - 'Deficit Excitation'
+            - 'Excitation'
+            - 'Deficit Radiated'
+            - 'Radiated'
+            - 'Absorbed'
+            - 'Electrical'
+            - 'Mechanical'
+            - 'PTO Loss'
+    
+    plot_reference : bool, optional
+        If True, the reference power will be plotted. Default is True.
+    
+    axes_title : str, optional
+        A string to display as the title over the Sankey diagram. Default is an empty string.
+    
+    axes : Axes, optional
+        A Matplotlib Axes object where the Sankey diagram will be drawn. If None, a new figure and axes will be created. Default is None.
+    
+    return_fig_and_axes : bool, optional
+        If True, the function will return the Figure and Axes objects. Default is False.
+
+    Returns
+    -------
+    tuple[Figure, Axes]
+        A tuple containing the Matplotlib Figure and Axes objects.
     """
 
     if axes is None:

@@ -37,8 +37,7 @@ from matplotlib.sankey import Sankey
 _log = logging.getLogger(__name__)
 
 
-@property
-def colors(self):
+def power_flow_colors():
     clrs = {'hydro':        (0.267004, 0.004874, 0.329415, 1.0), #viridis(0.0)
         'hydro_mech':   (0.229739, 0.322361, 0.545706, 1.0), #viridis(0.25)
         'mech':         (0.127568, 0.566949, 0.550556, 1.0), #viridis(0.5)
@@ -258,7 +257,7 @@ def calculate_power_flows(wec,
         U_FD_t = np.atleast_2d(Vel_FD.sel(omega = om))
         U_FD = np.transpose(U_FD_t)
         R = np.atleast_2d(Rad_res.sel(omega= om))
-        P_r.append((1/2)*(U_FD_t@R)@np.conj(U_FD))
+        P_rad.append((1/2)*(U_FD_t@R)@np.conj(U_FD))
         #Eq. 6.56 (replaced pinv(Fe)*U with U'*conj(Fe) 
         # as suggested in subsequent paragraph)
         P_exc.append((1/4)*(Fexc_FD_t@np.conj(U_FD) + U_FD_t@np.conj(Fexc_FD)))
@@ -296,13 +295,17 @@ def calculate_power_flows(wec,
 
 
 def plot_power_flow(power_flows: dict[str, float], 
-    tolerance: Optional[float] = None,
-)-> tuple(Figure, Axes):
+                        plot_reference = True,
+                        axes_title = '', 
+                        axes = None,
+                        return_fig_and_axes = False
+    )-> tuple(Figure, Axes):
     """Plot power flow through a WEC as Sankey diagram.
 
     Parameters
     ----------
     power_flows
+    #TODO: update key words...
         Power flow dictionary produced by for example by
         :py:func:`wecopttool.utilities.calculate_power_flows`.
         Required keys: 'Optimal Excitation', 'Radiated', 'Actual Excitation',
@@ -311,82 +314,158 @@ def plot_power_flow(power_flows: dict[str, float],
     tolerance
         Tolerance value for sankey diagram.
     """
-    if tolerance is None:
-        tolerance = -1e-03*power_flows['Optimal Excitation']
 
-    # fig = plt.figure(figsize = [8,4])
-    # ax = fig.add_subplot(1, 1, 1,)
-    fig, ax = plt.subplots(1, 1,
-        tight_layout=True, 
-        figsize=(8, 4), 
+    if axes is None:
+        fig, axes = plt.subplots(nrows = 1, ncols= 1,
+                tight_layout=True, 
+                figsize= [8, 4])
+    clrs = power_flow_colors()
+    len_trunk = 1.0
+    if plot_reference:
+        sankey = Sankey(ax=axes, 
+                        scale= 1/power_flows['Optimal Excitation'],
+                        offset= 0,
+                        format = '%.1f',
+                        shoulder = 0.02,
+                        tolerance=1e-03*power_flows['Optimal Excitation'],
+                        unit = 'W')
+        sankey.add(flows=[power_flows['Optimal Excitation'],
+                    -1*power_flows['Deficit Excitation'],
+                    -1*power_flows['Excitation']], 
+            labels = [' Optimal \n Excication ', 
+                    'Deficit \n Excitation', 
+                    'Excitation'], 
+            orientations=[0, 0,  0],#arrow directions,
+            pathlengths = [0.15,0.15,0.15],
+            trunklength = len_trunk,
+            edgecolor = 'None',
+            facecolor = clrs['hydro'],
+                alpha = 0.1,
+            label = 'Reference',
+                )
+        n_diagrams = 1
+        init_diag  = 0
+        if power_flows['Deficit Excitation'] > 0.1:
+            sankey.add(flows=[power_flows['Deficit Excitation'],
+                        -1*power_flows['Deficit Radiated'],
+                        -1*power_flows['Deficit Absorbed'],], 
+                labels = ['XX Deficit Exc', 
+                        'Deficit \n Radiated',
+                            'Deficit \n Absorbed', ], 
+                prior= (0),
+                connect=(1,0),
+                orientations=[0, 1,  0],#arrow directions,
+                pathlengths = [0.15,0.01,0.15],
+                trunklength = len_trunk,
+                edgecolor = 'None',
+                facecolor = clrs['hydro_mech'],
+                alpha = 0.3, #viridis(0.2)
+                label = 'Reference',
+                    )
+            n_diagrams = n_diagrams +1
+    else:
+        sankey = Sankey(ax=axes, 
+                        scale= 1/power_flows['Excitation'],
+                        offset= 0,
+                        format = '%.1f',
+                        shoulder = 0.02,
+                        tolerance=1e-03*power_flows['Excitation'],
+                        unit = 'W')
+        n_diagrams = 0
+        init_diag = None
+
+    sankey.add(flows=[power_flows['Excitation'],
+                        -1*(power_flows['Absorbed'] 
+                           + power_flows['Radiated'])], 
+                labels = ['Excitation', 
+                        'Excitaion'], 
+                prior = init_diag,
+                connect=(2,0),
+                orientations=[0,  -0],#arrow directions,
+                pathlengths = [.15,0.15],
+                trunklength = len_trunk,
+                edgecolor = 'None',
+                facecolor = clrs['hydro'] #viridis(0.9)
         )
-
-    # plt.viridis()
-    sankey = Sankey(ax=ax, 
-                    scale= -1/power_flows['Optimal Excitation'],
-                    offset= 0,
-                    format = '%.1f',
-                    shoulder = 0.02,
-                    tolerance = tolerance,
-                    unit = 'W'
-    )
-
-    sankey.add(flows=[-1*power_flows['Optimal Excitation'],
-                    power_flows['Unused Potential'],
-                    power_flows['Actual Excitation']], 
-            labels = ['Optimal Excitation', 
-                    'Unused Potential ', 
-                    'Excited'], 
-            orientations=[0, -1,  -0],#arrow directions,
-            pathlengths = [0.2,0.3,0.2],
-            trunklength = 1.0,
-            edgecolor = 'None',
-            facecolor = (0.253935, 0.265254, 0.529983, 1.0) #viridis(0.2)
-    )
-
     sankey.add(flows=[
-            -1*(power_flows['Absorbed'] + power_flows['Radiated']),
-            power_flows['Radiated'],
-            power_flows['Absorbed'],
-            ], 
-            labels = ['Excited', 
-                    'Radiated', 
-                    ''], 
-            prior= (0),
-            connect=(2,0),
-            orientations=[0, -1,  -0],#arrow directions,
-            pathlengths = [0.2,0.3,0.2],
-            trunklength = 1.0,
-            edgecolor = 'None', 
-            facecolor = (0.127568, 0.566949, 0.550556, 1.0) #viridis(0.5)
-    )
-
-    sankey.add(flows=[-1*(power_flows['Mechanical (solver)']),
-                    power_flows['PTO Loss'],
-                    power_flows['Electrical (solver)'],
-                    ], 
-            labels = ['Mechanical', 
-                    'PTO-Loss' , 
-                    'Electrical'], 
-            prior= (1),
-            connect=(2,0),
-            orientations=[0, -1,  -0],#arrow directions,
-            pathlengths = [.2,0.3,0.2],
-            trunklength = 1.0,
-            edgecolor = 'None',
-            facecolor = (0.741388, 0.873449, 0.149561, 1.0) #viridis(0.9)
-    )
+                (power_flows['Absorbed'] + power_flows['Radiated']),
+                -1*power_flows['Radiated'],
+                -1*power_flows['Absorbed']], 
+                labels = ['Excitation', 
+                        'Radiated', 
+                        'Absorbed'], 
+                # prior= (0),
+                prior= (n_diagrams),
+                connect=(1,0),
+                orientations=[0, -1,  -0],#arrow directions,
+                pathlengths = [0.15,0.2,0.15],
+                trunklength = len_trunk-0.2,
+                edgecolor = 'None', 
+                facecolor = clrs['hydro_mech'] #viridis(0.5)
+        )
+    sankey.add(flows=[power_flows['Absorbed'],
+                        -1*power_flows['Mechanical']], 
+                labels = ['Absorbed', 
+                        'Mechanical'], 
+                prior= (n_diagrams+1),
+                connect=(2,0),
+                orientations=[0,  -0],#arrow directions,
+                pathlengths = [.15,0.15],
+                trunklength = len_trunk,
+                edgecolor = 'None',
+                facecolor = clrs['mech'] #viridis(0.9)
+        )
+    sankey.add(flows=[(power_flows['Mechanical']),
+                        -1*power_flows['PTO Loss'],
+                        -1*power_flows['Electrical']], 
+                labels = ['Mechanical', 
+                        'PTO-Loss' , 
+                        'Electrical'], 
+                prior= (n_diagrams+2),
+                connect=(1,0),
+                orientations=[0, -1,  -0],#arrow directions,
+                pathlengths = [.15,0.2,0.15],
+                trunklength = len_trunk,
+                edgecolor = 'None',
+                facecolor = clrs['mech_elec'] #viridis(0.9)
+        )
+    sankey.add(flows=[(power_flows['Electrical']),
+                        -1*power_flows['Electrical']], 
+                labels = ['', 
+                        'Electrical'], 
+                prior= (n_diagrams+3),
+                connect=(2,0),
+                orientations=[0,  -0],#arrow directions,
+                pathlengths = [.15,0.15],
+                trunklength = len_trunk,
+                edgecolor = 'None',
+                facecolor = clrs['elec'] #viridis(0.9)
+        )
 
 
     diagrams = sankey.finish()
+
     for diagram in diagrams:
         for text in diagram.texts:
-            text.set_fontsize(10)
-    #remove text label from last entries
-    for diagram in diagrams[0:2]:
-            diagram.texts[2].set_text('')
+            text.set_fontsize(8)
 
-    plt.axis("off") 
-    # plt.show()
+    #Remvove labels that are double
+    len_diagrams = len(diagrams)
 
-    return fig, ax
+    diagrams[len_diagrams-4].texts[0].set_text('') #remove exciation from hydro
+    diagrams[len_diagrams-5].texts[-1].set_text('') #remove excitation from excitation
+    diagrams[len_diagrams-3].texts[0].set_text('') #remove absorbed from absorbed
+    diagrams[len_diagrams-2].texts[0].set_text('') #remove mech from mech-elec
+    diagrams[len_diagrams-2].texts[-1].set_text('') #remove electrical from mech-elec
+    diagrams[len_diagrams-1].texts[0].set_text('')  #remove electrical in from elec
+
+    if len_diagrams > 5:
+        axes.legend()   #add legend for the refernce arrows
+    if len_diagrams >6:
+      diagrams[1].texts[0].set_text('')  
+
+    axes.set_title(axes_title)
+    axes.axis("off")
+
+    if return_fig_and_axes:
+        return fig, axes, 

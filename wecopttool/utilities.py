@@ -30,8 +30,8 @@ from matplotlib.figure import Figure
 from matplotlib.axes import Axes
 
 from matplotlib.sankey import Sankey
-
-
+from wecopttool import WEC
+from wecopttool.pto import PTO
 
 # logger
 _log = logging.getLogger(__name__)
@@ -199,31 +199,48 @@ def plot_bode_impedance(impedance: DataArray,
     return fig, axes
 
 
-def calculate_power_flows(wec, 
-                          pto, 
-                          results, 
-                          waves, 
-                          intrinsic_impedance)-> dict[str, float]:
+def calculate_power_flows(
+    wec: WEC, 
+    pto: PTO, 
+    results: OptimizeResult, 
+    waves: Dataset, 
+    intrinsic_impedance: DataArray
+) -> dict[str, float]:
     """Calculate power flows into a :py:class:`wecopttool.WEC`
-        and through a :py:class:`wecopttool.pto.PTO` based on the results
-        of :py:meth:`wecopttool.WEC.solve` for a single wave realization.
+    and through a :py:class:`wecopttool.pto.PTO` based on the results
+    of :py:meth:`wecopttool.WEC.solve` for a single wave realization.
+
+    This function returns a dictionary containing the power flows, which can
+    be used as input for the :py:func:`plot_power_flow` function.
 
     Parameters
     ----------
-    wec
-        WEC object of :py:class:`wecopttool.WEC` 
-    pto
-        PTO object of :py:class:`wecopttool.pto.PTO`
-    results
+    wec : WEC
+        WEC object of :py:class:`wecopttool.WEC`.
+    
+    pto : PTO
+        PTO object of :py:class:`wecopttool.pto.PTO`.
+    
+    results : OptimizeResult
         Results produced by :py:func:`scipy.optimize.minimize` for a single wave
         realization.
-    waves
-        :py:class:`xarray.Dataset` with the structure and elements
+    
+    waves : Dataset
+        An :py:class:`xarray.Dataset` with the structure and elements
         shown by :py:mod:`wecopttool.waves`.
-    intrinsic_impedance: DataArray
+    
+    intrinsic_impedance : DataArray
         Complex intrinsic impedance matrix produced by 
         :py:func:`wecopttool.hydrodynamic_impedance`.
-        Dimensions: omega, radiating_dofs, influenced_dofs
+        Dimensions: omega, radiating_dofs, influenced_dofs.
+
+    Returns
+    -------
+    dict[str, float]
+        A dictionary containing the calculated power flows, with keys such as
+        'Optimal Excitation', 'Deficit Excitation', 'Excitation', 
+        'Deficit Radiated', 'Radiated', 'Absorbed', 
+        'Electrical', 'Mechanical', and 'PTO Loss'.
     """
     wec_fdom, _ = wec.post_process(wec, results, waves)
     x_wec, x_opt = wec.decompose_state(results[0].x)
@@ -300,7 +317,7 @@ def plot_power_flow(power_flows: dict[str, float],
                     axes: Axes = None,
                     return_fig_and_axes: bool = False
     )-> tuple(Figure, Axes):
-"""Plot power flow through a WEC as a Sankey diagram.
+    """Plot power flow through a WEC as a Sankey diagram.
    
    If you are not considering a model with mechanical and
    electrical components, you will need to customize this function.

@@ -255,6 +255,16 @@ def calculate_power_flows(
                          'diffraction']).sum('type')
     Rad_res = np.real(intrinsic_impedance.squeeze())
     Vel_FD = wec_fdom[0].vel
+    print('Im in the main of calculate power flows')
+    if pto.impedance is not None:
+        Rpto11 = np.real(pto.impedance[:pto.ndof,:pto.ndof,:])
+        pto_friction = np.abs(np.transpose(Rpto11))
+        print(f"I'm adding {pto_friction[0,0,0]} friction")
+    else:
+        pto_friction = np.zeros((wec.nfreq, pto.ndof, pto.ndof))
+        print(f"I'm not adding PTO friction")
+
+    
 
     P_max_abs, P_exc, P_rad = [], [], []
 
@@ -268,8 +278,12 @@ def calculate_power_flows(
         #Dofs are row vector, which is transposed in standard convention
         Fexc_FD_t = np.atleast_2d(Fexc_FD_full.sel(omega = om))    
         Fexc_FD = np.transpose(Fexc_FD_t)
-        R_inv = np.linalg.inv(np.atleast_2d(Rad_res.sel(omega= om)))
-        P_max_abs.append((1/8)*(Fexc_FD_t@R_inv)@np.conj(Fexc_FD)) 
+        # R_inv = np.linalg.inv(np.atleast_2d(Rad_res.sel(omega= om)))
+        # P_max_abs.append((1/8)*(Fexc_FD_t@R_inv)@np.conj(Fexc_FD)) 
+        
+        RandB_inv = np.linalg.inv(np.atleast_2d(Rad_res.sel(omega= om))+np.atleast_2d(pto_friction) )   
+        P_max_abs.append((1/8)*(Fexc_FD_t@RandB_inv)@np.conj(Fexc_FD)) 
+
         #Eq.6.57
         U_FD_t = np.atleast_2d(Vel_FD.sel(omega = om))
         U_FD = np.transpose(U_FD_t)

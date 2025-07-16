@@ -255,18 +255,19 @@ def calculate_power_flows(
                          'diffraction']).sum('type')
     Rad_res = np.real(intrinsic_impedance.squeeze())
     Vel_FD = wec_fdom[0].vel
-    print('Im in the main of calculate power flows')
     if pto.impedance is not None:
         Rpto11 = np.real(pto.impedance[:pto.ndof,:pto.ndof,:])
-        pto_friction = np.abs(np.transpose(Rpto11))
-        print(f"I'm adding {pto_friction[0,0,0]} friction")
+        pto_friction = np.squeeze(np.abs(np.transpose(Rpto11)))
+        Rpto_xr = (Rad_res/Rad_res - 1) + pto_friction
     else:
-        pto_friction = np.zeros((wec.nfreq, pto.ndof, pto.ndof))
-        print(f"I'm not adding PTO friction")
+        # pto_friction = np.zeros((wec.nfreq, pto.ndof, pto.ndof))
+        # Rad_res_and_fric = Rad_res
+        Rpto_xr = (Rad_res/Rad_res - 1) #xarray with zeros
 
     
 
-    P_max_abs, P_exc, P_rad = [], [], []
+    P_max_abs, P_max_use = [], []
+    P_exc, P_rad, Ppto_fric = [], [], []
 
     #This solution requires radiation resistance matrix Rad_res to be invertible
     # TODO In the future we might want to add an entirely unconstrained solve 
@@ -278,17 +279,19 @@ def calculate_power_flows(
         #Dofs are row vector, which is transposed in standard convention
         Fexc_FD_t = np.atleast_2d(Fexc_FD_full.sel(omega = om))    
         Fexc_FD = np.transpose(Fexc_FD_t)
-        # R_inv = np.linalg.inv(np.atleast_2d(Rad_res.sel(omega= om)))
-        # P_max_abs.append((1/8)*(Fexc_FD_t@R_inv)@np.conj(Fexc_FD)) 
+        R_inv = np.linalg.inv(np.atleast_2d(Rad_res.sel(omega= om)))
+        P_max_abs.append((1/8)*(Fexc_FD_t@R_inv)@np.conj(Fexc_FD)) 
         
-        RandB_inv = np.linalg.inv(np.atleast_2d(Rad_res.sel(omega= om))+np.atleast_2d(pto_friction) )   
-        P_max_abs.append((1/8)*(Fexc_FD_t@RandB_inv)@np.conj(Fexc_FD)) 
+        RandB_inv = np.linalg.inv(np.atleast_2d((Rad_res + Rpto_xr).sel(omega= om)))
+        P_max_use.append((1/8)*(Fexc_FD_t@RandB_inv)@np.conj(Fexc_FD)) 
 
         #Eq.6.57
         U_FD_t = np.atleast_2d(Vel_FD.sel(omega = om))
         U_FD = np.transpose(U_FD_t)
         R = np.atleast_2d(Rad_res.sel(omega= om))
         P_rad.append((1/2)*(U_FD_t@R)@np.conj(U_FD))
+        Rpto = np.atleast_2d(Rpto_xr.sel(omega= om))
+        Ppto_fric.append((1/2)*(U_FD_t@Rpto)@np.conj(U_FD))
         #Eq. 6.56 (replaced pinv(Fe)*U with U'*conj(Fe) 
         # as suggested in subsequent paragraph)
         P_exc.append((1/4)*(Fexc_FD_t@np.conj(U_FD) + U_FD_t@np.conj(Fexc_FD)))
@@ -296,10 +299,11 @@ def calculate_power_flows(
     power_flows = {
         'Optimal Excitation' : 2* np.sum(np.real(P_max_abs)),#eq 6.68 
         'Max Absorbed': 1* np.sum(np.real(P_max_abs)),
+        'Max Useful': 1* np.sum(np.real(P_max_use)),
         'Radiated': 1*np.sum(np.real(P_rad)), 
         'Excitation': 1*np.sum(np.real(P_exc)), 
         'Electrical': -1*P_elec, 
-        'Mechanical': -1*P_mech, 
+        'Mechanical': -1*P_mech - np.sum(np.real(Ppto_fric)), 
                   }
 
     power_flows['Absorbed'] =  (
@@ -317,8 +321,12 @@ def calculate_power_flows(
     power_flows['Deficit Radiated'] =  (
         power_flows['Deficit Excitation'] 
         - power_flows['Deficit Absorbed']
-            )     
-    power_flows['PTO Loss'] = (
+            )   
+    power_flows['PTO Loss Mechanical'] = (
+        power_flows['Absorbed'] 
+        -  power_flows['Mechanical']
+            )  
+    power_flows['PTO Loss Electrical'] = (
         power_flows['Mechanical'] 
         -  power_flows['Electrical']
             )
@@ -387,7 +395,7 @@ def plot_power_flow(power_flows: dict[str, float],
         sankey.add(flows=[power_flows['Optimal Excitation'],
                     -1*power_flows['Deficit Excitation'],
                     -1*power_flows['Excitation']], 
-            labels = [' Optimal \n Excication ', 
+            labels = [' Optimal \n Excitation ', 
                     'Deficit \n Excitation', 
                     'Excitation'], 
             orientations=[0, 0,  0],#arrow directions,
@@ -433,7 +441,7 @@ def plot_power_flow(power_flows: dict[str, float],
                         -1*(power_flows['Absorbed'] 
                            + power_flows['Radiated'])], 
                 labels = ['Excitation', 
-                        'Excitaion'], 
+                        'Excitation'], 
                 prior = init_diag,
                 connect=(2,0),
                 orientations=[0,  -0],#arrow directions,
@@ -459,25 +467,27 @@ def plot_power_flow(power_flows: dict[str, float],
                 facecolor = clrs['hydro_mech'] #viridis(0.5)
         )
     sankey.add(flows=[power_flows['Absorbed'],
+                        -1*power_flows['PTO Loss Mechanical'],                      
                         -1*power_flows['Mechanical']], 
                 labels = ['Absorbed', 
+                        'PTO-Loss Mechanical' ,                           
                         'Mechanical'], 
                 prior= (n_diagrams+1),
                 connect=(2,0),
-                orientations=[0,  -0],#arrow directions,
-                pathlengths = [.15,0.15],
+                orientations=[0, -1, -0],#arrow directions,
+                pathlengths = [.15,0.2,0.15],
                 trunklength = len_trunk,
                 edgecolor = 'None',
                 facecolor = clrs['mech'] #viridis(0.9)
         )
     sankey.add(flows=[(power_flows['Mechanical']),
-                        -1*power_flows['PTO Loss'],
+                        -1*power_flows['PTO Loss Electrical'],
                         -1*power_flows['Electrical']], 
                 labels = ['Mechanical', 
-                        'PTO-Loss' , 
+                        'PTO-Loss Electrical' , 
                         'Electrical'], 
                 prior= (n_diagrams+2),
-                connect=(1,0),
+                connect=(2,0),
                 orientations=[0, -1,  -0],#arrow directions,
                 pathlengths = [.15,0.2,0.15],
                 trunklength = len_trunk,

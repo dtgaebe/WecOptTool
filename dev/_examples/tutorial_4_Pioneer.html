@@ -6,21 +6,21 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tutorial 4 - Pioneer &mdash; WecOptTool 3.1.0 documentation</title>
+  <title>Tutorial 4 - Pioneer &mdash; WecOptTool 3.2.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=a0fb6060" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=dd1205ac"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/documentation_options.js?v=eb155f5e"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
       <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -138,14 +138,15 @@ back to shore.</p>
 <li><p><a class="reference internal" href="#2.-Regular-wave-results"><span class="std std-ref">Regular wave results</span></a></p></li>
 <li><p><a class="reference internal" href="#3.-Irregular-wave"><span class="std std-ref">Irregular wave</span></a></p></li>
 </ol>
-<p><p><img alt="Diagram of the Pioneer device" class="no-scaled-link" src="https://oceanobservatories.org/wp-content/uploads/2015/09/Central-Surface-Mooring-Array-01-1.png" style="width: 200px;" /></p>
+<p><p><img alt="Diagram of the Pioneer device" class="no-scaled-link" src="https://oceanobservatories.org/wp-content/uploads/2015/09/Central-Surface-Mooring-Array-01-1.png" width="200" /></p>
 </p><div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">capytaine</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cpy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">capytaine.io.meshio</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_from_meshio</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">autograd.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="kn">import</span> <span class="n">block_diag</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
@@ -221,7 +222,7 @@ back to shore.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x7f1761303e90&gt;
+&lt;matplotlib.legend.Legend at 0x7f01fc91d2b0&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -280,7 +281,7 @@ Info    : [ 90%] Union - Splitting solids
 <li><p><strong>Spring</strong>: The magnetic torsional spring provides positive stiffness to the flywheel. It has a linear displacement up to 45 degrees, at which point it “wraps around” and the stiffness begins decreasing. For simplicity, we will model the spring as strictly linear. The spring is connected to a gearbox which makes the position of the spring (and therefore, the generator shaft) different from the relative position of the flywheel and buoy.</p></li>
 </ul>
 <p>A rendering of the Pioneer WEC model is shown here with the buoy pitch in red and the flywheel pitch in green:</p>
-<p><p><img alt="Diagram of the Pioneer device" class="no-scaled-link" src="https://live.staticflickr.com/65535/53025745404_2e75c89894_k.jpg" style="width: 500px;" /></p>
+<p><p><img alt="Diagram of the Pioneer device" class="no-scaled-link" src="https://live.staticflickr.com/65535/53025745404_2e75c89894_k.jpg" width="500" /></p>
 </p><div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -323,7 +324,7 @@ Info    : [ 90%] Union - Splitting solids
 <section id="Pitch-resonator">
 <h4>Pitch resonator<a class="headerlink" href="#Pitch-resonator" title="Link to this heading"></a></h4>
 <p>This system uses a unique PTO system, where the generator velocity is dependent on the relative pitching rotation of the buoy and the flywheel. The system can be modeled as a coupled spring-mass-damper system, with the generator represented as <span class="math notranslate nohighlight">\(B_{PTO}\)</span>. The spring-mass-damper system and equivalent circuit model are shown below. Note that all of these values are rotational and are drawn here linearly for simplicity.</p>
-<p><p><img alt="Pioneer model as a spring-mass-damper system" class="no-scaled-link" src="https://live.staticflickr.com/65535/53025028262_1a4ba2d5ce_z.jpg" style="width: 500px;" /> <img alt="Pioneer model as a spring-mass-damper system" class="no-scaled-link" src="https://live.staticflickr.com/65535/53025140497_29c5b9d601_z.jpg" style="width: 180px;" /></p>
+<p><p><img alt="Pioneer model as a spring-mass-damper system" class="no-scaled-link" src="https://live.staticflickr.com/65535/53025028262_1a4ba2d5ce_z.jpg" width="500" /> <img alt="Pioneer model as a spring-mass-damper system" class="no-scaled-link" src="https://live.staticflickr.com/65535/53025140497_29c5b9d601_z.jpg" width="180" /></p>
 </p><p>This corresponds to the following dynamics equations:</p>
 <ol class="arabic simple">
 <li></li>
@@ -374,7 +375,7 @@ WARNING:capytaine.bodies.bodies:The rotation dof Pitch has been initialized arou
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[00:40:10] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> The rotation dof Pitch has been initialized around the origin of the domain <span style="font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span><span style="font-weight: bold">)</span>.
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[22:45:03] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> The rotation dof Pitch has been initialized around the origin of the domain <span style="font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span><span style="font-weight: bold">)</span>.
 </pre></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -415,7 +416,7 @@ WARNING:wecopttool.core:center_of_mass already defined as [0.    0.    0.298].
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[00:40:11] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> center_of_mass already defined as <span style="font-weight: bold">[</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>.    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>.    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.298</span><span style="font-weight: bold">]</span>.
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[22:45:04] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> center_of_mass already defined as <span style="font-weight: bold">[</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>.    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>.    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.298</span><span style="font-weight: bold">]</span>.
 </pre></div>
 </div>
 <div class="nboutput docutils container">
@@ -472,7 +473,7 @@ This warning appears when the largest panel of this mesh has radius &gt; wavelen
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "a892574dc3af48899b8a5dfe0f338559"}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "35a62d2da53c4fb481325f535d817776"}</script></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
@@ -485,20 +486,6 @@ This warning appears when the largest panel of this mesh has radius &gt; wavelen
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/capytaine/io/xarray.py:428: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
-  dataset = xr.merge([dataset, diffraction_cases])
-/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/capytaine/io/xarray.py:428: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
-  dataset = xr.merge([dataset, diffraction_cases])
-/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/capytaine/io/xarray.py:428: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
-  dataset = xr.merge([dataset, diffraction_cases])
-/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/capytaine/io/xarray.py:428: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
-  dataset = xr.merge([dataset, diffraction_cases])
-/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/capytaine/io/xarray.py:428: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
-  dataset = xr.merge([dataset, diffraction_cases])
-/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/capytaine/io/xarray.py:260: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
-  dataset = xr.merge([dataset, {body_property: bodies_properties}])
-/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/capytaine/io/xarray.py:522: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
-  dataset = xr.merge([dataset, hydrostatics_dataset(bodies)])
 WARNING:wecopttool.core:center_of_mass already defined as [0.    0.    0.298].
 </pre></div></div>
 </div>
@@ -506,7 +493,7 @@ WARNING:wecopttool.core:center_of_mass already defined as [0.    0.    0.298].
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[00:40:24] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> center_of_mass already defined as <span style="font-weight: bold">[</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>.    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>.    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.298</span><span style="font-weight: bold">]</span>.
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[22:45:17] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> center_of_mass already defined as <span style="font-weight: bold">[</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>.    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>.    <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.298</span><span style="font-weight: bold">]</span>.
 </pre></div>
 </div>
 <div class="nboutput docutils container">
@@ -563,7 +550,7 @@ This warning appears when the largest panel of this mesh has radius &gt; wavelen
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "27055059d5f84e32b4484a5c48b8c1a7"}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "bee87916e267422e91e05e60fe37d39b"}</script></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
@@ -571,34 +558,13 @@ This warning appears when the largest panel of this mesh has radius &gt; wavelen
 <div class="output_area rendered_html docutils container">
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Hydrostatic stiffness from Capytaine: -21740.251372010614 N-m/rad
 Hydrostatic stiffness from experiment: 37204 N-m/rad
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/capytaine/io/xarray.py:428: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
-  dataset = xr.merge([dataset, diffraction_cases])
-/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/capytaine/io/xarray.py:428: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
-  dataset = xr.merge([dataset, diffraction_cases])
-/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/capytaine/io/xarray.py:428: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
-  dataset = xr.merge([dataset, diffraction_cases])
-/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/capytaine/io/xarray.py:428: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
-  dataset = xr.merge([dataset, diffraction_cases])
-/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/capytaine/io/xarray.py:428: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
-  dataset = xr.merge([dataset, diffraction_cases])
-/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/capytaine/io/xarray.py:260: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
-  dataset = xr.merge([dataset, {body_property: bodies_properties}])
-/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/capytaine/io/xarray.py:522: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
-  dataset = xr.merge([dataset, hydrostatics_dataset(bodies)])
 </pre></div></div>
 </div>
 <p>Although the system has yet to be deployed as a WEC, the Coastal Pioneer Array itself has been collecting data from multiple locations. From the collected data, an empirical impedance model and excitation force spectrum has been developed. This empirical dataset can replace the BEM dataset in order to model the WEC dynamics. Here, we load in the data and convert it into two DataArrays for the intrinsic impedance and the excitation coefficients, respectively. We then interpolate from the
@@ -661,7 +627,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[00:43:06] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> Linear damping for DOF <span style="color: #008000; text-decoration-color: #008000">"Pitch"</span> has negative or close to zero terms. Shifting up damping terms
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[22:48:03] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> Linear damping for DOF <span style="color: #008000; text-decoration-color: #008000">"Pitch"</span> has negative or close to zero terms. Shifting up damping terms
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">           </span>         <span style="font-weight: bold">[</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span><span style="font-weight: bold">]</span> to a minimum of <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1e-06</span> N/<span style="font-weight: bold">(</span>m/s<span style="font-weight: bold">)</span>
 </pre></div>
 </div>
@@ -671,7 +637,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x7f175e867230&gt;
+&lt;matplotlib.legend.Legend at 0x7f01fc194d10&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -709,7 +675,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x7f175e864dd0&gt;
+&lt;matplotlib.legend.Legend at 0x7f01fc1cf590&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -762,13 +728,13 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 <span class="k">def</span><span class="w"> </span><span class="nf">rel_position</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">wave</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">pos_rel</span> <span class="o">=</span> <span class="n">x_rel</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">)</span>
     <span class="n">time_matrix</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">time_mat_nsubsteps</span><span class="p">(</span><span class="n">nsubsteps</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_matrix</span><span class="p">,</span> <span class="n">pos_rel</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_matrix</span><span class="p">,</span> <span class="n">pos_rel</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">rel_velocity</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">wave</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">pos_rel</span> <span class="o">=</span> <span class="n">x_rel</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">)</span>
-    <span class="n">vel_rel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">wec</span><span class="o">.</span><span class="n">derivative_mat</span><span class="p">,</span> <span class="n">pos_rel</span><span class="p">)</span>
+    <span class="n">vel_rel</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">wec</span><span class="o">.</span><span class="n">derivative_mat</span><span class="p">,</span> <span class="n">pos_rel</span><span class="p">)</span>
     <span class="n">time_matrix</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">time_mat_nsubsteps</span><span class="p">(</span><span class="n">nsubsteps</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_matrix</span><span class="p">,</span> <span class="n">vel_rel</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_matrix</span><span class="p">,</span> <span class="n">vel_rel</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -781,9 +747,9 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">force_from_generator</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">wave</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="n">f_fd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x_opt</span><span class="p">[:</span><span class="n">nstate_pto</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ndof</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+    <span class="n">f_fd</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x_opt</span><span class="p">[:</span><span class="n">nstate_pto</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ndof</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
     <span class="n">time_matrix</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">time_mat_nsubsteps</span><span class="p">(</span><span class="n">nsubsteps</span><span class="p">)</span>
-    <span class="n">torque</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_matrix</span><span class="p">,</span> <span class="n">f_fd</span><span class="p">)</span> <span class="o">*</span> <span class="n">flywheel_properties</span><span class="p">[</span><span class="s1">&#39;motor_gear_ratio&#39;</span><span class="p">]</span>
+    <span class="n">torque</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_matrix</span><span class="p">,</span> <span class="n">f_fd</span><span class="p">)</span> <span class="o">*</span> <span class="n">flywheel_properties</span><span class="p">[</span><span class="s1">&#39;motor_gear_ratio&#39;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">torque</span>
 </pre></div>
 </div>
@@ -837,20 +803,20 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
     <span class="n">e1_td</span> <span class="o">=</span> <span class="n">force_from_generator</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">wave</span><span class="p">)</span>
     <span class="n">q1</span> <span class="o">=</span> <span class="n">wot</span><span class="o">.</span><span class="n">complex_to_real</span><span class="p">(</span><span class="n">wec</span><span class="o">.</span><span class="n">td_to_fd</span><span class="p">(</span><span class="n">q1_td</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
     <span class="n">e1</span> <span class="o">=</span> <span class="n">wot</span><span class="o">.</span><span class="n">complex_to_real</span><span class="p">(</span><span class="n">wec</span><span class="o">.</span><span class="n">td_to_fd</span><span class="p">(</span><span class="n">e1_td</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
-    <span class="n">vars_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">q1</span><span class="p">,</span> <span class="n">e1</span><span class="p">])</span>
+    <span class="n">vars_1</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">q1</span><span class="p">,</span> <span class="n">e1</span><span class="p">])</span>
     <span class="n">vars_1_flat</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">dofmat_to_vec</span><span class="p">(</span><span class="n">vars_1</span><span class="p">)</span>
-    <span class="n">vars_2_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">pto</span><span class="o">.</span><span class="n">_transfer_mat</span><span class="p">,</span> <span class="n">vars_1_flat</span><span class="p">)</span>
+    <span class="n">vars_2_flat</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">pto</span><span class="o">.</span><span class="n">_transfer_mat</span><span class="p">,</span> <span class="n">vars_1_flat</span><span class="p">)</span>
     <span class="n">vars_2</span> <span class="o">=</span> <span class="n">wot</span><span class="o">.</span><span class="n">vec_to_dofmat</span><span class="p">(</span><span class="n">vars_2_flat</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">q2</span> <span class="o">=</span> <span class="n">vars_2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
     <span class="n">e2</span> <span class="o">=</span> <span class="n">vars_2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
     <span class="n">time_mat</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">time_mat_nsubsteps</span><span class="p">(</span><span class="n">nsubsteps</span><span class="p">)</span>
-    <span class="n">q2_td</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_mat</span><span class="p">,</span> <span class="n">q2</span><span class="p">)</span>
-    <span class="n">e2_td</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_mat</span><span class="p">,</span> <span class="n">e2</span><span class="p">)</span>
+    <span class="n">q2_td</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_mat</span><span class="p">,</span> <span class="n">q2</span><span class="p">)</span>
+    <span class="n">e2_td</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_mat</span><span class="p">,</span> <span class="n">e2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">q2_td</span> <span class="o">*</span> <span class="n">e2_td</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">energy</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">wave</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">power_td</span> <span class="o">=</span> <span class="n">electrical_power</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">wave</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">power_td</span><span class="p">)</span> <span class="o">*</span> <span class="n">wec</span><span class="o">.</span><span class="n">dt</span><span class="o">/</span><span class="n">nsubsteps</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">power_td</span><span class="p">)</span> <span class="o">*</span> <span class="n">wec</span><span class="o">.</span><span class="n">dt</span><span class="o">/</span><span class="n">nsubsteps</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">average_electrical_power</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">wave</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">e</span> <span class="o">=</span> <span class="n">energy</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">wave</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span>
@@ -876,7 +842,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 
 <span class="k">def</span><span class="w"> </span><span class="nf">constraint_max_generator_torque</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">wave</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="o">=</span><span class="n">nsubsteps_constraints</span><span class="p">):</span>
     <span class="n">torque</span> <span class="o">=</span> <span class="n">force_from_generator</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">wave</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">max_generator_torque</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">torque</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">max_generator_torque</span> <span class="o">-</span> <span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">torque</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -911,7 +877,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">force_from_friction</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">wave</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
     <span class="n">rel_vel</span> <span class="o">=</span> <span class="n">rel_velocity</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">wave</span><span class="p">,</span> <span class="n">nsubsteps</span><span class="p">)</span> <span class="o">*</span> <span class="n">flywheel_properties</span><span class="p">[</span><span class="s1">&#39;motor_gear_ratio&#39;</span><span class="p">]</span>
     <span class="n">fric</span> <span class="o">=</span>  <span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="p">(</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">rel_vel</span><span class="p">)</span><span class="o">*</span><span class="n">flywheel_properties</span><span class="p">[</span><span class="s1">&#39;coulomb_friction&#39;</span><span class="p">]</span> <span class="o">+</span>
+        <span class="n">jnp</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">rel_vel</span><span class="p">)</span><span class="o">*</span><span class="n">flywheel_properties</span><span class="p">[</span><span class="s1">&#39;coulomb_friction&#39;</span><span class="p">]</span> <span class="o">+</span>
         <span class="n">rel_vel</span><span class="o">*</span><span class="n">flywheel_properties</span><span class="p">[</span><span class="s1">&#39;viscous_friction&#39;</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">*</span> <span class="n">flywheel_properties</span><span class="p">[</span><span class="s1">&#39;motor_gear_ratio&#39;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">fric</span>
@@ -925,7 +891,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 
 <span class="k">def</span><span class="w"> </span><span class="nf">nonlinear_spring</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
     <span class="c1"># 135 deg nonlinear spring</span>
-    <span class="n">spring_eq_pos_td</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">spring_eq_pos_td</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">-</span> <span class="n">jnp</span><span class="o">.</span><span class="n">pi</span>
     <span class="n">n</span> <span class="o">=</span> <span class="mi">12</span>
     <span class="n">slope</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">))</span><span class="o">*</span><span class="n">comb</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
     <span class="n">scale</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">slope</span>
@@ -933,7 +899,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
     <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
         <span class="n">k</span> <span class="o">=</span> <span class="n">ind</span><span class="o">+</span><span class="mi">1</span>
         <span class="n">coeffs</span> <span class="o">=</span> <span class="n">comb</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
-        <span class="n">new_pos</span> <span class="o">=</span> <span class="n">new_pos</span> <span class="o">-</span> <span class="n">coeffs</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">spring_eq_pos_td</span><span class="p">)</span>
+        <span class="n">new_pos</span> <span class="o">=</span> <span class="n">new_pos</span> <span class="o">-</span> <span class="n">coeffs</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">spring_eq_pos_td</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">spring_properties</span><span class="p">[</span><span class="s1">&#39;gear_ratio&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="o">-</span><span class="n">spring_properties</span><span class="p">[</span><span class="s1">&#39;stiffness&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">new_pos</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">force_from_nl_spring</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">wave</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
@@ -957,7 +923,7 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x7f175e8ccfb0&gt;
+&lt;matplotlib.legend.Legend at 0x7f01fc2dd880&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -982,9 +948,9 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">flywheel_inertia</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">wave</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
     <span class="n">pos_fw</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">vec_to_dofmat</span><span class="p">(</span><span class="n">x_opt</span><span class="p">[</span><span class="n">nstate_pto</span><span class="p">:])</span>
-    <span class="n">acc_fw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">wec</span><span class="o">.</span><span class="n">derivative2_mat</span><span class="p">,</span> <span class="n">pos_fw</span><span class="p">)</span>
+    <span class="n">acc_fw</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">wec</span><span class="o">.</span><span class="n">derivative2_mat</span><span class="p">,</span> <span class="n">pos_fw</span><span class="p">)</span>
     <span class="n">time_matrix</span> <span class="o">=</span> <span class="n">wec</span><span class="o">.</span><span class="n">time_mat_nsubsteps</span><span class="p">(</span><span class="n">nsubsteps</span><span class="p">)</span>
-    <span class="n">acc_fw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_matrix</span><span class="p">,</span> <span class="n">acc_fw</span><span class="p">)</span>
+    <span class="n">acc_fw</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">time_matrix</span><span class="p">,</span> <span class="n">acc_fw</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">flywheel_properties</span><span class="p">[</span><span class="s1">&#39;MOI&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">acc_fw</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">flywheel_residual_lin_spring</span><span class="p">(</span><span class="n">wec</span><span class="p">,</span> <span class="n">x_wec</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">,</span> <span class="n">wave</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nsubsteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
@@ -1098,16 +1064,16 @@ WARNING:wecopttool.core:Linear damping for DOF &#34;Pitch&#34; has negative or c
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.24489426779638607
-            Iterations: 14
-            Function evaluations: 15
-            Gradient evaluations: 14
+            Current function value: -0.24489178979091844
+            Iterations: 11
+            Function evaluations: 12
+            Gradient evaluations: 11
 Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.13151572646226364
-            Iterations: 21
-            Function evaluations: 22
-            Gradient evaluations: 21
-Optimal average power: -13.15 W
+            Current function value: -0.13159763478759287
+            Iterations: 26
+            Function evaluations: 27
+            Gradient evaluations: 26
+Optimal average power: -13.16 W
 </pre></div></div>
 </div>
 </section>
@@ -1141,11 +1107,11 @@ Optimal average power: -13.15 W
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:964: FutureWarning: In a future version of xarray the default value for join will change from join=&#39;outer&#39; to join=&#39;exact&#39;. This change will result in the following ValueError: cannot be aligned with join=&#39;exact&#39; because index/labels/sizes are not equal along these coordinates (dimensions): &#39;omega&#39; (&#39;omega&#39;,) The recommendation is to set join explicitly for this case.
+/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:967: FutureWarning: In a future version of xarray the default value for join will change from join=&#39;outer&#39; to join=&#39;exact&#39;. This change will result in the following ValueError: cannot be aligned with join=&#39;exact&#39; because index/labels/sizes are not equal along these coordinates (dimensions): &#39;omega&#39; (&#39;omega&#39;,) The recommendation is to set join explicitly for this case.
   results_fd = xr.merge([fd_state, fd_forces, wave])
-/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:964: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
+/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:967: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
   results_fd = xr.merge([fd_state, fd_forces, wave])
-/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:964: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
+/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:967: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
   results_fd = xr.merge([fd_state, fd_forces, wave])
 </pre></div></div>
 </div>
@@ -1311,7 +1277,7 @@ it will bring the effective stiffness of the flywheel out of resonance, causing 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[00:43:12] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> Ignoring fixed x limits to fulfill fixed data aspect with adjustable data limits.
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[22:48:14] </span><span style="color: #808000; text-decoration-color: #808000">WARNING </span> Ignoring fixed x limits to fulfill fixed data aspect with adjustable data limits.
 </pre></div>
 </div>
 <div class="nboutput docutils container">
@@ -1387,7 +1353,7 @@ it will bring the effective stiffness of the flywheel out of resonance, causing 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 
 <span class="n">obj_fun</span> <span class="o">=</span> <span class="n">average_electrical_power</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">wec_lin</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span>
@@ -1420,24 +1386,20 @@ it will bring the effective stiffness of the flywheel out of resonance, causing 
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
 INFO:wecopttool.core:Solving pseudo-spectral control problem for realization number 0.
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.18e-02, 3.41e+00, 2.43e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.17e-02, 3.29e+00, 2.26e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.16e-02, 3.21e+00, 2.03e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.15e-02, 2.82e+00, 1.07e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.10e-02, 3.75e+00, -6.83e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.10e-02, 3.84e+00, -6.98e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.10e-02, 3.85e+00, -6.99e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.10e-02, 3.90e+00, -7.06e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.11e-02, 4.00e+00, -7.16e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.11e-02, 4.00e+00, -7.18e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.11e-02, 3.97e+00, -7.19e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.11e-02, 3.97e+00, -7.19e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.11e-02, 3.95e+00, -7.19e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.11e-02, 3.96e+00, -7.20e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.11e-02, 3.98e+00, -7.20e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.11e-02, 3.99e+00, -7.20e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.11e-02, 3.99e+00, -7.20e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.11e-02, 3.99e+00, -7.20e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.69e-02, 3.26e+00, 5.57e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.68e-02, 3.18e+00, 4.82e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.68e-02, 3.22e+00, 4.25e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.67e-02, 3.41e+00, 1.66e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.64e-02, 4.27e+00, -5.71e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 4.84e+00, -7.05e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 4.85e+00, -7.07e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 4.87e+00, -7.09e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 4.97e+00, -7.17e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 5.04e+00, -7.19e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 5.04e+00, -7.19e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 5.04e+00, -7.20e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 5.06e+00, -7.20e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 5.06e+00, -7.20e-02]
 INFO:wecopttool.core:Optimization terminated successfully    (Exit mode 0)
 INFO:wecopttool.core:Solving pseudo-spectral control problem for realization number 1.
 </pre></div></div>
@@ -1448,10 +1410,10 @@ INFO:wecopttool.core:Solving pseudo-spectral control problem for realization num
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.07201583423945063
-            Iterations: 18
-            Function evaluations: 19
-            Gradient evaluations: 18
+            Current function value: -0.07199174365249358
+            Iterations: 14
+            Function evaluations: 15
+            Gradient evaluations: 14
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -1459,22 +1421,20 @@ Optimization terminated successfully    (Exit mode 0)
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.62e-02, 3.43e+00, 2.58e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.60e-02, 3.32e+00, 2.11e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.60e-02, 3.35e+00, 1.67e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.60e-02, 3.51e+00, -3.15e-03]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.18e+00, -6.01e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.64e+00, -7.07e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.64e+00, -7.08e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.67e+00, -7.11e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.76e+00, -7.18e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.80e+00, -7.19e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.80e+00, -7.19e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.82e+00, -7.19e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.86e+00, -7.20e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.86e+00, -7.20e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.85e+00, -7.20e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.85e+00, -7.20e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.46e-02, 2.77e+00, 7.94e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.45e-02, 2.63e+00, 7.04e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.45e-02, 2.60e+00, 6.36e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 2.71e+00, 3.29e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.41e-02, 3.23e+00, -5.44e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.39e-02, 3.57e+00, -7.03e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.39e-02, 3.58e+00, -7.05e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.39e-02, 3.59e+00, -7.08e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.40e-02, 3.65e+00, -7.17e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.40e-02, 3.70e+00, -7.19e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.40e-02, 3.70e+00, -7.19e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.40e-02, 3.71e+00, -7.19e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.40e-02, 3.72e+00, -7.20e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.40e-02, 3.72e+00, -7.20e-02]
 INFO:wecopttool.core:Optimization terminated successfully    (Exit mode 0)
 INFO:wecopttool.core:Solving pseudo-spectral control problem for realization number 0.
 </pre></div></div>
@@ -1485,10 +1445,10 @@ INFO:wecopttool.core:Solving pseudo-spectral control problem for realization num
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.0720091365111144
-            Iterations: 16
-            Function evaluations: 17
-            Gradient evaluations: 16
+            Current function value: -0.07197437994132594
+            Iterations: 14
+            Function evaluations: 15
+            Gradient evaluations: 14
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -1496,30 +1456,30 @@ Optimization terminated successfully    (Exit mode 0)
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.09e-02, 3.88e+00, -7.06e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.08e-02, 3.87e+00, -7.03e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.08e-02, 3.88e+00, -7.03e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.08e-02, 3.90e+00, -7.05e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.07e-02, 4.00e+00, -7.14e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.04e-02, 4.34e+00, -7.30e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.04e-02, 4.27e+00, -7.26e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.04e-02, 4.30e+00, -7.26e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.03e-02, 4.38e+00, -7.27e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.03e-02, 4.41e+00, -7.27e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.03e-02, 4.42e+00, -7.27e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.03e-02, 4.45e+00, -7.27e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.03e-02, 4.48e+00, -7.28e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.03e-02, 4.47e+00, -7.28e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.03e-02, 4.46e+00, -7.28e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.03e-02, 4.46e+00, -7.28e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.03e-02, 4.45e+00, -7.28e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.03e-02, 4.45e+00, -7.28e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.03e-02, 4.45e+00, -7.28e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.03e-02, 4.45e+00, -7.28e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.03e-02, 4.45e+00, -7.28e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.03e-02, 4.46e+00, -7.28e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.03e-02, 4.46e+00, -7.28e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.03e-02, 4.46e+00, -7.28e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.61e-02, 4.66e+00, -7.00e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.61e-02, 4.46e+00, -6.85e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.61e-02, 4.43e+00, -6.84e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 4.44e+00, -6.87e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 4.49e+00, -7.00e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 4.67e+00, -7.51e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 4.66e+00, -7.55e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 4.70e+00, -7.70e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 4.71e+00, -7.76e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 4.70e+00, -7.75e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.62e-02, 4.69e+00, -7.77e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.61e-02, 4.66e+00, -7.86e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.61e-02, 4.62e+00, -7.90e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.60e-02, 4.60e+00, -7.92e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.60e-02, 4.61e+00, -7.92e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.60e-02, 4.61e+00, -7.92e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.60e-02, 4.61e+00, -7.92e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.60e-02, 4.61e+00, -7.92e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.60e-02, 4.61e+00, -7.92e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.60e-02, 4.60e+00, -7.92e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.60e-02, 4.60e+00, -7.92e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.60e-02, 4.60e+00, -7.92e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.60e-02, 4.60e+00, -7.92e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [5.60e-02, 4.60e+00, -7.92e-02]
 INFO:wecopttool.core:Optimization terminated successfully    (Exit mode 0)
 INFO:wecopttool.core:Solving pseudo-spectral control problem for realization number 1.
 </pre></div></div>
@@ -1530,7 +1490,7 @@ INFO:wecopttool.core:Solving pseudo-spectral control problem for realization num
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.07278712154636396
+            Current function value: -0.07923523017477975
             Iterations: 24
             Function evaluations: 25
             Gradient evaluations: 24
@@ -1541,37 +1501,52 @@ Optimization terminated successfully    (Exit mode 0)
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [9.29e-02, 5.93e+00, 8.82e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [7.86e-02, 6.15e+00, 9.43e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [7.75e-02, 6.06e+00, 8.76e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [7.60e-02, 5.95e+00, 8.29e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.91e-02, 5.38e+00, 6.19e-01]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.60e-02, 2.88e+00, 2.72e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.57e-02, 4.78e+00, -6.93e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.57e-02, 4.76e+00, -6.98e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 4.46e+00, -6.74e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.37e+00, -6.60e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.59e-02, 4.39e+00, -6.65e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.60e-02, 4.47e+00, -6.77e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.60e-02, 4.46e+00, -6.75e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.45e+00, -6.77e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.42e+00, -6.86e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.37e+00, -6.89e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.37e+00, -6.89e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.37e+00, -6.89e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.36e+00, -6.90e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.35e+00, -6.90e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.35e+00, -6.90e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.34e+00, -6.90e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.34e+00, -6.90e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.35e+00, -6.90e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.35e+00, -6.90e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.35e+00, -6.90e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.35e+00, -6.90e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.35e+00, -6.90e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.35e+00, -6.90e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.35e+00, -6.90e-02]
-INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.61e-02, 4.35e+00, -6.90e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.47e-02, 6.37e+00, 1.24e-01]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.58e-02, 6.01e+00, 1.39e-01]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.55e-02, 5.53e+00, 2.68e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.36e-02, 5.15e+00, 1.36e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.40e-02, 4.84e+00, 4.14e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.40e-02, 4.81e+00, 4.02e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.40e-02, 4.77e+00, 3.03e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.38e-02, 4.58e+00, -7.67e-03]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.35e-02, 4.15e+00, -4.29e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.35e-02, 4.12e+00, -4.26e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.35e-02, 4.09e+00, -4.38e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.35e-02, 3.99e+00, -4.92e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.37e-02, 3.51e+00, -6.27e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.37e-02, 3.31e+00, -6.37e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.37e-02, 3.28e+00, -6.37e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.37e-02, 3.26e+00, -6.37e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.38e-02, 3.24e+00, -6.39e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.38e-02, 3.25e+00, -6.41e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.39e-02, 3.26e+00, -6.45e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.39e-02, 3.26e+00, -6.47e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.39e-02, 3.29e+00, -6.49e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.39e-02, 3.32e+00, -6.49e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.39e-02, 3.35e+00, -6.50e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.39e-02, 3.40e+00, -6.53e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.39e-02, 3.47e+00, -6.59e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.40e-02, 3.54e+00, -6.71e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.41e-02, 3.54e+00, -6.88e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.43e-02, 3.70e+00, -7.00e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.77e+00, -7.02e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.77e+00, -7.02e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.76e+00, -7.03e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.75e+00, -7.03e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.75e+00, -7.03e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.76e+00, -7.03e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.43e-02, 3.78e+00, -7.04e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.80e+00, -7.04e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.80e+00, -7.04e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.81e+00, -7.04e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.81e+00, -7.04e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.81e+00, -7.04e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.81e+00, -7.04e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.81e+00, -7.04e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.81e+00, -7.04e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.81e+00, -7.04e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.81e+00, -7.04e-02]
+INFO:wecopttool.core:Scaled [max(x_wec), max(x_opt), obj_fun(x)]: [6.44e-02, 3.81e+00, -7.04e-02]
 INFO:wecopttool.core:Optimization terminated successfully    (Exit mode 0)
 </pre></div></div>
 </div>
@@ -1581,11 +1556,11 @@ INFO:wecopttool.core:Optimization terminated successfully    (Exit mode 0)
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimization terminated successfully    (Exit mode 0)
-            Current function value: -0.06897909013852595
-            Iterations: 31
-            Function evaluations: 34
-            Gradient evaluations: 31
-Optimal average power: -7.28 W
+            Current function value: -0.07038395108365283
+            Iterations: 46
+            Function evaluations: 47
+            Gradient evaluations: 46
+Optimal average power: -7.92 W
 </pre></div></div>
 </div>
 </section>
@@ -1618,17 +1593,17 @@ Optimal average power: -7.28 W
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:964: FutureWarning: In a future version of xarray the default value for join will change from join=&#39;outer&#39; to join=&#39;exact&#39;. This change will result in the following ValueError: cannot be aligned with join=&#39;exact&#39; because index/labels/sizes are not equal along these coordinates (dimensions): &#39;omega&#39; (&#39;omega&#39;,) The recommendation is to set join explicitly for this case.
+/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:967: FutureWarning: In a future version of xarray the default value for join will change from join=&#39;outer&#39; to join=&#39;exact&#39;. This change will result in the following ValueError: cannot be aligned with join=&#39;exact&#39; because index/labels/sizes are not equal along these coordinates (dimensions): &#39;omega&#39; (&#39;omega&#39;,) The recommendation is to set join explicitly for this case.
   results_fd = xr.merge([fd_state, fd_forces, wave])
-/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:964: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
+/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:967: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
   results_fd = xr.merge([fd_state, fd_forces, wave])
-/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:964: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
+/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:967: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
   results_fd = xr.merge([fd_state, fd_forces, wave])
-/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:964: FutureWarning: In a future version of xarray the default value for join will change from join=&#39;outer&#39; to join=&#39;exact&#39;. This change will result in the following ValueError: cannot be aligned with join=&#39;exact&#39; because index/labels/sizes are not equal along these coordinates (dimensions): &#39;omega&#39; (&#39;omega&#39;,) The recommendation is to set join explicitly for this case.
+/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:967: FutureWarning: In a future version of xarray the default value for join will change from join=&#39;outer&#39; to join=&#39;exact&#39;. This change will result in the following ValueError: cannot be aligned with join=&#39;exact&#39; because index/labels/sizes are not equal along these coordinates (dimensions): &#39;omega&#39; (&#39;omega&#39;,) The recommendation is to set join explicitly for this case.
   results_fd = xr.merge([fd_state, fd_forces, wave])
-/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:964: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
+/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:967: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
   results_fd = xr.merge([fd_state, fd_forces, wave])
-/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:964: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
+/home/runner/work/WecOptTool/WecOptTool/wecopttool/core.py:967: FutureWarning: In a future version of xarray the default value for compat will change from compat=&#39;no_conflicts&#39; to compat=&#39;override&#39;. This is likely to lead to different results when combining overlapping variables with the same name. To opt in to new defaults and get rid of these warnings now use `set_options(use_new_combine_kwarg_defaults=True) or set compat explicitly.
   results_fd = xr.merge([fd_state, fd_forces, wave])
 </pre></div></div>
 </div>
@@ -1855,7 +1830,7 @@ Text(0.5, 0, &#39;Total simulation time [min]&#39;)
 </div>
 </div>
 <script type="application/vnd.jupyter.widget-state+json">
-{"state": {"0017749993a5498391dcf357c8233d7c": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "a892574dc3af48899b8a5dfe0f338559": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_0017749993a5498391dcf357c8233d7c", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "Solving BEM problems \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m0:00:12\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Solving BEM problems <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">0:00:12</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "8dae9b0fc5014557991835c5b6b6247c": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "27055059d5f84e32b4484a5c48b8c1a7": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_8dae9b0fc5014557991835c5b6b6247c", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "Solving BEM problems \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m0:02:40\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Solving BEM problems <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">0:02:40</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}}, "version_major": 2, "version_minor": 0}
+{"state": {"007df5811fbe44bdb12377e8d90910de": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "35a62d2da53c4fb481325f535d817776": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_007df5811fbe44bdb12377e8d90910de", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "Solving BEM problems \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m0:00:13\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Solving BEM problems <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">0:00:13</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "9f11baf727d3460b93fe0701657acbfe": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "bee87916e267422e91e05e60fe37d39b": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_9f11baf727d3460b93fe0701657acbfe", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "Solving BEM problems \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m0:02:44\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Solving BEM problems <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">0:02:44</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}}, "version_major": 2, "version_minor": 0}
 </script></section>
 </section>
 </section>
